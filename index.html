@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>2026 NORTHWEST AMERICA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F6F3EC;
+    --surface: #FFFFFF;
+    --ink: #1E2A26;
+    --ink-soft: #64756E;
+    --ink-faint: #9AA79F;
+    --line: #E6E0D2;
+
+    --forest: #2F4A3E;
+    --forest-soft: #E6EDE8;
+    --slate: #4C6B78;
+    --slate-soft: #E5EDEF;
+    --maple: #AD4C3C;
+    --maple-soft: #F5E5E1;
+    --gold: #B3893F;
+    --gold-soft: #F1E6D2;
+  }
+
+  *{ box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body{
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Manrope', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body{ padding-bottom: 64px; }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position: relative;
+    padding: 48px 24px 26px;
+    background: linear-gradient(180deg, #223A30 0%, #2F4A3E 55%, #34503F 100%);
+    color: #F6F3EC;
+    overflow: hidden;
+  }
+
+  .hero::after{
+    content: "";
+    position: absolute;
+    right: -60px;
+    top: -60px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(179,137,63,0.35) 0%, rgba(179,137,63,0) 70%);
+  }
+
+  .hero-eyebrow{
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #C9BFA0;
+    margin: 0 0 14px;
+    font-weight: 600;
+  }
+
+  .hero-title{
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 34px;
+    line-height: 1.18;
+    margin: 0 0 18px;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-title em{
+    font-style: italic;
+    font-weight: 400;
+    color: #D7C79A;
+  }
+
+  .hero-meta{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    font-size: 13px;
+    color: #E6E0CC;
+  }
+
+  .hero-meta span{ display: flex; align-items: center; gap: 6px; }
+  .hero-meta svg{ width: 14px; height: 14px; opacity: 0.85; }
+
+  /* ---------- TABS ---------- */
+  .tabbar{
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 2px 6px rgba(30,42,38,0.05);
+  }
+
+  .tab{
+    flex: 1;
+    appearance: none;
+    border: none;
+    background: transparent;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 13.5px;
+    color: var(--ink-faint);
+    padding: 14px 4px 12px;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .tab.active{ color: var(--forest); }
+
+  .tab.active::after{
+    content: "";
+    position: absolute;
+    left: 18%;
+    right: 18%;
+    bottom: 0;
+    height: 3px;
+    border-radius: 3px 3px 0 0;
+    background: var(--forest);
+  }
+
+  main{ max-width: 480px; margin: 0 auto; padding: 0 16px; }
+
+  .tab-panel{ display: none; }
+  .tab-panel.active{ display: block; animation: fadein .25s ease; }
+
+  @keyframes fadein{ from{ opacity:0; transform: translateY(4px);} to{ opacity:1; transform: translateY(0);} }
+
+  /* ---------- SEGMENT LABEL ---------- */
+  .segment-label{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 26px 6px 14px;
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--ink);
+  }
+  .segment-label:first-child{ margin-top: 22px; }
+  .segment-label .dot{ width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .segment-label .rule{ flex: 1; height: 1px; background: var(--line); }
+  .seg-van .dot{ background: var(--slate); }
+  .seg-banff .dot{ background: var(--forest); }
+  .seg-cal .dot{ background: var(--gold); }
+  .seg-sea .dot{ background: var(--maple); }
+
+  /* ---------- TIMELINE / DAY CARD ---------- */
+  .timeline{ position: relative; }
+
+  .timeline::before{
+    content: "";
+    position: absolute;
+    left: 21px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: repeating-linear-gradient(to bottom, var(--line) 0px, var(--line) 4px, transparent 4px, transparent 9px);
+  }
+
+  .day{ position: relative; padding-left: 46px; margin-bottom: 18px; }
+
+  .day-dot{
+    position: absolute; left: 14px; top: 22px;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--surface); border: 3px solid var(--forest); z-index: 2;
+  }
+  .day.seg-van .day-dot{ border-color: var(--slate); }
+  .day.seg-banff .day-dot{ border-color: var(--forest); }
+  .day.seg-cal .day-dot{ border-color: var(--gold); }
+  .day.seg-sea .day-dot{ border-color: var(--maple); }
+
+  .card{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 18px 18px 16px;
+    box-shadow: 0 1px 2px rgba(30,42,38,0.04);
+  }
+
+  .card-head{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .card-head-left{ display: flex; flex-direction: column; }
+  .day-num{ font-family: 'Fraunces', serif; font-weight: 600; font-size: 20px; color: var(--ink); }
+  .day-date{ font-size: 12.5px; color: var(--ink-soft); font-weight: 600; }
+
+  .transport-badge{
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+    background: var(--forest-soft);
+    color: var(--forest);
+  }
+  .transport-badge svg{ width: 12px; height: 12px; }
+  .day.seg-van .transport-badge{ background: var(--slate-soft); color: var(--slate); }
+  .day.seg-cal .transport-badge{ background: var(--gold-soft); color: var(--gold); }
+  .day.seg-sea .transport-badge{ background: var(--maple-soft); color: var(--maple); }
+
+  .weather{
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 12px; border-radius: 10px; margin-bottom: 10px; font-size: 12.5px;
+  }
+  .day.seg-van .weather{ background: var(--slate-soft); }
+  .day.seg-banff .weather{ background: var(--forest-soft); }
+  .day.seg-cal .weather{ background: var(--gold-soft); }
+  .day.seg-sea .weather{ background: var(--maple-soft); }
+  .weather .temp{ font-weight: 800; color: var(--ink); white-space: nowrap; }
+  .weather .divider{ width: 1px; align-self: stretch; background: rgba(30,42,38,0.14); }
+  .weather .outfit{ color: var(--ink-soft); font-weight: 500; line-height: 1.4; }
+
+  .stay{
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 12px; font-size: 12px; font-weight: 600; color: var(--ink-soft);
+  }
+  .stay svg{ width: 13px; height: 13px; flex-shrink: 0; opacity: 0.75; }
+  .stay .stay-name{ color: var(--ink); font-weight: 700; }
+
+  .schedule{ list-style: none; margin: 0; padding: 0; }
+
+  .schedule li{
+    position: relative; padding: 6px 0 6px 16px;
+    font-size: 13.5px; color: var(--ink); line-height: 1.45;
+  }
+  .schedule li::before{
+    content: ""; position: absolute; left: 0; top: 14px;
+    width: 5px; height: 5px; border-radius: 50%; background: var(--ink-faint);
+  }
+  .schedule li.flight{ font-weight: 700; }
+  .schedule li.flight::before{ background: var(--maple); }
+  .schedule li.drive::before{ background: var(--forest); }
+  .schedule li.flight .tag{
+    display: inline-block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.03em;
+    color: var(--maple); background: var(--maple-soft); padding: 1px 6px; border-radius: 5px;
+    margin-left: 6px; vertical-align: middle;
+  }
+  .schedule li.note{ color: var(--ink-soft); font-weight: 500; font-style: italic; }
+
+  .meal-btn{
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    width: 100%; margin-top: 14px; padding: 10px 12px;
+    border-radius: 10px; border: 1px dashed var(--line);
+    background: #FBFAF6; color: var(--ink-soft);
+    font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 12.5px;
+    cursor: pointer;
+  }
+  .meal-btn svg{ width: 14px; height: 14px; }
+  .meal-btn:active{ background: var(--gold-soft); color: var(--ink); }
+
+  /* ---------- MEAL PAGE (slide-over) ---------- */
+  .meal-page{
+    position: fixed; inset: 0; z-index: 50;
+    background: var(--bg);
+    transform: translateX(100%);
+    transition: transform .28s ease;
+    overflow-y: auto;
+  }
+  .meal-page.open{ transform: translateX(0); }
+
+  .meal-page-head{
+    position: sticky; top: 0; z-index: 5;
+    background: var(--surface); border-bottom: 1px solid var(--line);
+    padding: 16px 16px 14px; display: flex; align-items: center; gap: 12px;
+  }
+  .meal-back{
+    width: 32px; height: 32px; border-radius: 50%;
+    border: 1px solid var(--line); background: var(--surface);
+    display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;
+  }
+  .meal-back svg{ width: 16px; height: 16px; color: var(--ink); }
+  .meal-page-head-text .m-day{ font-family:'Fraunces', serif; font-weight:600; font-size:17px; color: var(--ink); }
+  .meal-page-head-text .m-date{ font-size: 12px; color: var(--ink-soft); font-weight: 600; }
+
+  .meal-body{ max-width: 480px; margin: 0 auto; padding: 20px 16px 60px; }
+
+  .meal-slot{
+    background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+    padding: 16px; margin-bottom: 14px;
+  }
+  .meal-slot-title{
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'Fraunces', serif; font-weight: 600; font-size: 15px; color: var(--ink); margin-bottom: 8px;
+  }
+  .meal-slot-title svg{ width: 15px; height: 15px; color: var(--gold); }
+  .meal-empty{ font-size: 12.5px; color: var(--ink-faint); line-height: 1.6; }
+
+  /* ---------- ROUTE MAP TAB ---------- */
+  .map-card{
+    margin-top: 22px;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 18px;
+    padding: 16px 12px 20px; overflow: hidden;
+  }
+  .map-title{ font-family:'Fraunces', serif; font-weight: 600; font-size: 17px; margin: 4px 8px 14px; color: var(--ink); }
+  .map-legend{
+    display: flex; gap: 18px; margin: 14px 8px 0; font-size: 11.5px; color: var(--ink-soft); font-weight: 600;
+  }
+  .map-legend span{ display:flex; align-items:center; gap:6px; }
+  .legend-line{ width: 18px; height: 0; border-top: 2px solid var(--ink-soft); }
+  .legend-line.dashed{ border-top-style: dashed; }
+
+  .route-list{ margin: 20px 4px 4px; }
+  .route-step{
+    display: flex; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line);
+  }
+  .route-step:first-child{ border-top: none; }
+  .route-step .icon{
+    width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--forest-soft); color: var(--forest);
+  }
+  .route-step .icon svg{ width: 15px; height: 15px; }
+  .route-step .txt{ font-size: 13px; color: var(--ink); line-height: 1.4; padding-top: 4px; }
+  .route-step .txt b{ font-weight: 700; }
+  .route-step .txt span{ display:block; font-size: 11.5px; color: var(--ink-soft); font-weight: 600; margin-top: 2px; }
+
+  /* ---------- BUDGET TAB ---------- */
+  .budget-summary{
+    margin-top: 22px;
+    background: var(--forest);
+    border-radius: 18px;
+    padding: 20px 20px 18px;
+    color: #F6F3EC;
+  }
+  .budget-summary .total-label{ font-size: 12px; letter-spacing: 0.06em; color: #C9BFA0; font-weight: 700; text-transform: uppercase; }
+  .budget-summary .total-amount{ font-family: 'Fraunces', serif; font-size: 30px; font-weight: 600; margin: 6px 0 16px; }
+  .budget-summary .split{ display: flex; gap: 10px; }
+  .budget-summary .split div{ flex: 1; background: rgba(255,255,255,0.08); border-radius: 12px; padding: 10px 12px; }
+  .budget-summary .split .k{ font-size: 11px; color: #C9BFA0; font-weight: 700; margin-bottom: 3px; }
+  .budget-summary .split .v{ font-size: 15px; font-weight: 700; }
+  .budget-summary .split .v.paid{ color: #8FB6D9; }
+  .budget-summary .split .v.planned{ color: #E8A99C; }
+  .budget-note{ font-size: 11px; color: var(--ink-faint); margin: 10px 4px 0; line-height: 1.5; }
+
+  .budget-day{
+    background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+    padding: 16px 18px; margin-top: 14px;
+  }
+  .budget-day-head{ display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; }
+  .budget-day-head .b-day{ font-family: 'Fraunces', serif; font-weight: 600; font-size: 16px; color: var(--ink); }
+  .budget-day-head .b-date{ font-size: 11.5px; color: var(--ink-soft); font-weight: 600; }
+
+  .cost-row{
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 10px; padding: 6px 0; font-size: 13px; border-top: 1px dashed var(--line);
+  }
+  .cost-row:first-of-type{ border-top: none; }
+  .cost-row .cost-label{ color: var(--ink-soft); font-weight: 600; }
+  .cost-row .cost-label small{ display:block; font-size: 10.5px; color: var(--ink-faint); font-weight: 500; margin-top: 1px; }
+  .cost-row .cost-amount{ font-weight: 800; white-space: nowrap; }
+  .cost-amount.paid{ color: #3E6C8C; }
+  .cost-amount.planned{ color: #AD4C3C; }
+  .cost-amount.muted{ color: var(--ink-faint); font-weight: 600; }
+
+  .cost-legend{ display: flex; gap: 16px; margin: 16px 4px 0; font-size: 11.5px; font-weight: 700; }
+  .cost-legend span{ display: flex; align-items: center; gap: 6px; color: var(--ink-soft); }
+  .cost-legend .sw{ width: 9px; height: 9px; border-radius: 50%; }
+  .cost-legend .sw.paid{ background: #3E6C8C; }
+  .cost-legend .sw.planned{ background: #AD4C3C; }
+
+  /* ---------- BOOKING TAB ---------- */
+  .booking-group{ margin-top: 26px; }
+  .booking-group:first-child{ margin-top: 22px; }
+  .booking-card{
+    background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+    padding: 16px 18px; margin-top: 12px;
+  }
+  .booking-card-head{ display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+  .booking-title{ font-family: 'Fraunces', serif; font-weight: 600; font-size: 15.5px; color: var(--ink); line-height: 1.35; }
+  .booking-sub{ font-size: 12px; color: var(--ink-soft); font-weight: 600; margin-top: 2px; }
+  .booking-rows{ margin-top: 10px; }
+  .booking-row{ display: flex; justify-content: space-between; gap: 10px; padding: 5px 0; font-size: 12.5px; border-top: 1px dashed var(--line); }
+  .booking-row:first-child{ border-top: none; }
+  .booking-row .k{ color: var(--ink-soft); font-weight: 600; }
+  .booking-row .v{ color: var(--ink); font-weight: 700; text-align: right; }
+
+  /* ---------- EMPTY STATE (예약사항) ---------- */
+  .empty-state{
+    margin-top: 60px;
+    text-align: center;
+    padding: 40px 20px;
+  }
+  .empty-state .glyph{
+    width: 52px; height: 52px; margin: 0 auto 18px;
+    border-radius: 50%; background: var(--gold-soft);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .empty-state .glyph svg{ width: 24px; height: 24px; color: var(--gold); }
+  .empty-state h3{
+    font-family: 'Fraunces', serif; font-weight: 600; font-size: 18px; color: var(--ink); margin: 0 0 8px;
+  }
+  .empty-state p{ font-size: 13px; color: var(--ink-soft); line-height: 1.6; margin: 0; }
+
+  footer{ max-width: 480px; margin: 40px auto 0; padding: 0 24px; text-align: center; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <p class="hero-eyebrow">Family Trip · 2026.09.16 – 09.26</p>
+  <h1 class="hero-title">2026<br><em>NORTHWEST AMERICA</em></h1>
+  <div class="hero-meta">
+    <span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+      Vancouver · Banff & Canmore · Calgary · Seattle
+    </span>
+    <span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3v4M7 3v4M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+      10박 11일
+    </span>
+    <span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="3"/><path d="M2 20c0-3.3 3.1-6 7-6s7 2.7 7 6"/><circle cx="18" cy="8" r="2.2"/><path d="M23 20c0-2.6-2.1-4.7-4.7-5"/></svg>
+      성인 2 · 유아 1
+    </span>
+  </div>
+</div>
+
+<div class="tabbar">
+  <button class="tab active" data-tab="itinerary">일정</button>
+  <button class="tab" data-tab="route">동선</button>
+  <button class="tab" data-tab="budget">비용</button>
+  <button class="tab" data-tab="booking">예약사항</button>
+</div>
+
+<main>
+
+  <!-- ============ 일정 TAB ============ -->
+  <section class="tab-panel active" id="tab-itinerary">
+
+    <div class="segment-label seg-van"><span class="dot"></span>밴쿠버<span class="rule"></span></div>
+    <div class="timeline">
+
+      <div class="day seg-van">
+        <span class="day-dot"></span>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-head-left">
+              <span class="day-num">Day 01</span>
+              <span class="day-date">9.16 (수)</span>
+            </div>
+            <span class="transport-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-8-8 20-3-8-9-4z"/></svg>
+              항공 KE075
+            </span>
+          </div>
+          <div class="weather">
+            <span class="temp">19–21° / 11–13°</span>
+            <span class="divider"></span>
+            <span class="outfit">얇은 긴팔 + 가디건, 저녁엔 바람막이</span>
+          </div>
+          <div class="stay">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+            <span class="stay-name">Hilton Vancouver Downtown</span> 체크인
+          </div>
+          <ul class="schedule">
+            <li class="flight">22:40 ICN 출발 <span class="tag">KE075</span></li>
+            <li class="flight">16:30 YVR 도착</li>
+            <li>공항 → 호텔: 택시/우버 이동 (약 25분)</li>
+            <li>호텔 체크인(16:00~) · 짐 정리, 시차 적응</li>
+          </ul>
+          <button class="meal-btn" onclick="openMeal('day1','9.16 (수) · 밴쿠버')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3v6a2 2 0 0 0 4 0V3M9 9v12M17 3c-1.5 3-1.5 6 0 8v10"/></svg>
+            오늘 뭐 먹지?
+          </button>
+        </div>
+      </div>
+
+      <div class="day seg-van">
+        <span class="day-dot"></span>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-head-left">
+              <span class="day-num">Day 02</span>
+              <span class="day-date">9.17 (목)</span>
+            </div>
+            <span class="transport-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 4l-9 9h4v7h10v-7h4z"/></svg>
+              도보 · 대중교통
+            </span>
+          </div>
+          <div class="weather">
+            <span class="temp">19–21° / 11–13°</span>
+            <span class="divider"></span>
+            <span class="outfit">얇은 긴팔 + 가디건</span>
+          </div>
+          <div class="stay">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+            <span class="stay-name">Hilton Vancouver Downtown</span>
+          </div>
+          <ul class="schedule">
+            <li>밴쿠버 시내 관광 (도보 + 스카이트레인)</li>
+          </ul>
+          <button class="meal-btn" onclick="openMeal('day2','9.17 (목) · 밴쿠버')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3v6a2 2 0 0 0 4 0V3M9 9v12M17 3c-1.5 3-1.5 6 0 8v10"/></svg>
+            오늘 뭐 먹지?
+          </button>
+        </div>
+      </div>
+
+      <div class="day seg-van">
+        <span class="day-dot"></span>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-head-left">
+              <span class="day-num">Day 03</span>
+              <span class="day-date">9.18 (금)</span>
+            </div>
+            <span class="transport-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 4l-9 9h4v7h10v-7h4z"/></svg>
+              대중교통 (카셰어 불가 구간)
+            </span>
+          </div>
+          <div class="weather">
+            <span class="temp">19–21° / 11–13°</span>
+            <span class="divider"></span>
+            <span class="outfit">얇은 긴팔 + 방수 자켓 (캐필라노 대비)</span>
+          </div>
+          <div class="stay">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+            <span class="stay-name">Hilton Vancouver Downtown</span> 체크아웃
+          </div>
+          <ul class="schedule">
+            <li>버스/우버로 캐필라노 이동 (Evo 카셰어 불가 구간)</li>
+            <li>캐필라노 등 근교 나들이</li>
+          </ul>
+          <button class="meal-btn" onclick="openMeal('day3','9.18 (금) · 밴쿠버')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3v6a2 2 0 0 0 4 0V3M9 9v12M17 3c-1.5 3-1.5 6 0 8v10"/></svg>
+            오늘 뭐 먹지?
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="segment-label seg-banff"><span class="dot"></span>밴프 · 캔모어<span class="rule"></span></div>
+    <div class="timeline">
+
+      <div class="day seg-banff">
+        <span class="day-dot"></span>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-head-left">
+              <span class="day-num">Day 04</span>
+              <span class="day-date">9.19 (토)</span>
+            </div>
+            <span class="transport-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-8-8 20-3-8-9-4z"/></svg>
+              항공 WS110 + 렌터카
+            </span>
+          </div>
+          <div class="weather">
+            <span class="temp">12–15° / 0–4°</span>
+            <span class="divider"></span>
+            <span class="outfit">긴팔 + 플리스 or 경량 패딩</span>
+          </div>
+          <div class="stay">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+            <span class="stay-name">캔모어의 숙소</span> 체크인 (호스트 Ryan)
+          </div>
+          <ul class="schedule">
+            <li class="note">09:00~09:10 YVR 공항 도착 권장</li>
+            <li class="flight">10:40 YVR 출발 <span class="tag">WS110</span></li>
+            <li class="flight">13:10 YYC 도착</li>
+            <li class="drive">13:30 렌터카 픽업 (Calgary Airport)</li>
+            <li class="drive">차량으로 캔모어 이동 (약 1시간 10분)</li>
+            <li>16:00 이후 숙소 체크인</li>
+          </ul>
+          <button class="meal-btn" onclick="openMeal('day4','9.19 (토) · 캘거리→캔모어')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3v6a2 2 0 0 0 4 0V3M9 9v12M17 3c-1.5 3-1.5 6 0 8v10"/></svg>
+            오늘 뭐 먹지?
+          </button>
+        </div>
+      </div>
+
+      <div class="day seg-banff">
+        <span class="day-dot"></span>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-head-left">
+              <span class="day-num">Day 05</span>
+              <span class="day-date">9.20 (일)</span>
+            </div>
+            <span class="transport-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 11l1.5-5h11L19 11M5 11v6a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1h8v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-6M5 11h14"/><circle cx="7.5" cy="15" r="0"/></svg>
+              렌터카
+            </span>
+          </div>
+          <div class="weather">
+            <span class="temp">12–15° / 0–4°</span>
+            <span class="divider"></span>
+            <span class="outfit">긴팔 + 두꺼운 아우터, 장갑·목도리</span>
+          </div>
+          <div class="stay">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+            <span class="stay-name">캔모어의 숙소</span>
+          </div>
+          <ul class="schedule">
+            <li class="drive">렌터카로 밴프 국립공원 이동</li>
+            <li>모레인레이크 · 레이크루이스 등 관광</li>
+          </ul>
+          <button class="meal-btn" onclick="openMeal('day5','9.20 (일) · 밴프')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3v6a2 2 0 0 0 4 0V3M9 9v12M17 3c-1.5 3-1.5 6 0 8v10"/></svg>
+            오늘 뭐 먹지?
+          </button>
+        </div>
+      </div>
+
+      <div class="day seg-banff">
+        <span class="day-dot"></span>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-head-left">
+              <span class="day-num">Day 06</span>
+              <span class="day-date">9.21 (월)</span>
+            </div>
+            <span class="transport-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 11l1.5-5h11L19 11M5 11v6a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1h8v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-6M5 11h14"/></svg>
+              렌터카
+            </span>
+          </div>
+          <div class="weather">
+            <span class="temp">12–15° / 0–4°</span>
+            <span class="divider"></span>
+            <span class="outfit">긴팔 + 두꺼운 아우터, 장갑·목도리</span>
+          </div>
+          <div class="stay">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+            <span class="stay-name">캔모어의 숙소</span> 체크아웃
+          </div>
+          <ul class="schedule">
+            <li class="drive">렌터카로 밴프 국립공원 이동</li>
+            <li>밴프 시내 · 주변 관광</li>
+          </ul>
+          <button class="meal-btn" onclick="openMeal('day6','9.21 (월) · 밴프')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3v6a2 2 0 0 0 4 0V3M9 9v12M17 3c-1.5 3-1.5 6 0 8v10"/></svg>
+            오늘 뭐 먹지?
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="segment-label seg-cal"><span class="dot"></span>캘거리<span class="rule"></span></div>
+    <div class="timeline">
+
+      <div class="day seg-cal">
+        <span class="day-dot"></span>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-head-left">
+              <span class="day-num">Day 07</span>
+              <span class="day-date">9.22 (화)</span>
+            </div>
+            <span class="transport-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 11l1.5-5h11L19 11M5 11v6a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1h8v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-6M5 11h14"/></svg>
+              렌터카 반납
+            </span>
+          </div>
+          <div class="weather">
+            <span class="temp">12–15° / 0–4°</span>
+            <span class="divider"></span>
+            <span class="outfit">긴팔 + 두꺼운 아우터</span>
+          </div>
+          <div class="stay">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+            <span class="stay-name">Hampton Inn by Hilton Calgary Airport North</span> 체크인
+          </div>
+          <ul class="schedule">
+            <li>11:00 캔모어 숙소 체크아웃</li>
+            <li class="drive">렌터카로 밴프 or 캘거리 투어</li>
+            <li>15:00 이후 Hampton Inn 체크인</li>
+            <li class="flight">22:00 렌터카 반납 <span class="tag">Calgary Airport</span></li>
+            <li>공항 → 호텔: 호텔 셔틀 확인 필요</li>
+          </ul>
+          <button class="meal-btn" onclick="openMeal('day7','9.22 (화) · 밴프→캘거리')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3v6a2 2 0 0 0 4 0V3M9 9v12M17 3c-1.5 3-1.5 6 0 8v10"/></svg>
+            오늘 뭐 먹지?
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="segment-label seg-sea"><span class="dot"></span>시애틀<span class="rule"></span></div>
+    <div class="timeline">
+
+      <div class="day seg-sea">
+        <span class="day-dot"></span>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-head-left">
+              <span class="day-num">Day 08</span>
+              <span class="day-date">9.23 (수)</span>
+            </div>
+            <span class="transport-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-8-8 20-3-8-9-4z"/></svg>
+              항공 WS1550
+            </span>
+          </div>
+          <div class="weather">
+            <span class="temp">20–22° / 11°</span>
+            <span class="divider"></span>
+            <span class="outfit">얇은 긴팔 or 반팔 + 가디건</span>
+          </div>
+          <div class="stay">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+            <span class="stay-name">시애틀의 숙소</span> 체크인 (호스트 Beatrice)
+          </div>
+          <ul class="schedule">
+            <li>12:00 Hampton Inn 체크아웃</li>
+            <li class="note">06:15~06:30 YYC 공항 도착 권장</li>
+            <li class="flight">08:45 YYC 출발 <span class="tag">WS1550</span></li>
+            <li class="flight">09:40 SEA 도착</li>
+            <li>짐 처리(호스트 문의 or 공항 짐보관) 후 시내 구경</li>
+            <li>16:00 숙소 체크인</li>
+          </ul>
+          <button class="meal-btn" onclick="openMeal('day8','9.23 (수) · 시애틀')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3v6a2 2 0 0 0 4 0V3M9 9v12M17 3c-1.5 3-1.5 6 0 8v10"/></svg>
+            오늘 뭐 먹지?
+          </button>
+        </div>
+      </div>
+
+      <div class="day seg-sea">
+        <span class="day-dot"></span>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-head-left">
+              <span class="day-num">Day 09</span>
+              <span class="day-date">9.24 (목)</span>
+            </div>
+            <span class="transport-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 4l-9 9h4v7h10v-7h4z"/></svg>
+              도보 · 대중교통
+            </span>
+          </div>
+          <div class="weather">
+            <span class="temp">20–22° / 11°</span>
+            <span class="divider"></span>
+            <span class="outfit">얇은 긴팔 or 반팔 + 가디건</span>
+          </div>
+          <div class="stay">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+            <span class="stay-name">시애틀의 숙소</span>
+          </div>
+          <ul class="schedule">
+            <li>시애틀 시내 구경</li>
+          </ul>
+          <button class="meal-btn" onclick="openMeal('day9','9.24 (목) · 시애틀')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3v6a2 2 0 0 0 4 0V3M9 9v12M17 3c-1.5 3-1.5 6 0 8v10"/></svg>
+            오늘 뭐 먹지?
+          </button>
+        </div>
+      </div>
+
+      <div class="day seg-sea">
+        <span class="day-dot"></span>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-head-left">
+              <span class="day-num">Day 10</span>
+              <span class="day-date">9.25 (금)</span>
+            </div>
+            <span class="transport-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-8-8 20-3-8-9-4z"/></svg>
+              택시/우버 → 항공 KE042
+            </span>
+          </div>
+          <div class="weather">
+            <span class="temp">20–22° / 11°</span>
+            <span class="divider"></span>
+            <span class="outfit">얇은 긴팔 or 반팔 + 가디건</span>
+          </div>
+          <div class="stay">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+            <span class="stay-name">시애틀의 숙소</span> 체크아웃
+          </div>
+          <ul class="schedule">
+            <li>11:00 숙소 체크아웃 (셀프)</li>
+            <li class="note">08:50~09:00 숙소 출발 권장 (택시/우버)</li>
+            <li class="flight">12:50 SEA 출발 <span class="tag">KE042</span></li>
+          </ul>
+          <button class="meal-btn" onclick="openMeal('day10','9.25 (금) · 시애틀')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3v6a2 2 0 0 0 4 0V3M9 9v12M17 3c-1.5 3-1.5 6 0 8v10"/></svg>
+            오늘 뭐 먹지?
+          </button>
+        </div>
+      </div>
+
+      <div class="day seg-sea">
+        <span class="day-dot"></span>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-head-left">
+              <span class="day-num">Day 11</span>
+              <span class="day-date">9.26 (토)</span>
+            </div>
+            <span class="transport-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-8-8 20-3-8-9-4z"/></svg>
+              항공 도착
+            </span>
+          </div>
+          <div class="weather">
+            <span class="temp">서울</span>
+            <span class="divider"></span>
+            <span class="outfit">귀국</span>
+          </div>
+          <ul class="schedule">
+            <li class="flight">16:40 ICN 도착 <span class="tag">+1일</span></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ============ 동선 TAB ============ -->
+  <section class="tab-panel" id="tab-route">
+    <div class="map-card">
+      <p class="map-title">이동 경로</p>
+      <svg viewBox="0 0 380 300" width="100%" height="auto" style="display:block;">
+        <!-- coastline (Pacific, left) -->
+        <path d="M0,0 C40,40 20,90 45,140 C65,180 30,230 55,300 L0,300 Z" fill="#E5EDEF"/>
+        <!-- mountain silhouette (Rockies, right-center) -->
+        <polygon points="190,140 215,95 235,140" fill="#E6EDE8"/>
+        <polygon points="215,150 245,90 275,150" fill="#E6EDE8"/>
+        <polygon points="255,145 280,105 305,145" fill="#E6EDE8"/>
+
+        <!-- route: Vancouver -> Calgary (flight) -->
+        <line x1="72" y1="62" x2="272" y2="112" stroke="#AD4C3C" stroke-width="2" stroke-dasharray="5,5"/>
+        <!-- Calgary -> Banff/Canmore (drive) -->
+        <line x1="272" y1="112" x2="222" y2="82" stroke="#2F4A3E" stroke-width="2"/>
+        <!-- Banff/Canmore -> Calgary (drive back) -->
+        <line x1="222" y1="82" x2="272" y2="112" stroke="#2F4A3E" stroke-width="2" opacity="0.45"/>
+        <!-- Calgary -> Seattle (flight) -->
+        <line x1="272" y1="112" x2="97" y2="152" stroke="#AD4C3C" stroke-width="2" stroke-dasharray="5,5"/>
+
+        <!-- city nodes -->
+        <circle cx="72" cy="62" r="6" fill="#4C6B78"/>
+        <circle cx="222" cy="82" r="6" fill="#2F4A3E"/>
+        <circle cx="272" cy="112" r="6" fill="#B3893F"/>
+        <circle cx="97" cy="152" r="6" fill="#AD4C3C"/>
+
+        <text x="82" y="58" font-family="Manrope" font-size="12" font-weight="700" fill="#1E2A26">밴쿠버</text>
+        <text x="200" y="70" font-family="Manrope" font-size="12" font-weight="700" fill="#1E2A26">밴프·캔모어</text>
+        <text x="282" y="108" font-family="Manrope" font-size="12" font-weight="700" fill="#1E2A26">캘거리</text>
+        <text x="60" y="172" font-family="Manrope" font-size="12" font-weight="700" fill="#1E2A26">시애틀</text>
+      </svg>
+
+      <div class="map-legend">
+        <span><span class="legend-line dashed"></span> 항공</span>
+        <span><span class="legend-line"></span> 렌터카</span>
+      </div>
+    </div>
+
+    <div class="route-list">
+      <div class="route-step">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-8-8 20-3-8-9-4z"/></svg>
+        </div>
+        <div class="txt"><b>밴쿠버 → 캘거리</b><span>WS110 · 9.19(토) 10:40 → 13:10</span></div>
+      </div>
+      <div class="route-step">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 11l1.5-5h11L19 11M5 11v6a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1h8v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-6M5 11h14"/></svg>
+        </div>
+        <div class="txt"><b>캘거리 → 캔모어/밴프</b><span>렌터카 · 약 1시간 10분</span></div>
+      </div>
+      <div class="route-step">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 11l1.5-5h11L19 11M5 11v6a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1h8v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-6M5 11h14"/></svg>
+        </div>
+        <div class="txt"><b>캔모어/밴프 → 캘거리</b><span>렌터카 · 9.22(화) 반납</span></div>
+      </div>
+      <div class="route-step">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-8-8 20-3-8-9-4z"/></svg>
+        </div>
+        <div class="txt"><b>캘거리 → 시애틀</b><span>WS1550 · 9.23(수) 08:45 → 09:40</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 비용 TAB ============ -->
+  <section class="tab-panel" id="tab-budget">
+
+    <div class="budget-summary">
+      <div class="total-label">Total Budget</div>
+      <div class="total-amount">₩ 11,604,298</div>
+      <div class="split">
+        <div>
+          <div class="k">지출완료</div>
+          <div class="v paid">₩ 10,698,449</div>
+        </div>
+        <div>
+          <div class="k">지출예정</div>
+          <div class="v planned">₩ 2,040,000</div>
+        </div>
+      </div>
+    </div>
+    <p class="budget-note">파란색 = 이미 지출한 항목 · 빨간색 = 지출 예정(예산) 항목입니다. 합계는 표에 기재된 개별 항목 합산 기준이며, 최종 총액은 상단 금액을 기준으로 합니다.</p>
+    <div class="cost-legend">
+      <span><span class="sw paid"></span>지출완료</span>
+      <span><span class="sw planned"></span>지출예정</span>
+    </div>
+
+    <div class="budget-day">
+      <div class="budget-day-head"><span class="b-day">Day 01</span><span class="b-date">9.16(수) · 인천 → 밴쿠버</span></div>
+      <div class="cost-row"><div class="cost-label">대한항공(놀)<small>KE0075 · 왕복 항공권</small></div><div class="cost-amount paid">₩4,174,000</div></div>
+      <div class="cost-row"><div class="cost-label">저녁 · Skewers Souvlaki Pita bar</div><div class="cost-amount planned">₩120,000</div></div>
+      <div class="cost-row"><div class="cost-label">숙소 · Hilton Vancouver Downtown<small>9/14까지 취소가능</small></div><div class="cost-amount paid">₩1,275,440</div></div>
+    </div>
+
+    <div class="budget-day">
+      <div class="budget-day-head"><span class="b-day">Day 02</span><span class="b-date">9.17(목) · 밴쿠버</span></div>
+      <div class="cost-row"><div class="cost-label">교통 · 대중교통</div><div class="cost-amount planned">₩50,000</div></div>
+      <div class="cost-row"><div class="cost-label">오후 · The Lobster Man</div><div class="cost-amount planned">₩70,000</div></div>
+      <div class="cost-row"><div class="cost-label">저녁 · Costco?!</div><div class="cost-amount planned">₩50,000</div></div>
+    </div>
+
+    <div class="budget-day">
+      <div class="budget-day-head"><span class="b-day">Day 03</span><span class="b-date">9.18(금) · 밴쿠버</span></div>
+      <div class="cost-row"><div class="cost-label">오전 · 무료셔틀/버스<small>11시, 캐필라노 셔틀 예약 필수</small></div><div class="cost-amount muted">-</div></div>
+      <div class="cost-row"><div class="cost-label">오후 · 도시락/피크닉<small>+캐필라노 입장권</small></div><div class="cost-amount planned">₩50,000</div></div>
+      <div class="cost-row"><div class="cost-label">저녁 · 베트남음식?</div><div class="cost-amount planned">₩100,000</div></div>
+    </div>
+
+    <div class="budget-day">
+      <div class="budget-day-head"><span class="b-day">Day 04</span><span class="b-date">9.19(토) · 밴쿠버 → 캘거리 → 밴프</span></div>
+      <div class="cost-row"><div class="cost-label">웨스트젯(공홀)<small>WS110 · 밴쿠버→캘거리</small></div><div class="cost-amount paid">₩682,900</div></div>
+      <div class="cost-row"><div class="cost-label">렌트카 4일<small>Hertz, via 대한항공 · 9/19~9/22</small></div><div class="cost-amount paid">₩717,220</div></div>
+      <div class="cost-row"><div class="cost-label">오후 · 시내 식사</div><div class="cost-amount planned">₩50,000</div></div>
+      <div class="cost-row"><div class="cost-label">저녁 · 숙소에서 해먹기</div><div class="cost-amount planned">₩100,000</div></div>
+    </div>
+
+    <div class="budget-day">
+      <div class="budget-day-head"><span class="b-day">Day 05</span><span class="b-date">9.20(일) · 밴프</span></div>
+      <div class="cost-row"><div class="cost-label">숙소 · Michael's House (Airbnb)<small>8/20까지 취소가능 · 2박</small></div><div class="cost-amount paid">₩1,583,472</div></div>
+      <div class="cost-row"><div class="cost-label">오전 · 셔틀 예약 안내<small>실패 시 11시, 9/22 셔틀 예약 필수</small></div><div class="cost-amount muted">-</div></div>
+      <div class="cost-row"><div class="cost-label">오후 · 시내 식사</div><div class="cost-amount planned">₩50,000</div></div>
+      <div class="cost-row"><div class="cost-label">저녁 · 숙소에서 해먹기</div><div class="cost-amount planned">₩100,000</div></div>
+    </div>
+
+    <div class="budget-day">
+      <div class="budget-day-head"><span class="b-day">Day 06</span><span class="b-date">9.21(월) · 캔모어</span></div>
+      <div class="cost-row"><div class="cost-label">오전 · 셔틀 예약 안내<small>실패 시 11시, 9/23 셔틀 예약 필수</small></div><div class="cost-amount muted">-</div></div>
+      <div class="cost-row"><div class="cost-label">오후 · 시내 식사</div><div class="cost-amount planned">₩50,000</div></div>
+      <div class="cost-row"><div class="cost-label">저녁 · 숙소에서 해먹기</div><div class="cost-amount planned">₩100,000</div></div>
+    </div>
+
+    <div class="budget-day">
+      <div class="budget-day-head"><span class="b-day">Day 07</span><span class="b-date">9.22(화) · 밴프 → 캘거리</span></div>
+      <div class="cost-row"><div class="cost-label">숙소 · Hampton Inn by Hilton Calgary Airport North<small>*취소불가</small></div><div class="cost-amount paid">₩246,924</div></div>
+      <div class="cost-row"><div class="cost-label">오후 · 시내 식사</div><div class="cost-amount planned">₩50,000</div></div>
+      <div class="cost-row"><div class="cost-label">저녁 · 팀홀튼</div><div class="cost-amount planned">₩50,000</div></div>
+      <div class="cost-row"><div class="cost-label">교통 · 기름값</div><div class="cost-amount planned">₩150,000</div></div>
+    </div>
+
+    <div class="budget-day">
+      <div class="budget-day-head"><span class="b-day">Day 08</span><span class="b-date">9.23(수) · 캘거리 → 시애틀</span></div>
+      <div class="cost-row"><div class="cost-label">숙소 · Beatrice's house (Airbnb)<small>9/8까지 취소가능 · 2박</small></div><div class="cost-amount paid">₩875,739</div></div>
+      <div class="cost-row"><div class="cost-label">웨스트젯(공홀)<small>WS1550 · 캘거리→시애틀 · 886.89+135=1021.89</small></div><div class="cost-amount paid">₩1,142,754</div></div>
+      <div class="cost-row"><div class="cost-label">오후 · 시내 식사</div><div class="cost-amount planned">₩50,000</div></div>
+      <div class="cost-row"><div class="cost-label">저녁 · 시내 식사</div><div class="cost-amount planned">₩100,000</div></div>
+    </div>
+
+    <div class="budget-day">
+      <div class="budget-day-head"><span class="b-day">Day 09</span><span class="b-date">9.24(목) · 시애틀</span></div>
+      <div class="cost-row"><div class="cost-label">교통비</div><div class="cost-amount planned">₩50,000</div></div>
+      <div class="cost-row"><div class="cost-label">오후 · 시내 식사</div><div class="cost-amount planned">₩50,000</div></div>
+      <div class="cost-row"><div class="cost-label">저녁 · 시내 식사</div><div class="cost-amount planned">₩100,000</div></div>
+    </div>
+
+    <div class="budget-day">
+      <div class="budget-day-head"><span class="b-day">Day 10</span><span class="b-date">9.25(금) · 시애틀 → 인천</span></div>
+      <div class="cost-row"><div class="cost-label">교통비</div><div class="cost-amount planned">₩50,000</div></div>
+      <div class="cost-row"><div class="cost-label">기타여비</div><div class="cost-amount planned">₩500,000</div></div>
+      <div class="cost-row"><div class="cost-label">대한항공 KE0042<small>SEA→ICN · Day 01 항공권에 포함</small></div><div class="cost-amount muted">-</div></div>
+    </div>
+
+  </section>
+
+  <!-- ============ 예약사항 TAB ============ -->
+  <section class="tab-panel" id="tab-booking">
+
+    <div class="booking-group">
+      <div class="segment-label seg-van" style="margin-top:0;"><span class="dot"></span>항공<span class="rule"></span></div>
+
+      <div class="booking-card">
+        <div class="booking-card-head">
+          <div>
+            <div class="booking-title">인천 → 밴쿠버</div>
+            <div class="booking-sub">Korean Air KE0075 · B787-10</div>
+          </div>
+        </div>
+        <div class="booking-rows">
+          <div class="booking-row"><span class="k">출발</span><span class="v">9.16(수) 22:40 · ICN T2</span></div>
+          <div class="booking-row"><span class="k">도착</span><span class="v">9.16(수) 16:30 · YVR Terminal M</span></div>
+        </div>
+      </div>
+
+      <div class="booking-card">
+        <div class="booking-card-head">
+          <div>
+            <div class="booking-title">밴쿠버 → 캘거리</div>
+            <div class="booking-sub">WestJet WS110 · 1h 30m</div>
+          </div>
+        </div>
+        <div class="booking-rows">
+          <div class="booking-row"><span class="k">출발</span><span class="v">9.19(토) 10:40 · YVR Main Terminal</span></div>
+          <div class="booking-row"><span class="k">도착</span><span class="v">9.19(토) 13:10 · YYC</span></div>
+        </div>
+      </div>
+
+      <div class="booking-card">
+        <div class="booking-card-head">
+          <div>
+            <div class="booking-title">캘거리 → 시애틀</div>
+            <div class="booking-sub">WestJet WS1550 · 1h 55m</div>
+          </div>
+        </div>
+        <div class="booking-rows">
+          <div class="booking-row"><span class="k">출발</span><span class="v">9.23(수) 08:45 · YYC</span></div>
+          <div class="booking-row"><span class="k">도착</span><span class="v">9.23(수) 09:40 · SEA</span></div>
+        </div>
+      </div>
+
+      <div class="booking-card">
+        <div class="booking-card-head">
+          <div>
+            <div class="booking-title">시애틀 → 인천</div>
+            <div class="booking-sub">Korean Air KE0042 · B787-10 · 11h 50m</div>
+          </div>
+        </div>
+        <div class="booking-rows">
+          <div class="booking-row"><span class="k">출발</span><span class="v">9.25(금) 12:50 · SEA</span></div>
+          <div class="booking-row"><span class="k">도착</span><span class="v">9.26(토) 16:40 · ICN T2</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="booking-group">
+      <div class="segment-label seg-banff"><span class="dot"></span>숙소<span class="rule"></span></div>
+
+      <div class="booking-card">
+        <div class="booking-card-head">
+          <div>
+            <div class="booking-title">Hilton Vancouver Downtown</div>
+            <div class="booking-sub">3박</div>
+          </div>
+        </div>
+        <div class="booking-rows">
+          <div class="booking-row"><span class="k">체크인</span><span class="v">9.16(수) 16:00</span></div>
+          <div class="booking-row"><span class="k">체크아웃</span><span class="v">9.19(토) 11:00</span></div>
+        </div>
+      </div>
+
+      <div class="booking-card">
+        <div class="booking-card-head">
+          <div>
+            <div class="booking-title">캔모어의 숙소 (Airbnb)</div>
+            <div class="booking-sub">호스트 Ryan</div>
+          </div>
+        </div>
+        <div class="booking-rows">
+          <div class="booking-row"><span class="k">체크인</span><span class="v">9.19(토) 16:00</span></div>
+          <div class="booking-row"><span class="k">체크아웃</span><span class="v">9.22(화) 11:00</span></div>
+        </div>
+      </div>
+
+      <div class="booking-card">
+        <div class="booking-card-head">
+          <div>
+            <div class="booking-title">Hampton Inn by Hilton Calgary Airport North</div>
+            <div class="booking-sub">1박</div>
+          </div>
+        </div>
+        <div class="booking-rows">
+          <div class="booking-row"><span class="k">체크인</span><span class="v">9.22(화) 15:00</span></div>
+          <div class="booking-row"><span class="k">체크아웃</span><span class="v">9.23(수) 12:00</span></div>
+        </div>
+      </div>
+
+      <div class="booking-card">
+        <div class="booking-card-head">
+          <div>
+            <div class="booking-title">시애틀의 숙소 (Airbnb)</div>
+            <div class="booking-sub">호스트 Beatrice</div>
+          </div>
+        </div>
+        <div class="booking-rows">
+          <div class="booking-row"><span class="k">체크인</span><span class="v">9.23(수) 16:00</span></div>
+          <div class="booking-row"><span class="k">체크아웃</span><span class="v">9.25(금) 11:00</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="booking-group">
+      <div class="segment-label seg-cal"><span class="dot"></span>렌터카<span class="rule"></span></div>
+
+      <div class="booking-card">
+        <div class="booking-card-head">
+          <div>
+            <div class="booking-title">Fullsize · Toyota Camry or similar</div>
+            <div class="booking-sub">Calgary International Airport 픽업/반납</div>
+          </div>
+        </div>
+        <div class="booking-rows">
+          <div class="booking-row"><span class="k">픽업</span><span class="v">9.19(토) 13:30</span></div>
+          <div class="booking-row"><span class="k">반납</span><span class="v">9.22(화) 22:00</span></div>
+          <div class="booking-row"><span class="k">영업시간</span><span class="v">Mon–Sun 07:00–24:00</span></div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<!-- ============ MEAL SLIDE-OVER PAGE ============ -->
+<div class="meal-page" id="mealPage">
+  <div class="meal-page-head">
+    <div class="meal-back" onclick="closeMeal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    </div>
+    <div class="meal-page-head-text">
+      <div class="m-day" id="mealDayLabel">Day 01</div>
+      <div class="m-date" id="mealDateLabel">9.16 (수) · 밴쿠버</div>
+    </div>
+  </div>
+  <div class="meal-body">
+    <div class="meal-slot">
+      <div class="meal-slot-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        아침
+      </div>
+      <p class="meal-empty" id="mealBreakfast">맛집 리스트 준비 중이에요.</p>
+    </div>
+    <div class="meal-slot">
+      <div class="meal-slot-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v10M6 12h12l-1 8H7l-1-8z"/></svg>
+        점심
+      </div>
+      <p class="meal-empty" id="mealLunch">맛집 리스트 준비 중이에요.</p>
+    </div>
+    <div class="meal-slot">
+      <div class="meal-slot-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12a8 8 0 1 1-8-8c0 3 2 5 4 5s4-2 4-5c2 2 0 5 0 8z"/></svg>
+        저녁
+      </div>
+      <p class="meal-empty" id="mealDinner">맛집 리스트 준비 중이에요.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // 탭 전환
+  document.querySelectorAll('.tab').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      window.scrollTo({top:0, behavior:'instant'});
+    });
+  });
+
+  // 일자별 식사 정보
+  const mealData = {
+    day1: { b: "공항 라운지 (예정)", l: "기내식", d: "Skewers Souvlaki Pita bar" },
+    day2: { b: "호텔", l: "The Lobster Man", d: "Costco?!" },
+    day3: { b: "호텔", l: "도시락 / 피크닉 (캐필라노)", d: "베트남 음식 (예정)" },
+    day4: { b: "숙소에서 해먹기", l: "시내 식당", d: "숙소에서 해먹기" },
+    day5: { b: "숙소에서 해먹기", l: "시내 식당", d: "숙소에서 해먹기" },
+    day6: { b: "숙소에서 해먹기", l: "시내 식당", d: "숙소에서 해먹기" },
+    day7: { b: "숙소에서 해먹기", l: "시내 식당", d: "팀홀튼" },
+    day8: { b: "호텔 조식", l: "시내 식당", d: "시내 (파이크 플레이스 마켓 인근)" },
+    day9: { b: "숙소에서 해먹기", l: "시내 식당", d: "시내 식당" },
+    day10:{ b: "숙소에서 해먹기", l: "기내식", d: "-" }
+  };
+
+  // 식사 페이지
+  function openMeal(dayKey, date){
+    const labelMap = {day1:'Day 01',day2:'Day 02',day3:'Day 03',day4:'Day 04',day5:'Day 05',day6:'Day 06',day7:'Day 07',day8:'Day 08',day9:'Day 09',day10:'Day 10'};
+    document.getElementById('mealDayLabel').textContent = labelMap[dayKey] || dayKey;
+    document.getElementById('mealDateLabel').textContent = date;
+    const m = mealData[dayKey];
+    document.getElementById('mealBreakfast').textContent = m ? m.b : '맛집 리스트 준비 중이에요.';
+    document.getElementById('mealLunch').textContent = m ? m.l : '맛집 리스트 준비 중이에요.';
+    document.getElementById('mealDinner').textContent = m ? m.d : '맛집 리스트 준비 중이에요.';
+    document.getElementById('mealPage').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMeal(){
+    document.getElementById('mealPage').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+</script>
+
+</body>
+</html>
