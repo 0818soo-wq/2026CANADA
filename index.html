@@ -306,6 +306,12 @@
   }
   .meal-slot-title svg{ width: 15px; height: 15px; color: var(--gold); }
   .meal-empty{ font-size: 12.5px; color: var(--ink-faint); line-height: 1.6; }
+  .meal-link{
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 12.5px; color: var(--forest); font-weight: 700; text-decoration: none;
+  }
+  .meal-link svg{ width: 12px; height: 12px; flex-shrink: 0; opacity: 0.8; }
+  .meal-link:active{ opacity: 0.6; }
 
   /* ---------- ROUTE MAP TAB ---------- */
   .map-card{
@@ -1220,9 +1226,9 @@
     });
   });
 
-  // 일자별 식사 정보
+  // 일자별 식사 정보 (장소명은 문자열, 실제 식당은 {name, place}로 적으면 구글맵 링크가 붙음)
   const mealData = {
-    day1: { b: "공항 라운지 (예정)", l: "기내식", d: "Skewers Souvlaki Pita bar" },
+    day1: { b: "공항 라운지 (예정)", l: "기내식", d: { name: "Skewers Souvlaki Pita bar", place: "Skewers Souvlaki Pita Bar, Vancouver, BC" } },
     day2: { b: "호텔", l: "The Lobster Man", d: "Costco?!" },
     day3: { b: "호텔", l: "도시락 / 피크닉 (캐필라노)", d: "베트남 음식 (예정)" },
     day4: { b: "숙소에서 해먹기", l: "시내 식당", d: "숙소에서 해먹기" },
@@ -1234,15 +1240,28 @@
     day10:{ b: "숙소에서 해먹기", l: "기내식", d: "-" }
   };
 
+  // 식사 슬롯 렌더링: {name, place} 형태면 구글맵 링크, 문자열이면 일반 텍스트
+  function renderMealSlot(el, entry){
+    if (entry && typeof entry === 'object' && entry.place){
+      const q = encodeURIComponent(entry.place);
+      el.innerHTML = `<a class="meal-link" href="https://www.google.com/maps/search/?api=1&query=${q}" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        ${entry.name}
+      </a>`;
+    } else {
+      el.textContent = entry || '맛집 리스트 준비 중이에요.';
+    }
+  }
+
   // 식사 페이지
   function openMeal(dayKey, date){
     const labelMap = {day1:'Day 01',day2:'Day 02',day3:'Day 03',day4:'Day 04',day5:'Day 05',day6:'Day 06',day7:'Day 07',day8:'Day 08',day9:'Day 09',day10:'Day 10'};
     document.getElementById('mealDayLabel').textContent = labelMap[dayKey] || dayKey;
     document.getElementById('mealDateLabel').textContent = date;
     const m = mealData[dayKey];
-    document.getElementById('mealBreakfast').textContent = m ? m.b : '맛집 리스트 준비 중이에요.';
-    document.getElementById('mealLunch').textContent = m ? m.l : '맛집 리스트 준비 중이에요.';
-    document.getElementById('mealDinner').textContent = m ? m.d : '맛집 리스트 준비 중이에요.';
+    renderMealSlot(document.getElementById('mealBreakfast'), m && m.b);
+    renderMealSlot(document.getElementById('mealLunch'), m && m.l);
+    renderMealSlot(document.getElementById('mealDinner'), m && m.d);
     document.getElementById('mealPage').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
