@@ -312,6 +312,8 @@
   }
   .meal-link svg{ width: 12px; height: 12px; flex-shrink: 0; opacity: 0.8; }
   .meal-link:active{ opacity: 0.6; }
+  .meal-picks{ display: flex; flex-direction: column; gap: 12px; }
+  .meal-pick .meal-desc{ display: block; font-size: 11.5px; color: var(--ink-soft); margin-top: 3px; line-height: 1.5; }
 
   /* ---------- ROUTE MAP TAB ---------- */
   .map-card{
@@ -1240,25 +1242,68 @@
   // 일자별 식사 정보 (장소명은 문자열, 실제 식당은 {name, place}로 적으면 구글맵 링크가 붙음)
   const mealData = {
     day1: { b: "공항 라운지 (예정)", l: "기내식", d: { name: "Skewers Souvlaki Pita bar", place: "Skewers Souvlaki Pita Bar, Vancouver, BC" } },
-    day2: { b: "호텔", l: { name: "The Lobster Man", place: "The Lobster Man, Granville Island, Vancouver, BC" }, d: { name: "Costco?!", place: "Costco Wholesale, Vancouver, BC" } },
-    day3: { b: "호텔", l: "도시락 / 피크닉 (캐필라노)", d: "베트남 음식 (예정)" },
-    day4: { b: "숙소에서 해먹기", l: "시내 식당", d: "숙소에서 해먹기" },
-    day5: { b: "숙소에서 해먹기", l: "시내 식당", d: "숙소에서 해먹기" },
-    day6: { b: "숙소에서 해먹기", l: "시내 식당", d: "숙소에서 해먹기" },
-    day7: { b: "숙소에서 해먹기", l: "시내 식당", d: { name: "팀홀튼", place: "Tim Hortons, Calgary, AB" } },
-    day8: { b: "호텔 조식", l: "시내 식당", d: { name: "시내 (파이크 플레이스 마켓 인근)", place: "Pike Place Market, Seattle, WA" } },
-    day9: { b: "숙소에서 해먹기", l: "시내 식당", d: "시내 식당" },
+    day2: { b: "호텔", l: [
+      { name: "The Lobster Man", place: "The Lobster Man, Granville Island, Vancouver, BC", desc: "확정 · 그랜빌아일랜드 시푸드 마켓" },
+      { name: "The Sandbar", place: "The Sandbar Restaurant, Granville Island, Vancouver, BC", desc: "다리 밑 시푸드 타워 + 라이브 피아노, 특색있는 분위기" },
+      { name: "Tony's Fish & Chips", place: "Tony's Fish & Chips, Granville Island, Vancouver, BC", desc: "그랜빌아일랜드 입구, 캐주얼 피시앤칩스" }
+    ], d: [
+      { name: "Costco?!", place: "Costco Wholesale, Vancouver, BC", desc: "확정(농담 반) · 편하게 장봐서 숙소에서" },
+      { name: "Blue Water Cafe", place: "Blue Water Cafe, Yaletown, Vancouver, BC", desc: "요트타운 대표 시푸드 파인다이닝, 오이스터바 유명" },
+      { name: "Minami", place: "Minami Restaurant, Yaletown, Vancouver, BC", desc: "토치로 굽는 아부리 스시, 요트타운 특색있는 곳" }
+    ] },
+    day3: { b: "호텔", l: "도시락 / 피크닉 (캐필라노)", d: [
+      { name: "VietSub Vietnamese Cuisine", place: "VietSub Vietnamese Cuisine, Vancouver, BC", desc: "구글 4.5★ · 반미(바게트 샌드위치) 맛집, 로컬 인기" },
+      { name: "Chef Lien Vietnamese Cuisine", place: "Chef Lien Vietnamese Cuisine, Robson Street, Vancouver, BC", desc: "구글 4.5★ · 호텔 바로 앞 로브슨가, 스프링롤·레몬그라스 치킨" },
+      { name: "Phnom Penh", place: "Phnom Penh Restaurant, Vancouver, BC", desc: "구글 4.5★ · 밴쿠버 대표 베트남식당, 웨이팅 있는 맛집" }
+    ] },
+    day4: { b: "숙소에서 해먹기", l: [
+      { name: "Kain Tayo", place: "Kain Tayo, Canmore, AB", desc: "캔모어 신상 · 아시아 스트리트푸드(일본·인니·필리핀), 가장 특색있는 곳" },
+      { name: "Gaucho's", place: "Gaucho's Canmore, AB", desc: "캔모어 유일 브라질 슈하스코, 고기 좋아하면 강추" },
+      { name: "JK Bakery", place: "JK Bakery, Canmore, AB", desc: "홈메이드 샌드위치 전문, 아이와 가볍게 먹기 좋음" }
+    ], d: "숙소에서 해먹기" },
+    day5: { b: "숙소에서 해먹기", l: [
+      { name: "Lago Italian Kitchen", place: "Lago Italian Kitchen, Fairmont Chateau Lake Louise, AB", desc: "레이크루이스 호수 바로 앞, 모던 지중해식, 가족 여행객 많음" },
+      { name: "Bill Peyto's Cafe", place: "Bill Peyto's Cafe, Lake Louise, AB", desc: "레이크루이스 빌리지 로컬 맛집, 캐주얼·가성비" }
+    ], d: "숙소에서 해먹기" },
+    day6: { b: "숙소에서 해먹기", l: [
+      { name: "Bear Street Tavern", place: "Bear Street Tavern, Banff, AB", desc: "구글 4.5★(2800+) · 밴프 시내 대표 맛집, 웨이팅 가능" },
+      { name: "Tooloulou's", place: "Tooloulou's, Banff, AB", desc: "구글 4.5★(1700+) · 케이준-크리올 요리, 밴프에서 가장 특색있는 곳" },
+      { name: "The Eddie Burger + Bar", place: "The Eddie Burger + Bar, Banff, AB", desc: "구글 4.5★(3100+) · 수제버거, 아이와 먹기 편한 캐주얼" }
+    ], d: "숙소에서 해먹기" },
+    day7: { b: "숙소에서 해먹기", l: [
+      { name: "Grazers (Calgary Zoo 내부)", place: "Grazers, Calgary Zoo, AB", desc: "동물원 안에서 바로 식사 · 동선 최적, 알파카·타조 보며 식사, 키즈메뉴 있음" },
+      { name: "La Brezza Ristorante", place: "La Brezza Ristorante, Calgary, AB", desc: "구글 4.5★(860+) · Hampton Inn 인근 이탈리안, 저녁으로도 좋음" }
+    ], d: { name: "팀홀튼", place: "Tim Hortons, Calgary, AB" } },
+    day8: { b: "호텔 조식", l: "시내 식당", d: [
+      { name: "Sushi Kashiba", place: "Sushi Kashiba, Seattle, WA", desc: "파이크플레이스 바로 옆, 시애틀 대표 오마카세 스시 (고급, 시간 여유 필요)" },
+      { name: "The Pink Door", place: "The Pink Door, Seattle, WA", desc: "1981년부터 파이크플레이스 골목의 이탈리안 노포, 숨은 입구로 유명" },
+      { name: "Salumi", place: "Salumi Cured Meats, Seattle, WA", desc: "유명 살루미(햄) 샌드위치, 파이크플레이스 골목집" }
+    ] },
+    day9: { b: "숙소에서 해먹기", l: [
+      { name: "Pasta Casalinga", place: "Pasta Casalinga, Seattle, WA", desc: "Yelp 4.6★ · 다운타운 파스타 맛집, 셰프가 이탈리아 출신" },
+      { name: "Lola", place: "Lola Seattle, WA", desc: "그리스/지중해식, 아침부터 저녁까지 인기" }
+    ], d: [
+      { name: "Six Seven Restaurant", place: "Six Seven Restaurant, Seattle, WA", desc: "구글 4.5★ · 뉴아메리칸·시푸드, 벨타운 숙소에서 가까움" },
+      { name: "Lenox", place: "Lenox Seattle, WA", desc: "아프로-라틴 소울푸드, 벨타운에서 가장 특색있는 곳" },
+      { name: "Chiho", place: "Chiho Seattle, WA", desc: "샤오롱바오 등 딤섬 전문, 아이와 먹기도 좋음" }
+    ] },
     day10:{ b: "숙소에서 해먹기", l: "기내식", d: "-" }
   };
 
-  // 식사 슬롯 렌더링: {name, place} 형태면 구글맵 링크, 문자열이면 일반 텍스트
-  function renderMealSlot(el, entry){
-    if (entry && typeof entry === 'object' && entry.place){
-      const q = encodeURIComponent(entry.place);
-      el.innerHTML = `<a class="meal-link" href="https://www.google.com/maps/search/?api=1&query=${q}" target="_blank" rel="noopener">
+  // 식사 슬롯 렌더링: {name, place} → 구글맵 링크 1개, 배열 → 여러 후보, 문자열 → 일반 텍스트
+  function mealPickHTML(item){
+    const q = encodeURIComponent(item.place);
+    const desc = item.desc ? `<span class="meal-desc">${item.desc}</span>` : '';
+    return `<div class="meal-pick"><a class="meal-link" href="https://www.google.com/maps/search/?api=1&query=${q}" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
-        ${entry.name}
-      </a>`;
+        ${item.name}
+      </a>${desc}</div>`;
+  }
+  function renderMealSlot(el, entry){
+    if (Array.isArray(entry)){
+      el.innerHTML = `<div class="meal-picks">${entry.map(mealPickHTML).join('')}</div>`;
+    } else if (entry && typeof entry === 'object' && entry.place){
+      el.innerHTML = mealPickHTML(entry);
     } else {
       el.textContent = entry || '맛집 리스트 준비 중이에요.';
     }
