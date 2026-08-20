@@ -510,7 +510,7 @@
             </div>
             <span class="transport-badge">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 4l-9 9h4v7h10v-7h4z"/></svg>
-              도보 · 대중교통
+              대중교통 · 미니페리
             </span>
           </div>
           <div class="weather">
@@ -523,7 +523,13 @@
             <span class="stay-name">Hilton Vancouver Downtown</span>
           </div>
           <ul class="schedule">
-            <li>밴쿠버 시내 관광 (도보 + 스카이트레인)</li>
+            <li>호텔 → 버스 19번(Pender/Burrard 정류장) → 스탠리공원(Stanley Park) 진입 (약 10분)</li>
+            <li>밴쿠버 아쿠아리움(Vancouver Aquarium) 관람</li>
+            <li>스탠리공원 씨월(Seawall) 산책 → 잉글리시베이 방향 도보 이동</li>
+            <li>도보로 Hornby St Aquabus 선착장 이동 (약 25분)</li>
+            <li>Aquabus 미니페리로 그랜빌아일랜드(Granville Island) 이동 (약 5~10분)</li>
+            <li>그랜빌아일랜드 퍼블릭마켓 관람 · 저녁</li>
+            <li>Aquabus 또는 도보/버스로 호텔 복귀</li>
           </ul>
           <button class="meal-btn" onclick="openMeal('day2','9.17 (목) · 밴쿠버')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3v6a2 2 0 0 0 4 0V3M9 9v12M17 3c-1.5 3-1.5 6 0 8v10"/></svg>
@@ -555,8 +561,9 @@
             <span class="stay-name">Hilton Vancouver Downtown</span> 체크아웃
           </div>
           <ul class="schedule">
+            <li class="note">⚠ 오늘 08:00(MDT) 모레인레이크·레이크루이스 셔틀 예약 오픈 (9/20 방문분) — parks.canada.ca에서 예약 시도</li>
             <li>호텔 → 캐나다플레이스(Canada Place) 도보 이동 (약 15분)</li>
-            <li class="note">Capilano 무료셔틀 · Canada Place 정류장, 09:00~17:00 30분 간격 · 예약 불필요(선착순, Park 입장권 소지 시 탑승) — 9월 중순은 성수기(5/3~9/1) 이후라 운행일 축소 가능, 출발 전 capbridge.com/shuttle-schedule 재확인 필요</li>
+            <li class="note">Capilano 무료셔틀 · Canada Place 정류장, 09:00~17:00 30분 간격 · 예약 불필요</li>
             <li>무료셔틀로 캐필라노 현수교(Capilano Suspension Bridge) 이동 후 관람</li>
             <li>TransLink 버스 232 or 236번으로 캐필라노 연어부화장(Salmon Hatchery) 이동 (약 1km, 하차 후 도보)</li>
             <li>다시 현수교로 복귀 → 무료셔틀로 Canada Place 복귀</li>
@@ -633,11 +640,7 @@
             <span class="stay-name">캔모어의 숙소</span>
           </div>
           <ul class="schedule">
-            <li class="note"><b>⚠ Moraine Lake·Lake Louise 셔틀 예약 시도 계획</b> — 개인차량 진입 불가, Parks Canada 사전예약 필수 (4/15 1차 오픈분은 마감 가능성 높음, 좌석의 60%가 방문일 2일 전 08:00 MDT에 추가 오픈)</li>
-            <li class="note">9/18 08:00(MDT) → 9/20(오늘) 방문분 예약 시도 · 1순위</li>
-            <li class="note">9/19은 이동일(항공편)이라 시도 불가 → 9/21 방문분 예약 기회는 놓침</li>
-            <li class="note">9/20 08:00(MDT) → 9/22 방문분 예약 시도 · 성공 시 Day 07 캘거리 동물원 일정과 조율 필요</li>
-            <li class="note">9/21 08:00(MDT) → 9/23 방문분 예약 시도 · 단 9/23은 08:45 YYC 출국이라 실제 방문은 불가능 (참고용)</li>
+            <li class="note">⚠ 모레인레이크 셔틀 예약 확인 (9/18 08:00 MDT 예약분)</li>
             <li class="drive">렌터카로 Lake Louise Park & Ride 이동 (Lake Louise Ski Resort, 1 Whitehorn Road) · 셔틀 예약자 무료주차</li>
             <li>Parks Canada 셔틀로 모레인레이크 · 레이크루이스 이동 (예약 1건으로 두 곳 모두 가능, 무료 Lake Connector 환승)</li>
           </ul>
@@ -671,6 +674,7 @@
             <span class="stay-name">캔모어의 숙소</span> 체크아웃
           </div>
           <ul class="schedule">
+            <li class="note">⚠ 9/20 셔틀 예약 실패 시, 오늘 모레인레이크·레이크루이스 재도전 가능 여부 parks.canada.ca에서 확인</li>
             <li class="drive">렌터카로 밴프 국립공원 이동</li>
             <li>밴프 시내 · 주변 관광</li>
           </ul>
@@ -1236,13 +1240,13 @@
   // 일자별 식사 정보 (장소명은 문자열, 실제 식당은 {name, place}로 적으면 구글맵 링크가 붙음)
   const mealData = {
     day1: { b: "공항 라운지 (예정)", l: "기내식", d: { name: "Skewers Souvlaki Pita bar", place: "Skewers Souvlaki Pita Bar, Vancouver, BC" } },
-    day2: { b: "호텔", l: "The Lobster Man", d: "Costco?!" },
+    day2: { b: "호텔", l: { name: "The Lobster Man", place: "The Lobster Man, Granville Island, Vancouver, BC" }, d: { name: "Costco?!", place: "Costco Wholesale, Vancouver, BC" } },
     day3: { b: "호텔", l: "도시락 / 피크닉 (캐필라노)", d: "베트남 음식 (예정)" },
     day4: { b: "숙소에서 해먹기", l: "시내 식당", d: "숙소에서 해먹기" },
     day5: { b: "숙소에서 해먹기", l: "시내 식당", d: "숙소에서 해먹기" },
     day6: { b: "숙소에서 해먹기", l: "시내 식당", d: "숙소에서 해먹기" },
-    day7: { b: "숙소에서 해먹기", l: "시내 식당", d: "팀홀튼" },
-    day8: { b: "호텔 조식", l: "시내 식당", d: "시내 (파이크 플레이스 마켓 인근)" },
+    day7: { b: "숙소에서 해먹기", l: "시내 식당", d: { name: "팀홀튼", place: "Tim Hortons, Calgary, AB" } },
+    day8: { b: "호텔 조식", l: "시내 식당", d: { name: "시내 (파이크 플레이스 마켓 인근)", place: "Pike Place Market, Seattle, WA" } },
     day9: { b: "숙소에서 해먹기", l: "시내 식당", d: "시내 식당" },
     day10:{ b: "숙소에서 해먹기", l: "기내식", d: "-" }
   };
