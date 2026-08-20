@@ -390,11 +390,17 @@
   .booking-card-head{ display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
   .booking-title{ font-family: 'Fraunces', serif; font-weight: 600; font-size: 15.5px; color: var(--ink); line-height: 1.35; }
   .booking-sub{ font-size: 12px; color: var(--ink-soft); font-weight: 600; margin-top: 2px; }
+  .booking-code{
+    flex-shrink: 0; font-size: 11px; font-weight: 800; letter-spacing: 0.02em;
+    background: var(--gold-soft); color: var(--gold); padding: 4px 8px; border-radius: 7px; white-space: nowrap;
+  }
   .booking-rows{ margin-top: 10px; }
   .booking-row{ display: flex; justify-content: space-between; gap: 10px; padding: 5px 0; font-size: 12.5px; border-top: 1px dashed var(--line); }
   .booking-row:first-child{ border-top: none; }
   .booking-row .k{ color: var(--ink-soft); font-weight: 600; }
   .booking-row .v{ color: var(--ink); font-weight: 700; text-align: right; }
+  .booking-pax{ margin-top: 10px; font-size: 12px; color: var(--ink-soft); line-height: 1.6; }
+  .booking-pax b{ color: var(--ink); font-weight: 700; }
 
   /* ---------- EMPTY STATE (예약사항) ---------- */
   .empty-state{
@@ -1015,10 +1021,16 @@
             <div class="booking-title">인천 → 밴쿠버</div>
             <div class="booking-sub">Korean Air KE0075 · B787-10</div>
           </div>
+          <div class="booking-code">EEWFQ2 · EEZM6G</div>
         </div>
         <div class="booking-rows">
           <div class="booking-row"><span class="k">출발</span><span class="v">9.16(수) 22:40 · ICN T2</span></div>
           <div class="booking-row"><span class="k">도착</span><span class="v">9.16(수) 16:30 · YVR Terminal M</span></div>
+          <div class="booking-row"><span class="k">좌석</span><span class="v">33G · 33H · 33I (배정 확인 필요)</span></div>
+        </div>
+        <div class="booking-pax">
+          <b>Ms Soo Youn Cho</b> · <b>Mr Jiwoo Hong</b> — EEWFQ2<br>
+          <b>Mr Jeongpyo Hong</b> — EEZM6G
         </div>
       </div>
 
@@ -1028,10 +1040,14 @@
             <div class="booking-title">밴쿠버 → 캘거리</div>
             <div class="booking-sub">WestJet WS110 · 1h 30m</div>
           </div>
+          <div class="booking-code">JWSPBG</div>
         </div>
         <div class="booking-rows">
           <div class="booking-row"><span class="k">출발</span><span class="v">9.19(토) 10:40 · YVR Main Terminal</span></div>
           <div class="booking-row"><span class="k">도착</span><span class="v">9.19(토) 13:10 · YYC</span></div>
+        </div>
+        <div class="booking-pax">
+          <b>Mrs Soo Youn Cho</b> 08F · <b>Mr Jeongpyo Hong</b> 08E · <b>Mr Jiwoo Hong</b> 08D
         </div>
       </div>
 
@@ -1041,10 +1057,14 @@
             <div class="booking-title">캘거리 → 시애틀</div>
             <div class="booking-sub">WestJet WS1550 · 1h 55m</div>
           </div>
+          <div class="booking-code">HFUIBY</div>
         </div>
         <div class="booking-rows">
           <div class="booking-row"><span class="k">출발</span><span class="v">9.23(수) 08:45 · YYC</span></div>
           <div class="booking-row"><span class="k">도착</span><span class="v">9.23(수) 09:40 · SEA</span></div>
+        </div>
+        <div class="booking-pax">
+          <b>Ms Soo Youn Cho</b> 17A · <b>Mr Jeongpyo Hong</b> 17B · <b>Mr Jiwoo Hong</b> 17C
         </div>
       </div>
 
@@ -1054,10 +1074,16 @@
             <div class="booking-title">시애틀 → 인천</div>
             <div class="booking-sub">Korean Air KE0042 · B787-10 · 11h 50m</div>
           </div>
+          <div class="booking-code">EEWFQ2 · EEZM6G</div>
         </div>
         <div class="booking-rows">
           <div class="booking-row"><span class="k">출발</span><span class="v">9.25(금) 12:50 · SEA</span></div>
           <div class="booking-row"><span class="k">도착</span><span class="v">9.26(토) 16:40 · ICN T2</span></div>
+          <div class="booking-row"><span class="k">좌석</span><span class="v">39G · 39H · 39I (배정 확인 필요)</span></div>
+        </div>
+        <div class="booking-pax">
+          <b>Ms Soo Youn Cho</b> · <b>Mr Jiwoo Hong</b> — EEWFQ2<br>
+          <b>Mr Jeongpyo Hong</b> — EEZM6G
         </div>
       </div>
     </div>
@@ -1071,6 +1097,7 @@
             <div class="booking-title">Hilton Vancouver Downtown</div>
             <div class="booking-sub">3박</div>
           </div>
+          <div class="booking-code">3414008677</div>
         </div>
         <div class="booking-rows">
           <div class="booking-row"><span class="k">체크인</span><span class="v">9.16(수) 16:00</span></div>
@@ -1082,7 +1109,7 @@
         <div class="booking-card-head">
           <div>
             <div class="booking-title">캔모어의 숙소 (Airbnb)</div>
-            <div class="booking-sub">호스트 Ryan</div>
+            <div class="booking-sub">호스트 Ryan · 160 Kananaskis Way</div>
           </div>
         </div>
         <div class="booking-rows">
@@ -1097,6 +1124,7 @@
             <div class="booking-title">Hampton Inn by Hilton Calgary Airport North</div>
             <div class="booking-sub">1박</div>
           </div>
+          <div class="booking-code">94505622</div>
         </div>
         <div class="booking-rows">
           <div class="booking-row"><span class="k">체크인</span><span class="v">9.22(화) 15:00</span></div>
@@ -1108,7 +1136,7 @@
         <div class="booking-card-head">
           <div>
             <div class="booking-title">시애틀의 숙소 (Airbnb)</div>
-            <div class="booking-sub">호스트 Beatrice</div>
+            <div class="booking-sub">호스트 Beatrice · 2415 2nd Avenue</div>
           </div>
         </div>
         <div class="booking-rows">
