@@ -140,7 +140,6 @@
   @keyframes fadein{ from{ opacity:0; transform: translateY(4px);} to{ opacity:1; transform: translateY(0);} }
 
   /* ---------- TODAY CARD ---------- */
-  .tz-note{ margin: 18px 6px 0; font-size: 11px; color: var(--ink-faint); text-align: right; }
   .today-wrap{ margin: 6px 6px 8px; padding-bottom: 22px; border-bottom: 1px dashed var(--line); }
   .today-label{
     display: flex; align-items: center; gap: 8px;
@@ -482,7 +481,6 @@
   <section class="tab-panel active" id="tab-itinerary">
 
     <div id="todayCard"></div>
-    <p class="tz-note">※ 모든 시각은 각 도시 현지 시간 기준입니다 (한국 시간 아님)</p>
 
     <div class="segment-label seg-van"><span class="dot"></span>밴쿠버<span class="rule"></span></div>
     <div class="timeline">
@@ -948,6 +946,68 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-8-8 20-3-8-9-4z"/></svg>
         </div>
         <div class="txt"><b>캘거리 → 시애틀</b><span>WS1550 · 9.23(수) 08:45 → 09:40</span></div>
+      </div>
+    </div>
+
+    <p class="map-title" style="margin-top:36px;">일자별 상세 동선</p>
+
+    <div class="segment-label seg-van" style="margin-top:0;"><span class="dot"></span>밴쿠버<span class="rule"></span></div>
+    <div class="route-list" style="margin-top:8px;">
+      <div class="route-step">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-8-8 20-3-8-9-4z"/></svg></div>
+        <div class="txt"><b>Day 01 · 9.16(수)</b><span>YVR 공항 → Canada Line 스카이트레인 → Vancouver City Centre역 → 도보 → 호텔</span></div>
+      </div>
+      <div class="route-step">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 4l-9 9h4v7h10v-7h4z"/></svg></div>
+        <div class="txt"><b>Day 02 · 9.17(목)</b><span>호텔 → 버스19번 → 스탠리공원·아쿠아리움 → 도보 → Hornby St → Aquabus → 그랜빌아일랜드 → 복귀</span></div>
+      </div>
+      <div class="route-step">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 4l-9 9h4v7h10v-7h4z"/></svg></div>
+        <div class="txt"><b>Day 03 · 9.18(금)</b><span>호텔 → 도보 → Canada Place → 무료셔틀 → 캐필라노 현수교 → 버스232/236 → 연어부화장 → 복귀</span></div>
+      </div>
+    </div>
+
+    <div class="segment-label seg-banff"><span class="dot"></span>밴프 · 캔모어<span class="rule"></span></div>
+    <div class="route-list" style="margin-top:8px;">
+      <div class="route-step">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-8-8 20-3-8-9-4z"/></svg></div>
+        <div class="txt"><b>Day 04 · 9.19(토)</b><span>YVR → WS110 → YYC → 렌터카 픽업 → 캔모어 숙소</span></div>
+      </div>
+      <div class="route-step">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 11l1.5-5h11L19 11M5 11v6a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1h8v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-6M5 11h14"/></svg></div>
+        <div class="txt"><b>Day 05 · 9.20(일)</b><span>렌터카 → Lake Louise Park & Ride → Parks Canada 셔틀 → 모레인레이크·레이크루이스</span></div>
+      </div>
+      <div class="route-step">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 11l1.5-5h11L19 11M5 11v6a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1h8v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-6M5 11h14"/></svg></div>
+        <div class="txt"><b>Day 06 · 9.21(월)</b><span>렌터카로 밴프 국립공원 · 밴프 시내 이동</span></div>
+      </div>
+    </div>
+
+    <div class="segment-label seg-cal"><span class="dot"></span>캘거리<span class="rule"></span></div>
+    <div class="route-list" style="margin-top:8px;">
+      <div class="route-step">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 11l1.5-5h11L19 11M5 11v6a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1h8v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-6M5 11h14"/></svg></div>
+        <div class="txt"><b>Day 07 · 9.22(화)</b><span>렌터카로 캘거리 동물원 → Hampton Inn 체크인 → 공항 렌터카 반납 → 호텔 셔틀</span></div>
+      </div>
+    </div>
+
+    <div class="segment-label seg-sea"><span class="dot"></span>시애틀<span class="rule"></span></div>
+    <div class="route-list" style="margin-top:8px;">
+      <div class="route-step">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-8-8 20-3-8-9-4z"/></svg></div>
+        <div class="txt"><b>Day 08 · 9.23(수)</b><span>YYC → WS1550 → SEA → 얼리체크인 시애틀 숙소</span></div>
+      </div>
+      <div class="route-step">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 4l-9 9h4v7h10v-7h4z"/></svg></div>
+        <div class="txt"><b>Day 09 · 9.24(목)</b><span>도보 · 대중교통으로 시애틀 시내 구경</span></div>
+      </div>
+      <div class="route-step">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 4l-9 9h4v7h10v-7h4z"/></svg></div>
+        <div class="txt"><b>Day 10 · 9.25(금)</b><span>숙소 → 도보 → Westlake역 → Link 경전철 → SEA공항역 → 공항 도보</span></div>
+      </div>
+      <div class="route-step">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-8-8 20-3-8-9-4z"/></svg></div>
+        <div class="txt"><b>Day 11 · 9.26(토)</b><span>SEA → ICN 도착, 귀국</span></div>
       </div>
     </div>
   </section>
