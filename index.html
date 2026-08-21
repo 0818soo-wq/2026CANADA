@@ -139,6 +139,22 @@
 
   @keyframes fadein{ from{ opacity:0; transform: translateY(4px);} to{ opacity:1; transform: translateY(0);} }
 
+  /* ---------- TODAY CARD ---------- */
+  .tz-note{ margin: 18px 6px 0; font-size: 11px; color: var(--ink-faint); text-align: right; }
+  .today-wrap{ margin: 6px 6px 8px; padding-bottom: 22px; border-bottom: 1px dashed var(--line); }
+  .today-label{
+    display: flex; align-items: center; gap: 8px;
+    font-family: 'Fraunces', serif; font-weight: 700; font-size: 16px;
+    color: var(--maple); margin: 18px 0 14px;
+  }
+  .today-label .dot-live{
+    width: 8px; height: 8px; border-radius: 50%; background: var(--maple);
+  }
+  .today-wrap .timeline{ display: none; }
+  .today-wrap .day{ padding-left: 0; margin-bottom: 0; }
+  .today-wrap .day-dot{ display: none; }
+  .today-wrap .card{ border: 2px solid var(--maple); box-shadow: 0 4px 14px rgba(173,76,60,0.14); }
+
   /* ---------- SEGMENT LABEL ---------- */
   .segment-label{
     display: flex;
@@ -258,6 +274,8 @@
     margin-left: 6px; vertical-align: middle;
   }
   .schedule li.note{ color: var(--ink-soft); font-weight: 500; font-style: italic; }
+  .schedule li.warn{ color: var(--maple); font-weight: 700; font-style: normal; }
+  .schedule li.warn::before{ background: var(--maple); }
 
   .meal-btn{
     display: flex; align-items: center; justify-content: center; gap: 6px;
@@ -463,10 +481,13 @@
   <!-- ============ 일정 TAB ============ -->
   <section class="tab-panel active" id="tab-itinerary">
 
+    <div id="todayCard"></div>
+    <p class="tz-note">※ 모든 시각은 각 도시 현지 시간 기준입니다 (한국 시간 아님)</p>
+
     <div class="segment-label seg-van"><span class="dot"></span>밴쿠버<span class="rule"></span></div>
     <div class="timeline">
 
-      <div class="day seg-van">
+      <div class="day seg-van" data-date="2026-09-16">
         <span class="day-dot"></span>
         <div class="card">
           <div class="card-head">
@@ -502,7 +523,7 @@
         </div>
       </div>
 
-      <div class="day seg-van">
+      <div class="day seg-van" data-date="2026-09-17">
         <span class="day-dot"></span>
         <div class="card">
           <div class="card-head">
@@ -540,7 +561,7 @@
         </div>
       </div>
 
-      <div class="day seg-van">
+      <div class="day seg-van" data-date="2026-09-18">
         <span class="day-dot"></span>
         <div class="card">
           <div class="card-head">
@@ -563,7 +584,7 @@
             <span class="stay-name">Hilton Vancouver Downtown</span> 체크아웃
           </div>
           <ul class="schedule">
-            <li class="note">⚠ 오늘 08:00(MDT) 모레인레이크·레이크루이스 셔틀 예약 오픈 (9/20 방문분) — parks.canada.ca에서 예약 시도</li>
+            <li class="warn">⚠ 오늘 08:00(MDT) 모레인레이크·레이크루이스 셔틀 예약 오픈 (9/20 방문분) — parks.canada.ca에서 예약 시도</li>
             <li>호텔 → 캐나다플레이스(Canada Place) 도보 이동 (약 15분)</li>
             <li class="note">Capilano 무료셔틀 · Canada Place 정류장, 09:00~17:00 30분 간격 · 예약 불필요</li>
             <li>무료셔틀로 캐필라노 현수교(Capilano Suspension Bridge) 이동 후 관람</li>
@@ -582,7 +603,7 @@
     <div class="segment-label seg-banff"><span class="dot"></span>밴프 · 캔모어<span class="rule"></span></div>
     <div class="timeline">
 
-      <div class="day seg-banff">
+      <div class="day seg-banff" data-date="2026-09-19">
         <span class="day-dot"></span>
         <div class="card">
           <div class="card-head">
@@ -619,7 +640,7 @@
         </div>
       </div>
 
-      <div class="day seg-banff">
+      <div class="day seg-banff" data-date="2026-09-20">
         <span class="day-dot"></span>
         <div class="card">
           <div class="card-head">
@@ -642,7 +663,7 @@
             <span class="stay-name">캔모어의 숙소</span>
           </div>
           <ul class="schedule">
-            <li class="note">⚠ 모레인레이크 셔틀 예약 확인 (9/18 08:00 MDT 예약분)</li>
+            <li class="warn">⚠ 모레인레이크 셔틀 예약 확인 (9/18 08:00 MDT 예약분)</li>
             <li class="drive">렌터카로 Lake Louise Park & Ride 이동 (Lake Louise Ski Resort, 1 Whitehorn Road) · 셔틀 예약자 무료주차</li>
             <li>Parks Canada 셔틀로 모레인레이크 · 레이크루이스 이동 (예약 1건으로 두 곳 모두 가능, 무료 Lake Connector 환승)</li>
           </ul>
@@ -653,7 +674,7 @@
         </div>
       </div>
 
-      <div class="day seg-banff">
+      <div class="day seg-banff" data-date="2026-09-21">
         <span class="day-dot"></span>
         <div class="card">
           <div class="card-head">
@@ -676,7 +697,7 @@
             <span class="stay-name">캔모어의 숙소</span> 체크아웃
           </div>
           <ul class="schedule">
-            <li class="note">⚠ 9/20 셔틀 예약 실패 시, 오늘 모레인레이크·레이크루이스 재도전 가능 여부 parks.canada.ca에서 확인</li>
+            <li class="warn">⚠ 9/20 셔틀 예약 실패 시, 오늘 모레인레이크·레이크루이스 재도전 가능 여부 parks.canada.ca에서 확인</li>
             <li class="drive">렌터카로 밴프 국립공원 이동</li>
             <li>밴프 시내 · 주변 관광</li>
           </ul>
@@ -692,7 +713,7 @@
     <div class="segment-label seg-cal"><span class="dot"></span>캘거리<span class="rule"></span></div>
     <div class="timeline">
 
-      <div class="day seg-cal">
+      <div class="day seg-cal" data-date="2026-09-22">
         <span class="day-dot"></span>
         <div class="card">
           <div class="card-head">
@@ -733,7 +754,7 @@
     <div class="segment-label seg-sea"><span class="dot"></span>시애틀<span class="rule"></span></div>
     <div class="timeline">
 
-      <div class="day seg-sea">
+      <div class="day seg-sea" data-date="2026-09-23">
         <span class="day-dot"></span>
         <div class="card">
           <div class="card-head">
@@ -769,7 +790,7 @@
         </div>
       </div>
 
-      <div class="day seg-sea">
+      <div class="day seg-sea" data-date="2026-09-24">
         <span class="day-dot"></span>
         <div class="card">
           <div class="card-head">
@@ -801,7 +822,7 @@
         </div>
       </div>
 
-      <div class="day seg-sea">
+      <div class="day seg-sea" data-date="2026-09-25">
         <span class="day-dot"></span>
         <div class="card">
           <div class="card-head">
@@ -836,7 +857,7 @@
         </div>
       </div>
 
-      <div class="day seg-sea">
+      <div class="day seg-sea" data-date="2026-09-26">
         <span class="day-dot"></span>
         <div class="card">
           <div class="card-head">
@@ -936,7 +957,7 @@
 
     <div class="budget-summary">
       <div class="total-label">Total Budget</div>
-      <div class="total-amount">₩ 11,604,298</div>
+      <div class="total-amount">₩ 13,064,449</div>
       <div class="split">
         <div>
           <div class="k">지출완료</div>
@@ -944,7 +965,7 @@
         </div>
         <div>
           <div class="k">지출예정</div>
-          <div class="v planned">₩ 2,368,000</div>
+          <div class="v planned">₩ 2,366,000</div>
         </div>
       </div>
     </div>
@@ -1247,7 +1268,7 @@
       { name: "The Sandbar", place: "The Sandbar Restaurant, Granville Island, Vancouver, BC", desc: "다리 밑 시푸드 타워 + 라이브 피아노, 특색있는 분위기" },
       { name: "Tony's Fish & Chips", place: "Tony's Fish & Chips, Granville Island, Vancouver, BC", desc: "그랜빌아일랜드 입구, 캐주얼 피시앤칩스" }
     ], d: [
-      { name: "Costco?!", place: "Costco Wholesale, Vancouver, BC", desc: "확정(농담 반) · 편하게 장봐서 숙소에서" },
+      { name: "Costco?!", place: "Costco Wholesale, 605 Expo Blvd, Vancouver, BC", desc: "확정(농담 반) · 호텔에서 가장 가까운 지점, 편하게 장봐서 숙소에서" },
       { name: "Blue Water Cafe", place: "Blue Water Cafe, Yaletown, Vancouver, BC", desc: "요트타운 대표 시푸드 파인다이닝, 오이스터바 유명" },
       { name: "Minami", place: "Minami Restaurant, Yaletown, Vancouver, BC", desc: "토치로 굽는 아부리 스시, 요트타운 특색있는 곳" }
     ] },
@@ -1273,9 +1294,8 @@
     day7: { b: "숙소에서 해먹기", l: [
       { name: "Grazers (Calgary Zoo 내부)", place: "Grazers, Calgary Zoo, AB", desc: "동물원 안에서 바로 식사 · 동선 최적, 알파카·타조 보며 식사, 키즈메뉴 있음" },
       { name: "La Brezza Ristorante", place: "La Brezza Ristorante, Calgary, AB", desc: "구글 4.5★(860+) · Hampton Inn 인근 이탈리안, 저녁으로도 좋음" }
-    ], d: { name: "팀홀튼", place: "Tim Hortons, Calgary, AB" } },
+    ], d: { name: "팀홀튼", place: "Tim Hortons, 2016 Airport Road NE, Calgary, AB" } },
     day8: { b: "호텔 조식", l: "시내 식당", d: [
-      { name: "Sushi Kashiba", place: "Sushi Kashiba, Seattle, WA", desc: "파이크플레이스 바로 옆, 시애틀 대표 오마카세 스시 (고급, 시간 여유 필요)" },
       { name: "The Pink Door", place: "The Pink Door, Seattle, WA", desc: "1981년부터 파이크플레이스 골목의 이탈리안 노포, 숨은 입구로 유명" },
       { name: "Salumi", place: "Salumi Cured Meats, Seattle, WA", desc: "유명 살루미(햄) 샌드위치, 파이크플레이스 골목집" }
     ] },
@@ -1325,6 +1345,25 @@
     document.getElementById('mealPage').classList.remove('open');
     document.body.style.overflow = '';
   }
+
+  // 오늘의 일정: 기기 날짜가 여행 기간 중 하나와 맞으면 상단에 카드 복제해서 보여줌
+  function initTodayCard(){
+    const now = new Date();
+    const todayStr = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
+    const days = document.querySelectorAll('#tab-itinerary .day[data-date]');
+    let match = null;
+    days.forEach(day => { if (day.dataset.date === todayStr) match = day; });
+    if (!match) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'today-wrap';
+    const label = document.createElement('div');
+    label.className = 'today-label';
+    label.innerHTML = '<span class="dot-live"></span>오늘의 일정';
+    wrap.appendChild(label);
+    wrap.appendChild(match.cloneNode(true));
+    document.getElementById('todayCard').appendChild(wrap);
+  }
+  initTodayCard();
 </script>
 
 </body>
