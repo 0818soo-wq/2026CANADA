@@ -361,6 +361,38 @@
   .route-step .txt b{ font-weight: 700; }
   .route-step .txt span{ display:block; font-size: 11.5px; color: var(--ink-soft); font-weight: 600; margin-top: 2px; }
 
+  /* ---------- DAILY ROUTE DIAGRAM (mini map) ---------- */
+  .daily-route-card{
+    background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+    padding: 16px 18px 14px; margin-top: 12px;
+  }
+  .daily-route-head{ display:flex; align-items:baseline; gap:8px; margin-bottom: 12px; }
+  .daily-route-head .d-day{ font-family:'Fraunces', serif; font-weight:600; font-size:15.5px; color: var(--ink); }
+  .daily-route-head .d-date{ font-size: 11.5px; color: var(--ink-soft); font-weight: 600; }
+
+  .drd{ position: relative; padding-left: 22px; }
+  .drd::before{
+    content:""; position:absolute; left:5px; top:7px; bottom:7px; width:2px;
+    background: repeating-linear-gradient(to bottom, var(--line) 0px, var(--line) 4px, transparent 4px, transparent 9px);
+  }
+  .drd-stop{ position: relative; margin-bottom: 2px; }
+  .drd-stop .dot{
+    position:absolute; left:-22px; top:2px; width:11px; height:11px; border-radius:50%;
+    background: var(--surface); border: 2.5px solid var(--forest); z-index:1;
+  }
+  .drd-stop .label{ font-size: 13px; font-weight: 700; color: var(--ink); padding-top: 0; }
+  .drd-connector{
+    position: relative; margin: 3px 0 14px; padding-left: 2px;
+    display:flex; align-items:center; gap:6px;
+    font-size: 11.5px; color: var(--ink-soft); font-weight: 600;
+  }
+  .drd-connector svg{ width: 12px; height: 12px; opacity: 0.75; flex-shrink:0; }
+
+  .daily-route-card.seg-van .drd-stop .dot{ border-color: var(--slate); }
+  .daily-route-card.seg-banff .drd-stop .dot{ border-color: var(--forest); }
+  .daily-route-card.seg-cal .drd-stop .dot{ border-color: var(--gold); }
+  .daily-route-card.seg-sea .drd-stop .dot{ border-color: var(--maple); }
+
   /* ---------- BUDGET TAB ---------- */
   .budget-summary{
     margin-top: 22px;
@@ -950,66 +982,7 @@
     </div>
 
     <p class="map-title" style="margin-top:36px;">일자별 상세 동선</p>
-
-    <div class="segment-label seg-van" style="margin-top:0;"><span class="dot"></span>밴쿠버<span class="rule"></span></div>
-    <div class="route-list" style="margin-top:8px;">
-      <div class="route-step">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-8-8 20-3-8-9-4z"/></svg></div>
-        <div class="txt"><b>Day 01 · 9.16(수)</b><span>YVR 공항 → Canada Line 스카이트레인 → Vancouver City Centre역 → 도보 → 호텔</span></div>
-      </div>
-      <div class="route-step">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 4l-9 9h4v7h10v-7h4z"/></svg></div>
-        <div class="txt"><b>Day 02 · 9.17(목)</b><span>호텔 → 버스19번 → 스탠리공원·아쿠아리움 → 도보 → Hornby St → Aquabus → 그랜빌아일랜드 → 복귀</span></div>
-      </div>
-      <div class="route-step">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 4l-9 9h4v7h10v-7h4z"/></svg></div>
-        <div class="txt"><b>Day 03 · 9.18(금)</b><span>호텔 → 도보 → Canada Place → 무료셔틀 → 캐필라노 현수교 → 버스232/236 → 연어부화장 → 복귀</span></div>
-      </div>
-    </div>
-
-    <div class="segment-label seg-banff"><span class="dot"></span>밴프 · 캔모어<span class="rule"></span></div>
-    <div class="route-list" style="margin-top:8px;">
-      <div class="route-step">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-8-8 20-3-8-9-4z"/></svg></div>
-        <div class="txt"><b>Day 04 · 9.19(토)</b><span>YVR → WS110 → YYC → 렌터카 픽업 → 캔모어 숙소</span></div>
-      </div>
-      <div class="route-step">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 11l1.5-5h11L19 11M5 11v6a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1h8v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-6M5 11h14"/></svg></div>
-        <div class="txt"><b>Day 05 · 9.20(일)</b><span>렌터카 → Lake Louise Park & Ride → Parks Canada 셔틀 → 모레인레이크·레이크루이스</span></div>
-      </div>
-      <div class="route-step">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 11l1.5-5h11L19 11M5 11v6a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1h8v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-6M5 11h14"/></svg></div>
-        <div class="txt"><b>Day 06 · 9.21(월)</b><span>렌터카로 밴프 국립공원 · 밴프 시내 이동</span></div>
-      </div>
-    </div>
-
-    <div class="segment-label seg-cal"><span class="dot"></span>캘거리<span class="rule"></span></div>
-    <div class="route-list" style="margin-top:8px;">
-      <div class="route-step">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 11l1.5-5h11L19 11M5 11v6a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1h8v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-6M5 11h14"/></svg></div>
-        <div class="txt"><b>Day 07 · 9.22(화)</b><span>렌터카로 캘거리 동물원 → Hampton Inn 체크인 → 공항 렌터카 반납 → 호텔 셔틀</span></div>
-      </div>
-    </div>
-
-    <div class="segment-label seg-sea"><span class="dot"></span>시애틀<span class="rule"></span></div>
-    <div class="route-list" style="margin-top:8px;">
-      <div class="route-step">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-8-8 20-3-8-9-4z"/></svg></div>
-        <div class="txt"><b>Day 08 · 9.23(수)</b><span>YYC → WS1550 → SEA → 얼리체크인 시애틀 숙소</span></div>
-      </div>
-      <div class="route-step">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 4l-9 9h4v7h10v-7h4z"/></svg></div>
-        <div class="txt"><b>Day 09 · 9.24(목)</b><span>도보 · 대중교통으로 시애틀 시내 구경</span></div>
-      </div>
-      <div class="route-step">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 4l-9 9h4v7h10v-7h4z"/></svg></div>
-        <div class="txt"><b>Day 10 · 9.25(금)</b><span>숙소 → 도보 → Westlake역 → Link 경전철 → SEA공항역 → 공항 도보</span></div>
-      </div>
-      <div class="route-step">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-8-8 20-3-8-9-4z"/></svg></div>
-        <div class="txt"><b>Day 11 · 9.26(토)</b><span>SEA → ICN 도착, 귀국</span></div>
-      </div>
-    </div>
+    <div id="dailyRouteList"></div>
   </section>
 
   <!-- ============ 비용 TAB ============ -->
@@ -1424,6 +1397,60 @@
     document.getElementById('todayCard').appendChild(wrap);
   }
   initTodayCard();
+
+  // 일자별 상세 동선 (미니 경로도)
+  const routeIcons = {
+    transit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 4l-9 9h4v7h10v-7h4z"/></svg>',
+    car: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 11l1.5-5h11L19 11M5 11v6a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1h8v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-6M5 11h14"/></svg>',
+    plane: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-8-8 20-3-8-9-4z"/></svg>'
+  };
+  const dayRouteData = [
+    { day:'Day 01', date:'9.16(수)', seg:'seg-van', stops:['YVR 공항','Vancouver City Centre역','Hilton Vancouver Downtown'],
+      connectors:[{icon:'transit',text:'Canada Line 스카이트레인 · 약 26분'},{icon:'transit',text:'도보 · 약 10분'}] },
+    { day:'Day 02', date:'9.17(목)', seg:'seg-van', stops:['호텔','스탠리공원 · 아쿠아리움','Hornby St 선착장','그랜빌아일랜드','호텔 (복귀)'],
+      connectors:[{icon:'transit',text:'버스 19번 · 약 10분'},{icon:'transit',text:'씨월 도보 · 약 25분'},{icon:'transit',text:'Aquabus 미니페리 · 약 5~10분'},{icon:'transit',text:'Aquabus/도보/버스로 복귀'}] },
+    { day:'Day 03', date:'9.18(금)', seg:'seg-van', stops:['호텔','Canada Place','캐필라노 현수교','연어부화장','호텔 (복귀)'],
+      connectors:[{icon:'transit',text:'도보 · 약 15분'},{icon:'transit',text:'무료셔틀'},{icon:'transit',text:'버스 232/236번'},{icon:'transit',text:'도보 + 무료셔틀'}] },
+    { day:'Day 04', date:'9.19(토)', seg:'seg-banff', stops:['YVR','YYC','캔모어 숙소'],
+      connectors:[{icon:'plane',text:'WS110 · 약 1h30m'},{icon:'car',text:'렌터카 · 약 1시간10분'}] },
+    { day:'Day 05', date:'9.20(일)', seg:'seg-banff', stops:['캔모어 숙소','Lake Louise Park & Ride','모레인레이크 · 레이크루이스'],
+      connectors:[{icon:'car',text:'렌터카'},{icon:'transit',text:'Parks Canada 셔틀'}] },
+    { day:'Day 06', date:'9.21(월)', seg:'seg-banff', stops:['캔모어 숙소','밴프 국립공원 · 밴프 시내'],
+      connectors:[{icon:'car',text:'렌터카'}] },
+    { day:'Day 07', date:'9.22(화)', seg:'seg-cal', stops:['캔모어 숙소','캘거리 동물원','Hampton Inn','캘거리공항 (반납)','Hampton Inn'],
+      connectors:[{icon:'car',text:'렌터카'},{icon:'car',text:'렌터카'},{icon:'car',text:'렌터카 반납'},{icon:'transit',text:'호텔 셔틀'}] },
+    { day:'Day 08', date:'9.23(수)', seg:'seg-sea', stops:['YYC','SEA','시애틀 숙소'],
+      connectors:[{icon:'plane',text:'WS1550'},{icon:'transit',text:'얼리체크인'}] },
+    { day:'Day 09', date:'9.24(목)', seg:'seg-sea', stops:['시애틀 숙소','시애틀 시내'],
+      connectors:[{icon:'transit',text:'도보 · 대중교통'}] },
+    { day:'Day 10', date:'9.25(금)', seg:'seg-sea', stops:['시애틀 숙소','Westlake역','SEA공항역','공항 (탑승동)'],
+      connectors:[{icon:'transit',text:'도보 · 약 15분'},{icon:'transit',text:'Link 경전철 · 약 38분'},{icon:'transit',text:'도보 · 약 10분'}] },
+    { day:'Day 11', date:'9.26(토)', seg:'seg-sea', stops:['SEA','ICN 도착'],
+      connectors:[{icon:'plane',text:'KE042'}] }
+  ];
+  function renderDailyRoutes(){
+    const segLabels = {'seg-van':'밴쿠버','seg-banff':'밴프 · 캔모어','seg-cal':'캘거리','seg-sea':'시애틀'};
+    const container = document.getElementById('dailyRouteList');
+    let html = '';
+    let lastSeg = null;
+    dayRouteData.forEach(d => {
+      if (d.seg !== lastSeg){
+        html += `<div class="segment-label ${d.seg}"${lastSeg ? '' : ' style="margin-top:0;"'}><span class="dot"></span>${segLabels[d.seg]}<span class="rule"></span></div>`;
+        lastSeg = d.seg;
+      }
+      let drd = '<div class="drd">';
+      d.stops.forEach((stop, i) => {
+        drd += `<div class="drd-stop"><span class="dot"></span><span class="label">${stop}</span></div>`;
+        if (d.connectors[i]){
+          drd += `<div class="drd-connector">${routeIcons[d.connectors[i].icon]}<span>${d.connectors[i].text}</span></div>`;
+        }
+      });
+      drd += '</div>';
+      html += `<div class="daily-route-card ${d.seg}"><div class="daily-route-head"><span class="d-day">${d.day}</span><span class="d-date">${d.date}</span></div>${drd}</div>`;
+    });
+    container.innerHTML = html;
+  }
+  renderDailyRoutes();
 </script>
 
 </body>
