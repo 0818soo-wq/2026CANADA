@@ -264,7 +264,7 @@
             <li class="flight">15:00 CTS 도착 (2h45m)</li>
             <li class="transit">신치토세공항 → 삿포로역: [JR] 약 37분</li>
             <li>16:30 호텔 체크인</li>
-            <li>저녁: 양고기 식당</li>
+            <li>저녁: 히게노우시 본점 (ひげのうし本店) · 스스키노 양고기</li>
             <li class="transit">[지하철] 스스키노 왕복</li>
           </ul>
           <button class="meal-btn" onclick="openMeal('day1','9.5 (토) · 삿포로')">
@@ -294,7 +294,7 @@
           <ul class="schedule">
             <li>호텔 조식 후 비에이 프리미어 투어 참여 (픽업/샌딩 포함)</li>
             <li>점심: 준페이</li>
-            <li>저녁: 털게 전문점</li>
+            <li>저녁: 삿포로 가니혼케 에키마에 본점 · 털게</li>
             <li>투어 종료 후 삿포로 숙소 복귀</li>
           </ul>
           <button class="meal-btn" onclick="openMeal('day2','9.6 (일) · 비에이 → 삿포로')">
@@ -360,7 +360,7 @@
           <ul class="schedule">
             <li>조식: 가이세키 (숙소 제공)</li>
             <li>오타루 시내 구경 · 코인락커 이용</li>
-            <li>점심 · 오후: 오타루에서 먹기 (스프카레)</li>
+            <li>점심: 스프카레 Kufuu (호시미역 도보 3분, JR 오타루→삿포로 방향 경유)</li>
             <li class="transit">[JR] 오타루 → 신치토세공항 이동</li>
             <li class="note">14:00까지 신치토세공항 도착</li>
             <li class="flight">16:00 CTS 출발 <span class="tag">JC1504</span></li>
@@ -457,7 +457,7 @@
       <div class="cost-row"><div class="cost-label">NOL(항공)<small>JC1503 왕복 항공권</small></div><div class="cost-amount paid">₩1,624,560</div></div>
       <div class="cost-row"><div class="cost-label">[JR] 공항 → 삿포로역<small>¥2,300</small></div><div class="cost-amount paid">₩21,045</div></div>
       <div class="cost-row"><div class="cost-label">공항에서 (식사)</div><div class="cost-amount planned">₩30,000</div></div>
-      <div class="cost-row"><div class="cost-label">저녁 · 양고기</div><div class="cost-amount planned">₩100,000</div></div>
+      <div class="cost-row"><div class="cost-label">저녁 · 히게노우시 본점<small>스스키노 양고기, 구글평점 4.6</small></div><div class="cost-amount planned">₩100,000</div></div>
       <div class="cost-row"><div class="cost-label">[지하철] 스스키노 왕복<small>¥1,000</small></div><div class="cost-amount paid">₩9,150</div></div>
       <div class="cost-row"><div class="cost-label">숙소 · Keikyu EX Hotel Sapporo<small>[Klook] 2박</small></div><div class="cost-amount paid">₩366,080</div></div>
     </div>
@@ -466,7 +466,7 @@
       <div class="budget-day-head"><span class="b-day">Day 02</span><span class="b-date">9.6(일) · 비에이</span></div>
       <div class="cost-row"><div class="cost-label">비에이 프리미어 투어</div><div class="cost-amount paid">₩264,000</div></div>
       <div class="cost-row"><div class="cost-label">점심 · 준페이</div><div class="cost-amount planned">₩50,000</div></div>
-      <div class="cost-row"><div class="cost-label">저녁 · 털게</div><div class="cost-amount planned">₩250,000</div></div>
+      <div class="cost-row"><div class="cost-label">저녁 · 삿포로 가니혼케 에키마에 본점<small>털게, 호텔 도보권</small></div><div class="cost-amount planned">₩250,000</div></div>
     </div>
 
     <div class="budget-day">
@@ -482,7 +482,7 @@
       <div class="budget-day-head"><span class="b-day">Day 04</span><span class="b-date">9.8(화) · 오타루 → 귀국</span></div>
       <div class="cost-row"><div class="cost-label">조식 · 가이세키<small>숙소 제공</small></div><div class="cost-amount muted">-</div></div>
       <div class="cost-row"><div class="cost-label">코인락커<small>¥2,000</small></div><div class="cost-amount paid">₩18,300</div></div>
-      <div class="cost-row"><div class="cost-label">오타루에서 먹기 · 스프카레</div><div class="cost-amount planned">₩50,000</div></div>
+      <div class="cost-row"><div class="cost-label">점심 · 스프카레 Kufuu<small>구글평점 4.5, 호시미역 인근</small></div><div class="cost-amount planned">₩50,000</div></div>
       <div class="cost-row"><div class="cost-label">[JR] 오타루 → 공항<small>¥4,080</small></div><div class="cost-amount paid">₩37,332</div></div>
       <div class="cost-row"><div class="cost-label">Jeju Air JC1504<small>Day 01 항공권에 포함</small></div><div class="cost-amount muted">-</div></div>
     </div>
@@ -610,10 +610,10 @@
   });
 
   const mealData = {
-    day1: { b: "-", l: "기내식", d: { name: "양고기 식당", place: "삿포로 양고기 징기스칸, Sapporo, Japan" } },
-    day2: { b: "호텔 조식", l: { name: "준페이", place: "준페이, Biei, Hokkaido, Japan" }, d: { name: "털게 전문점", place: "털게 요리, Sapporo, Japan" } },
-    day3: { b: "호텔 조식", l: { name: "스미레", place: "らーめん 味の三平 or Sumire Ramen, Sapporo, Japan", desc: "삿포로 대표 미소라멘 맛집" }, d: "가이세키 (숙소 제공)" },
-    day4: { b: "가이세키 (숙소 제공)", l: { name: "스프카레", place: "スープカレー, Otaru, Hokkaido, Japan" }, d: "기내식" }
+    day1: { b: "-", l: "기내식", d: { name: "히게노우시 본점", place: "ジンギスカン ひげのうし 本店, Sapporo, Japan", desc: "구글평점 4.6 · 스스키노역 도보 4분 · 스스키노 양고기(징기스칸) 대표 맛집" } },
+    day2: { b: "호텔 조식", l: { name: "준페이", place: "준페이, Biei, Hokkaido, Japan" }, d: { name: "삿포로 가니혼케 에키마에 본점", place: "札幌かに本家 札幌駅前本店, Sapporo, Japan", desc: "구글평점 4.4 · 삿포로역 앞, 숙소에서 도보권 · 털게·타라바게 코스" } },
+    day3: { b: "호텔 조식", l: { name: "스미레", place: "らーめん すみれ, Sapporo, Japan", desc: "삿포로 대표 미소라멘 맛집" }, d: "가이세키 (숙소 제공)" },
+    day4: { b: "가이세키 (숙소 제공)", l: { name: "스프카레 Kufuu", place: "スープカリー Kufuu, Otaru, Japan", desc: "구글평점 4.5 · JR 호시미역 도보 3분 (오타루→삿포로 방향, 오타루 중심가에서는 거리 있음)" }, d: "기내식" }
   };
 
   function mealPickHTML(item){
@@ -687,9 +687,9 @@
     { day:'Day 03', date:'9.7(월)', seg:'seg-otaru', stops:['삿포로맥주박물관','삿포로역','오타루역','Otaru Korakuen'],
       connectors:[{icon:'transit',text:'도보/시내이동'},{icon:'transit',text:'JR · 약 32분'},{icon:'transit',text:'도보'}],
       map: mapFrame(['Sapporo Beer Museum, Japan','Sapporo Station, Japan','Otaru Station, Japan','Otaru Korakuen, Japan']) },
-    { day:'Day 04', date:'9.8(화)', seg:'seg-otaru', stops:['오타루 시내','오타루역','신치토세공항'],
-      connectors:[{icon:'transit',text:'도보'},{icon:'transit',text:'JR · 약 1시간'}],
-      map: mapFrame(['Otaru, Japan','Otaru Station, Japan','New Chitose Airport, Japan']) }
+    { day:'Day 04', date:'9.8(화)', seg:'seg-otaru', stops:['오타루 시내','오타루역','호시미역 (스프카레 Kufuu)','신치토세공항'],
+      connectors:[{icon:'transit',text:'도보'},{icon:'transit',text:'JR · 약 10분'},{icon:'transit',text:'JR · 약 50분 (환승)'}],
+      map: mapFrame(['Otaru, Japan','Otaru Station, Japan','Hoshimi Station, Japan','New Chitose Airport, Japan']) }
   ];
   function renderDailyRoutes(){
     const segLabels = {'seg-sapporo':'삿포로 · 비에이','seg-otaru':'오타루'};
