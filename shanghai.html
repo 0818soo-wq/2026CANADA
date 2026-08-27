@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>2026 SHANGHAI (2nd)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F6F3EC;
+    --surface: #FFFFFF;
+    --ink: #1E2A26;
+    --ink-soft: #64756E;
+    --ink-faint: #9AA79F;
+    --line: #E6E0D2;
+
+    --forest: #2F4A3E;
+    --forest-soft: #E6EDE8;
+    --gold: #B3893F;
+    --gold-soft: #F1E6D2;
+    --maple: #AD4C3C;
+    --maple-soft: #F5E5E1;
+    --paid: #3E6C8C;
+  }
+
+  *{ box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body{
+    margin: 0; padding: 0;
+    background: var(--bg); color: var(--ink);
+    font-family: 'Manrope', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  body{ padding-bottom: 64px; }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position: relative; padding: 48px 24px 26px;
+    background: linear-gradient(180deg, #7A2E22 0%, #AD4C3C 55%, #B3893F 100%);
+    color: #F6F3EC; overflow: hidden;
+  }
+  .hero::after{
+    content: ""; position: absolute; right: -60px; top: -60px;
+    width: 220px; height: 220px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(246,243,236,0.25) 0%, rgba(246,243,236,0) 70%);
+  }
+  .hero-eyebrow{ font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: #F1DFC9; margin: 0 0 14px; font-weight: 600; }
+  .hero-title{ font-family: 'Fraunces', serif; font-weight: 600; font-size: 34px; line-height: 1.18; margin: 0 0 18px; letter-spacing: -0.01em; }
+  .hero-title em{ font-style: italic; font-weight: 400; color: #F6DDBB; }
+  .hero-meta{ display: flex; flex-wrap: wrap; gap: 10px 16px; font-size: 13px; color: #F5E9D8; }
+  .hero-meta span{ display: flex; align-items: center; gap: 6px; }
+  .hero-meta svg{ width: 14px; height: 14px; opacity: 0.85; }
+
+  /* ---------- TABS ---------- */
+  .tabbar{ position: sticky; top: 0; z-index: 20; display: flex; background: var(--surface); border-bottom: 1px solid var(--line); box-shadow: 0 2px 6px rgba(30,42,38,0.05); }
+  .tab{ flex: 1; appearance: none; border: none; background: transparent; font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 13.5px; color: var(--ink-faint); padding: 14px 4px 12px; position: relative; cursor: pointer; }
+  .tab.active{ color: var(--maple); }
+  .tab.active::after{ content: ""; position: absolute; left: 18%; right: 18%; bottom: 0; height: 3px; border-radius: 3px 3px 0 0; background: var(--maple); }
+
+  main{ max-width: 480px; margin: 0 auto; padding: 0 16px; }
+  .tab-panel{ display: none; }
+  .tab-panel.active{ display: block; animation: fadein .25s ease; }
+  @keyframes fadein{ from{ opacity:0; transform: translateY(4px);} to{ opacity:1; transform: translateY(0);} }
+
+  /* ---------- TODAY CARD ---------- */
+  .today-wrap{ margin: 6px 6px 8px; padding-bottom: 22px; border-bottom: 1px dashed var(--line); }
+  .today-label{ display: flex; align-items: center; gap: 8px; font-family: 'Fraunces', serif; font-weight: 700; font-size: 16px; color: var(--maple); margin: 18px 0 14px; }
+  .today-label .dot-live{ width: 8px; height: 8px; border-radius: 50%; background: var(--maple); }
+  .today-wrap .timeline{ display: none; }
+  .today-wrap .day{ padding-left: 0; margin-bottom: 0; }
+  .today-wrap .day-dot{ display: none; }
+  .today-wrap .card{ border: 2px solid var(--maple); box-shadow: 0 4px 14px rgba(173,76,60,0.14); }
+
+  /* ---------- SEGMENT LABEL ---------- */
+  .segment-label{ display: flex; align-items: center; gap: 10px; margin: 26px 6px 14px; font-family: 'Fraunces', serif; font-weight: 600; font-size: 15px; color: var(--ink); }
+  .segment-label:first-child{ margin-top: 22px; }
+  .segment-label .dot{ width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: var(--maple); }
+  .segment-label .rule{ flex: 1; height: 1px; background: var(--line); }
+
+  /* ---------- TIMELINE / DAY CARD ---------- */
+  .timeline{ position: relative; }
+  .timeline::before{ content: ""; position: absolute; left: 21px; top: 6px; bottom: 6px; width: 2px; background: repeating-linear-gradient(to bottom, var(--line) 0px, var(--line) 4px, transparent 4px, transparent 9px); }
+  .day{ position: relative; padding-left: 46px; margin-bottom: 18px; }
+  .day-dot{ position: absolute; left: 14px; top: 22px; width: 16px; height: 16px; border-radius: 50%; background: var(--surface); border: 3px solid var(--maple); z-index: 2; }
+
+  .card{ background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px 18px 16px; box-shadow: 0 1px 2px rgba(30,42,38,0.04); }
+  .card-head{ display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+  .card-head-left{ display: flex; flex-direction: column; }
+  .day-num{ font-family: 'Fraunces', serif; font-weight: 600; font-size: 20px; color: var(--ink); }
+  .day-date{ font-size: 12.5px; color: var(--ink-soft); font-weight: 600; }
+
+  .transport-badge{ display: flex; align-items: center; gap: 4px; padding: 5px 9px; border-radius: 20px; font-size: 11px; font-weight: 700; white-space: nowrap; background: var(--maple-soft); color: var(--maple); }
+  .transport-badge svg{ width: 12px; height: 12px; }
+
+  .stay{ display: flex; align-items: center; gap: 6px; margin-bottom: 12px; font-size: 12px; font-weight: 600; color: var(--ink-soft); }
+  .stay svg{ width: 13px; height: 13px; flex-shrink: 0; opacity: 0.75; }
+  .stay .stay-name{ color: var(--ink); font-weight: 700; }
+
+  .schedule{ list-style: none; margin: 0; padding: 0; }
+  .schedule li{ position: relative; padding: 6px 0 6px 16px; font-size: 13.5px; color: var(--ink); line-height: 1.45; }
+  .schedule li::before{ content: ""; position: absolute; left: 0; top: 14px; width: 5px; height: 5px; border-radius: 50%; background: var(--ink-faint); }
+  .schedule li.flight{ font-weight: 700; }
+  .schedule li.flight::before{ background: var(--maple); }
+  .schedule li.flight .tag{ display: inline-block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.03em; color: var(--maple); background: var(--maple-soft); padding: 1px 6px; border-radius: 5px; margin-left: 6px; vertical-align: middle; }
+  .schedule li.note{ color: var(--ink-soft); font-weight: 500; font-style: italic; }
+  .schedule li.warn{ color: var(--maple); font-weight: 700; font-style: normal; }
+  .schedule li.warn::before{ background: var(--maple); }
+
+  .meal-btn{ display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; margin-top: 14px; padding: 10px 12px; border-radius: 10px; border: 1px dashed var(--line); background: #FBFAF6; color: var(--ink-soft); font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 12.5px; cursor: pointer; }
+  .meal-btn svg{ width: 14px; height: 14px; }
+  .meal-btn:active{ background: var(--gold-soft); color: var(--ink); }
+
+  /* ---------- MEAL PAGE (slide-over) ---------- */
+  .meal-page{ position: fixed; inset: 0; z-index: 50; background: var(--bg); transform: translateX(100%); transition: transform .28s ease; overflow-y: auto; }
+  .meal-page.open{ transform: translateX(0); }
+  .meal-page-head{ position: sticky; top: 0; z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line); padding: 16px 16px 14px; display: flex; align-items: center; gap: 12px; }
+  .meal-back{ width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface); display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+  .meal-back svg{ width: 16px; height: 16px; color: var(--ink); }
+  .meal-page-head-text .m-day{ font-family:'Fraunces', serif; font-weight:600; font-size:17px; color: var(--ink); }
+  .meal-page-head-text .m-date{ font-size: 12px; color: var(--ink-soft); font-weight: 600; }
+  .meal-body{ max-width: 480px; margin: 0 auto; padding: 20px 16px 60px; }
+  .meal-slot{ background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; margin-bottom: 14px; }
+  .meal-slot-title{ display: flex; align-items: center; gap: 8px; font-family: 'Fraunces', serif; font-weight: 600; font-size: 15px; color: var(--ink); margin-bottom: 8px; }
+  .meal-slot-title svg{ width: 15px; height: 15px; color: var(--gold); }
+  .meal-empty{ font-size: 12.5px; color: var(--ink-faint); line-height: 1.6; }
+  .meal-link{ display: inline-flex; align-items: center; gap: 5px; font-size: 12.5px; color: var(--forest); font-weight: 700; text-decoration: none; }
+  .meal-link svg{ width: 12px; height: 12px; flex-shrink: 0; opacity: 0.8; }
+  .meal-link:active{ opacity: 0.6; }
+  .meal-picks{ display: flex; flex-direction: column; gap: 12px; }
+  .meal-pick .meal-desc{ display: block; font-size: 11.5px; color: var(--ink-soft); margin-top: 3px; line-height: 1.5; }
+  .meal-amount{ display:inline-block; margin-left:6px; font-size: 11.5px; font-weight: 800; color: var(--maple); }
+
+  /* ---------- ROUTE MAP TAB ---------- */
+  .map-card{ margin-top: 22px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 16px 12px 20px; overflow: hidden; }
+  .map-title{ font-family:'Fraunces', serif; font-weight: 600; font-size: 17px; margin: 4px 8px 14px; color: var(--ink); }
+  .map-legend{ display: flex; flex-wrap: wrap; gap: 14px 18px; margin: 14px 8px 0; font-size: 11.5px; color: var(--ink-soft); font-weight: 600; }
+  .map-legend span{ display:flex; align-items:center; gap:6px; }
+  .legend-line{ width: 18px; height: 0; border-top: 2px solid var(--ink-soft); }
+  .legend-line.dashed{ border-top-style: dashed; }
+
+  .route-list{ margin: 20px 4px 4px; }
+  .route-step{ display: flex; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); }
+  .route-step:first-child{ border-top: none; }
+  .route-step .icon{ width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: var(--maple-soft); color: var(--maple); }
+  .route-step .icon svg{ width: 15px; height: 15px; }
+  .route-step .txt{ font-size: 13px; color: var(--ink); line-height: 1.4; padding-top: 4px; }
+  .route-step .txt b{ font-weight: 700; }
+  .route-step .txt span{ display:block; font-size: 11.5px; color: var(--ink-soft); font-weight: 600; margin-top: 2px; }
+
+  /* ---------- DAILY ROUTE DIAGRAM (mini map) ---------- */
+  .daily-route-card{ background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px 14px; margin-top: 12px; }
+  .daily-route-head{ display:flex; align-items:baseline; gap:8px; margin-bottom: 12px; }
+  .daily-route-head .d-day{ font-family:'Fraunces', serif; font-weight:600; font-size:15.5px; color: var(--ink); }
+  .daily-route-head .d-date{ font-size: 11.5px; color: var(--ink-soft); font-weight: 600; }
+  .drd-map{ width:100%; height:220px; display:block; margin-bottom: 16px; border-radius: 12px; border: 0; background: var(--bg); }
+  .drd{ position: relative; padding-left: 22px; }
+  .drd::before{ content:""; position:absolute; left:5px; top:7px; bottom:7px; width:2px; background: repeating-linear-gradient(to bottom, var(--line) 0px, var(--line) 4px, transparent 4px, transparent 9px); }
+  .drd-stop{ position: relative; margin-bottom: 2px; }
+  .drd-stop .dot{ position:absolute; left:-22px; top:2px; width:11px; height:11px; border-radius:50%; background: var(--surface); border: 2.5px solid var(--maple); z-index:1; }
+  .drd-stop .label{ font-size: 13px; font-weight: 700; color: var(--ink); padding-top: 0; }
+  .drd-connector{ position: relative; margin: 3px 0 14px; padding-left: 2px; display:flex; align-items:center; gap:6px; font-size: 11.5px; color: var(--ink-soft); font-weight: 600; }
+  .drd-connector svg{ width: 12px; height: 12px; opacity: 0.75; flex-shrink:0; }
+
+  /* ---------- BUDGET TAB ---------- */
+  .budget-summary{ margin-top: 22px; background: var(--maple); border-radius: 18px; padding: 20px 20px 18px; color: #F6F3EC; }
+  .budget-summary .total-label{ font-size: 12px; letter-spacing: 0.06em; color: #F1DFC9; font-weight: 700; text-transform: uppercase; }
+  .budget-summary .total-amount{ font-family: 'Fraunces', serif; font-size: 30px; font-weight: 600; margin: 6px 0 16px; }
+  .budget-summary .split{ display: flex; gap: 10px; }
+  .budget-summary .split div{ flex: 1; background: rgba(255,255,255,0.12); border-radius: 12px; padding: 10px 12px; }
+  .budget-summary .split .k{ font-size: 11px; color: #F1DFC9; font-weight: 700; margin-bottom: 3px; }
+  .budget-summary .split .v{ font-size: 15px; font-weight: 700; }
+  .budget-summary .split .v.paid{ color: #A9D2EC; }
+  .budget-summary .split .v.planned{ color: #FBD9CD; }
+  .budget-note{ font-size: 11px; color: var(--ink-faint); margin: 10px 4px 0; line-height: 1.5; }
+
+  .budget-day{ background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; margin-top: 14px; }
+  .budget-day-head{ display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; }
+  .budget-day-head .b-day{ font-family: 'Fraunces', serif; font-weight: 600; font-size: 16px; color: var(--ink); }
+  .budget-day-head .b-date{ font-size: 11.5px; color: var(--ink-soft); font-weight: 600; }
+
+  .cost-row{ display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; padding: 6px 0; font-size: 13px; border-top: 1px dashed var(--line); }
+  .cost-row:first-of-type{ border-top: none; }
+  .cost-row .cost-label{ color: var(--ink-soft); font-weight: 600; }
+  .cost-row .cost-label small{ display:block; font-size: 10.5px; color: var(--ink-faint); font-weight: 500; margin-top: 1px; }
+  .cost-row .cost-amount{ font-weight: 800; white-space: nowrap; }
+  .cost-amount.paid{ color: var(--paid); }
+  .cost-amount.planned{ color: var(--maple); }
+  .cost-amount.muted{ color: var(--ink-faint); font-weight: 600; }
+
+  .cost-legend{ display: flex; gap: 16px; margin: 16px 4px 0; font-size: 11.5px; font-weight: 700; }
+  .cost-legend span{ display: flex; align-items: center; gap: 6px; color: var(--ink-soft); }
+  .cost-legend .sw{ width: 9px; height: 9px; border-radius: 50%; }
+  .cost-legend .sw.paid{ background: var(--paid); }
+  .cost-legend .sw.planned{ background: var(--maple); }
+
+  /* ---------- BOOKING TAB ---------- */
+  .booking-group{ margin-top: 26px; }
+  .booking-group:first-child{ margin-top: 22px; }
+  .booking-card{ background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; margin-top: 12px; }
+  .booking-card-head{ display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+  .booking-title{ font-family: 'Fraunces', serif; font-weight: 600; font-size: 15.5px; color: var(--ink); line-height: 1.35; }
+  .booking-sub{ font-size: 12px; color: var(--ink-soft); font-weight: 600; margin-top: 2px; }
+  .booking-code{ flex-shrink: 0; font-size: 11px; font-weight: 800; letter-spacing: 0.02em; background: var(--gold-soft); color: var(--gold); padding: 4px 8px; border-radius: 7px; white-space: nowrap; }
+  .booking-rows{ margin-top: 10px; }
+  .booking-row{ display: flex; justify-content: space-between; gap: 10px; padding: 5px 0; font-size: 12.5px; border-top: 1px dashed var(--line); }
+  .booking-row:first-child{ border-top: none; }
+  .booking-row .k{ color: var(--ink-soft); font-weight: 600; }
+  .booking-row .v{ color: var(--ink); font-weight: 700; text-align: right; }
+
+  footer{ max-width: 480px; margin: 40px auto 0; padding: 0 24px; text-align: center; }
+  footer p{ font-size: 11.5px; color: var(--ink-faint); line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <p class="hero-eyebrow">Trip · 2026.08.07 – 08.10</p>
+  <h1 class="hero-title">2026<br><em>SHANGHAI (2nd)</em></h1>
+  <div class="hero-meta">
+    <span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+      상하이 (푸동 IN · 훙차오 OUT)
+    </span>
+    <span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3v4M7 3v4M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/></svg>
+      3박 4일
+    </span>
+  </div>
+</div>
+
+<div class="tabbar">
+  <button class="tab active" data-tab="itinerary">일정</button>
+  <button class="tab" data-tab="route">동선</button>
+  <button class="tab" data-tab="budget">비용</button>
+  <button class="tab" data-tab="booking">예약사항</button>
+</div>
+
+<main>
+
+  <!-- ============ 일정 TAB ============ -->
+  <section class="tab-panel active" id="tab-itinerary">
+
+    <div id="todayCard"></div>
+
+    <div class="segment-label"><span class="dot"></span>상하이<span class="rule"></span></div>
+    <div class="timeline">
+
+      <div class="day" data-date="2026-08-07">
+        <span class="day-dot"></span>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-head-left">
+              <span class="day-num">Day 01</span>
+              <span class="day-date">8.7 (토)</span>
+            </div>
+            <span class="transport-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-8-8 20-3-8-9-4z"/></svg>
+              항공 KE887
+            </span>
+          </div>
+          <div class="stay">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+            <span class="stay-name">하얏트 온더번드</span> 체크인 예정
+          </div>
+          <ul class="schedule">
+            <li class="note">09:00까지 인천공항 도착 권장</li>
+            <li class="flight">11:15 ICN 출발 <span class="tag">KE887</span></li>
+            <li class="flight">12:35 PVG(푸동) 도착 (2h25m)</li>
+            <li>공항 프라이빗셔틀로 숙소 이동</li>
+            <li>14:00 숙소 도착 · 난징둥루 거리 구경</li>
+            <li>저녁 · 1000 trees 일몰구경, 신톈디(신천지)</li>
+          </ul>
+          <button class="meal-btn" onclick="openMeal('day1','8.7 (토) · 상하이')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3v6a2 2 0 0 0 4 0V3M9 9v12M17 3c-1.5 3-1.5 6 0 8v10"/></svg>
+            오늘 뭐 먹지?
+          </button>
+        </div>
+      </div>
+
+      <div class="day" data-date="2026-08-08">
+        <span class="day-dot"></span>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-head-left">
+              <span class="day-num">Day 02</span>
+              <span class="day-date">8.8 (일)</span>
+            </div>
+            <span class="transport-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 4l-9 9h4v7h10v-7h4z"/></svg>
+              택시
+            </span>
+          </div>
+          <div class="stay">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+            <span class="stay-name">하얏트 온더번드</span>
+          </div>
+          <ul class="schedule">
+            <li>택시로 상하이동물원 이동</li>
+            <li>상하이동물원 관람 (입장권 비용 미정)</li>
+            <li>동물원 내 식사</li>
+            <li>저녁 · 와이탄(번드) 야경</li>
+          </ul>
+          <button class="meal-btn" onclick="openMeal('day2','8.8 (일) · 상하이')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3v6a2 2 0 0 0 4 0V3M9 9v12M17 3c-1.5 3-1.5 6 0 8v10"/></svg>
+            오늘 뭐 먹지?
+          </button>
+        </div>
+      </div>
+
+      <div class="day" data-date="2026-08-09">
+        <span class="day-dot"></span>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-head-left">
+              <span class="day-num">Day 03</span>
+              <span class="day-date">8.9 (월)</span>
+            </div>
+            <span class="transport-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 4l-9 9h4v7h10v-7h4z"/></svg>
+              택시 · 프라이빗셔틀
+            </span>
+          </div>
+          <div class="stay">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+            <span class="stay-name">하얏트 온더번드</span>
+          </div>
+          <ul class="schedule">
+            <li>상하이 디즈니랜드 종일 이용 (티켓 · 패스트트랙 포함)</li>
+            <li>점심은 디즈니 내에서 해결 (식사값 티켓포함)</li>
+            <li>저녁 · 위위안(예원) 야경</li>
+          </ul>
+          <button class="meal-btn" onclick="openMeal('day3','8.9 (월) · 디즈니')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3v6a2 2 0 0 0 4 0V3M9 9v12M17 3c-1.5 3-1.5 6 0 8v10"/></svg>
+            오늘 뭐 먹지?
+          </button>
+        </div>
+      </div>
+
+      <div class="day" data-date="2026-08-10">
+        <span class="day-dot"></span>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-head-left">
+              <span class="day-num">Day 04</span>
+              <span class="day-date">8.10 (화)</span>
+            </div>
+            <span class="transport-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-8-8 20-3-8-9-4z"/></svg>
+              항공 KE2058
+            </span>
+          </div>
+          <div class="stay">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+            <span class="stay-name">하얏트 온더번드</span> 체크아웃
+          </div>
+          <ul class="schedule">
+            <li>호텔 조식 후 택시로 이동 · 동방명주(東方明珠) 또는 신톈디 (입장권 비용 미정)</li>
+            <li>딤섬(대호춘) 점심</li>
+            <li>공항 프라이빗셔틀로 이동 · 발마사지</li>
+            <li class="note">16:00까지 상하이 훙차오공항 도착 권장</li>
+            <li class="flight">18:25 SHA(훙차오) 출발 <span class="tag">KE2058</span></li>
+            <li class="flight">21:35 GMP(김포) 도착 (2h10m)</li>
+          </ul>
+          <button class="meal-btn" onclick="openMeal('day4','8.10 (화) · 상하이 → 김포')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3v6a2 2 0 0 0 4 0V3M9 9v12M17 3c-1.5 3-1.5 6 0 8v10"/></svg>
+            오늘 뭐 먹지?
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- ============ 동선 TAB ============ -->
+  <section class="tab-panel" id="tab-route">
+    <div class="map-card">
+      <p class="map-title">항공 이동 경로</p>
+      <svg viewBox="0 0 380 200" width="100%" style="display:block; height:auto;">
+        <line x1="60" y1="150" x2="290" y2="60" stroke="#AD4C3C" stroke-width="2" stroke-dasharray="5,5"/>
+        <line x1="290" y1="60" x2="90" y2="130" stroke="#B3893F" stroke-width="2" stroke-dasharray="5,5"/>
+        <circle cx="60" cy="150" r="6" fill="#4C6B78"/>
+        <circle cx="290" cy="60" r="6" fill="#AD4C3C"/>
+        <circle cx="90" cy="130" r="6" fill="#B3893F"/>
+        <text x="20" y="172" font-family="Manrope" font-size="12" font-weight="700" fill="#1E2A26">인천(ICN)</text>
+        <text x="252" y="46" font-family="Manrope" font-size="12" font-weight="700" fill="#1E2A26">상하이</text>
+        <text x="40" y="112" font-family="Manrope" font-size="12" font-weight="700" fill="#1E2A26">김포(GMP)</text>
+      </svg>
+      <div class="map-legend">
+        <span><span class="legend-line dashed"></span> 항공</span>
+      </div>
+    </div>
+
+    <div class="route-list">
+      <div class="route-step">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-8-8 20-3-8-9-4z"/></svg></div>
+        <div class="txt"><b>인천 → 상하이(푸동)</b><span>KE887 · 8.7(토) 11:15 → 12:35</span></div>
+      </div>
+      <div class="route-step">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-8-8 20-3-8-9-4z"/></svg></div>
+        <div class="txt"><b>상하이(훙차오) → 김포</b><span>KE2058 · 8.10(화) 18:25 → 21:35</span></div>
+      </div>
+    </div>
+
+    <p class="map-title" style="margin-top:36px;">일자별 상세 동선</p>
+    <div class="map-legend" style="margin:0 8px 4px;">
+      <span><span class="legend-line dashed" style="border-top-color:var(--maple);"></span> 항공</span>
+      <span><span class="legend-line dashed" style="border-top-color:var(--gold);"></span> 택시 · 셔틀</span>
+    </div>
+    <div id="dailyRouteList"></div>
+  </section>
+
+  <!-- ============ 비용 TAB ============ -->
+  <section class="tab-panel" id="tab-budget">
+
+    <div class="budget-summary">
+      <div class="total-label">Total Budget (확정 항목 기준)</div>
+      <div class="total-amount">₩ 1,938,775</div>
+      <div class="split">
+        <div>
+          <div class="k">지출완료</div>
+          <div class="v paid">₩ 858,775</div>
+        </div>
+        <div>
+          <div class="k">지출예정</div>
+          <div class="v planned">₩ 1,080,000</div>
+        </div>
+      </div>
+    </div>
+    <p class="budget-note">파란색 = 이미 결제/예약된 항목(숙소·프라이빗셔틀) · 빨간색 = 지출 예정(예산) 항목입니다. 동물원 입장권 · 예원 입장료 · 동방명주 입장권은 금액 미확정(?)이라 위 합계에서 제외했습니다. 항공권 비용은 별도 결제 건으로 이 표에 포함하지 않았습니다.</p>
+    <div class="cost-legend">
+      <span><span class="sw paid"></span>지출완료</span>
+      <span><span class="sw planned"></span>지출예정</span>
+    </div>
+
+    <div class="budget-day">
+      <div class="budget-day-head"><span class="b-day">Day 01</span><span class="b-date">8.7(토) · 인천 → 상하이</span></div>
+      <div class="cost-row"><div class="cost-label">항공 · 대한항공<small>KE887</small></div><div class="cost-amount muted">별도</div></div>
+      <div class="cost-row"><div class="cost-label">교통 · 공항 프라이빗셔틀</div><div class="cost-amount paid">₩55,000</div></div>
+      <div class="cost-row"><div class="cost-label">점심 · 마라반(레드립) 딤섬(소양생전)</div><div class="cost-amount planned">₩30,000</div></div>
+      <div class="cost-row"><div class="cost-label">저녁 · 양꼬치(현지우이치엔)</div><div class="cost-amount planned">₩80,000</div></div>
+      <div class="cost-row"><div class="cost-label">교통 · 택시</div><div class="cost-amount planned">₩10,000</div></div>
+    </div>
+
+    <div class="budget-day">
+      <div class="budget-day-head"><span class="b-day">Day 02</span><span class="b-date">8.8(일) · 상하이 (동물원)</span></div>
+      <div class="cost-row"><div class="cost-label">숙소 · 하얏트 온더번드<small>[Hyatt App] ¥3,244</small></div><div class="cost-amount paid">₩713,775</div></div>
+      <div class="cost-row"><div class="cost-label">교통 · 택시</div><div class="cost-amount planned">₩50,000</div></div>
+      <div class="cost-row"><div class="cost-label">아침 · 전병(산둥잡곡전병)</div><div class="cost-amount planned">₩20,000</div></div>
+      <div class="cost-row"><div class="cost-label">동물원 입장권</div><div class="cost-amount muted">미정(?)</div></div>
+      <div class="cost-row"><div class="cost-label">점심 · 동물원 내 식사</div><div class="cost-amount planned">₩30,000</div></div>
+      <div class="cost-row"><div class="cost-label">저녁 · 마파두부·홍소육(그랜마 레스토랑)</div><div class="cost-amount planned">₩50,000</div></div>
+    </div>
+
+    <div class="budget-day">
+      <div class="budget-day-head"><span class="b-day">Day 03</span><span class="b-date">8.9(월) · 디즈니</span></div>
+      <div class="cost-row"><div class="cost-label">교통 · 택시</div><div class="cost-amount planned">₩20,000</div></div>
+      <div class="cost-row"><div class="cost-label">아침 · 디즈니 가서 간식</div><div class="cost-amount planned">₩30,000</div></div>
+      <div class="cost-row"><div class="cost-label">디즈니 티켓</div><div class="cost-amount planned">₩300,000</div></div>
+      <div class="cost-row"><div class="cost-label">교통 · 디즈니 프라이빗셔틀</div><div class="cost-amount paid">₩35,000</div></div>
+      <div class="cost-row"><div class="cost-label">패스트트랙 + 기타</div><div class="cost-amount planned">₩220,000</div></div>
+      <div class="cost-row"><div class="cost-label">점심 · 디즈니에서 (식사값 티켓포함)</div><div class="cost-amount muted">포함</div></div>
+      <div class="cost-row"><div class="cost-label">저녁 · 마라룽샤(홍쿠이지아)</div><div class="cost-amount planned">₩70,000</div></div>
+      <div class="cost-row"><div class="cost-label">예원 입장</div><div class="cost-amount muted">미정(?)</div></div>
+    </div>
+
+    <div class="budget-day">
+      <div class="budget-day-head"><span class="b-day">Day 04</span><span class="b-date">8.10(화) · 상하이 → 김포</span></div>
+      <div class="cost-row"><div class="cost-label">아침 · 호텔조식</div><div class="cost-amount muted">포함</div></div>
+      <div class="cost-row"><div class="cost-label">교통 · 택시</div><div class="cost-amount planned">₩20,000</div></div>
+      <div class="cost-row"><div class="cost-label">동방명주 입장권</div><div class="cost-amount muted">미정(?)</div></div>
+      <div class="cost-row"><div class="cost-label">점심 · 딤섬(대호춘)</div><div class="cost-amount planned">₩30,000</div></div>
+      <div class="cost-row"><div class="cost-label">교통 · 공항 프라이빗셔틀</div><div class="cost-amount paid">₩55,000</div></div>
+      <div class="cost-row"><div class="cost-label">발마사지</div><div class="cost-amount planned">₩120,000</div></div>
+      <div class="cost-row"><div class="cost-label">항공 · 대한항공<small>KE2058</small></div><div class="cost-amount muted">별도</div></div>
+      <div class="cost-row"><div class="cost-label">저녁 · 기내식</div><div class="cost-amount muted">포함</div></div>
+    </div>
+
+  </section>
+
+  <!-- ============ 예약사항 TAB ============ -->
+  <section class="tab-panel" id="tab-booking">
+
+    <div class="booking-group">
+      <div class="segment-label" style="margin-top:0;"><span class="dot"></span>항공<span class="rule"></span></div>
+
+      <div class="booking-card">
+        <div class="booking-card-head">
+          <div>
+            <div class="booking-title">인천 → 상하이(푸동)</div>
+            <div class="booking-sub">Korean Air KE887 · 2h25m</div>
+          </div>
+        </div>
+        <div class="booking-rows">
+          <div class="booking-row"><span class="k">출발</span><span class="v">8.7(토) 11:15 · ICN</span></div>
+          <div class="booking-row"><span class="k">도착</span><span class="v">8.7(토) 12:35 · PVG</span></div>
+        </div>
+      </div>
+
+      <div class="booking-card">
+        <div class="booking-card-head">
+          <div>
+            <div class="booking-title">상하이(훙차오) → 김포</div>
+            <div class="booking-sub">Korean Air KE2058 · 2h10m</div>
+          </div>
+        </div>
+        <div class="booking-rows">
+          <div class="booking-row"><span class="k">출발</span><span class="v">8.10(화) 18:25 · SHA</span></div>
+          <div class="booking-row"><span class="k">도착</span><span class="v">8.10(화) 21:35 · GMP</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="booking-group">
+      <div class="segment-label"><span class="dot"></span>숙소<span class="rule"></span></div>
+
+      <div class="booking-card">
+        <div class="booking-card-head">
+          <div>
+            <div class="booking-title">하얏트 온더번드 (Hyatt on the Bund)</div>
+            <div class="booking-sub">3박 · [Hyatt App] 예약 · ¥3,244 (₩713,775)</div>
+          </div>
+        </div>
+        <div class="booking-rows">
+          <div class="booking-row"><span class="k">체크인</span><span class="v">8.7(토) (예정)</span></div>
+          <div class="booking-row"><span class="k">체크아웃</span><span class="v">8.10(화) (예정)</span></div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<!-- ============ MEAL SLIDE-OVER PAGE ============ -->
+<div class="meal-page" id="mealPage">
+  <div class="meal-page-head">
+    <div class="meal-back" onclick="closeMeal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    </div>
+    <div class="meal-page-head-text">
+      <div class="m-day" id="mealDayLabel">Day 01</div>
+      <div class="m-date" id="mealDateLabel">8.7 (토) · 상하이</div>
+    </div>
+  </div>
+  <div class="meal-body">
+    <div class="meal-slot">
+      <div class="meal-slot-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        아침
+      </div>
+      <p class="meal-empty" id="mealBreakfast">준비 중이에요.</p>
+    </div>
+    <div class="meal-slot">
+      <div class="meal-slot-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v10M6 12h12l-1 8H7l-1-8z"/></svg>
+        점심
+      </div>
+      <p class="meal-empty" id="mealLunch">준비 중이에요.</p>
+    </div>
+    <div class="meal-slot">
+      <div class="meal-slot-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12a8 8 0 1 1-8-8c0 3 2 5 4 5s4-2 4-5c2 2 0 5 0 8z"/></svg>
+        저녁
+      </div>
+      <p class="meal-empty" id="mealDinner">준비 중이에요.</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>2026 SHANGHAI (2nd) · 개인 여행 일정표</p>
+</footer>
+
+<script>
+  // 탭 전환
+  document.querySelectorAll('.tab').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+      window.scrollTo({top:0, behavior:'instant'});
+    });
+  });
+
+  // 일자별 식사 정보
+  const mealData = {
+    day1: {
+      b: "기내식",
+      l: { name: "마라반(레드립) · 딤섬(소양생전)", place: "Red Lips Shanghai" , desc: "₩30,000 예정" },
+      d: { name: "양꼬치(현지우이치엔)", place: "Xianzheng Yizhen, Shanghai", desc: "₩80,000 예정" }
+    },
+    day2: {
+      b: { name: "전병(산둥잡곡전병)", place: "Shandong Jiangu Jianbing, Shanghai", desc: "₩20,000 예정" },
+      l: "동물원 내 식사 · ₩30,000 예정",
+      d: { name: "마파두부·홍소육 (그랜마 레스토랑)", place: "Grandma's Home, Shanghai", desc: "₩50,000 예정" }
+    },
+    day3: {
+      b: "디즈니 가서 간식 · ₩30,000 예정",
+      l: "디즈니 내 식사 (식사값 티켓포함)",
+      d: { name: "마라룽샤(홍쿠이지아)", place: "Hongkui Crayfish, Shanghai", desc: "₩70,000 예정" }
+    },
+    day4: {
+      b: "호텔 조식 (포함)",
+      l: { name: "딤섬(대호춘)", place: "Dahuchun, Shanghai", desc: "₩30,000 예정" },
+      d: "기내식"
+    }
+  };
+
+  function mealPickHTML(item){
+    const q = encodeURIComponent(item.place);
+    const desc = item.desc ? `<span class="meal-desc">${item.desc}</span>` : '';
+    return `<div class="meal-pick"><a class="meal-link" href="https://www.google.com/maps/search/?api=1&query=${q}" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+        ${item.name}
+      </a>${desc}</div>`;
+  }
+  function renderMealSlot(el, entry){
+    if (Array.isArray(entry)){
+      el.innerHTML = `<div class="meal-picks">${entry.map(mealPickHTML).join('')}</div>`;
+    } else if (entry && typeof entry === 'object' && entry.place){
+      el.innerHTML = mealPickHTML(entry);
+    } else {
+      el.textContent = entry || '준비 중이에요.';
+    }
+  }
+
+  function openMeal(dayKey, date){
+    const labelMap = {day1:'Day 01',day2:'Day 02',day3:'Day 03',day4:'Day 04'};
+    document.getElementById('mealDayLabel').textContent = labelMap[dayKey] || dayKey;
+    document.getElementById('mealDateLabel').textContent = date;
+    const m = mealData[dayKey];
+    renderMealSlot(document.getElementById('mealBreakfast'), m && m.b);
+    renderMealSlot(document.getElementById('mealLunch'), m && m.l);
+    renderMealSlot(document.getElementById('mealDinner'), m && m.d);
+    document.getElementById('mealPage').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMeal(){
+    document.getElementById('mealPage').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // 오늘의 일정
+  function initTodayCard(){
+    const now = new Date();
+    const todayStr = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
+    const days = document.querySelectorAll('#tab-itinerary .day[data-date]');
+    let match = null;
+    days.forEach(day => { if (day.dataset.date === todayStr) match = day; });
+    if (!match) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'today-wrap';
+    const label = document.createElement('div');
+    label.className = 'today-label';
+    label.innerHTML = '<span class="dot-live"></span>오늘의 일정';
+    wrap.appendChild(label);
+    wrap.appendChild(match.cloneNode(true));
+    document.getElementById('todayCard').appendChild(wrap);
+  }
+  initTodayCard();
+
+  // 일자별 상세 동선 (미니 경로도)
+  const routeIcons = {
+    transit: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 4l-9 9h4v7h10v-7h4z"/></svg>',
+    plane: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-8-8 20-3-8-9-4z"/></svg>'
+  };
+  function mapFrame(locs, zoom){
+    const q = locs.map(encodeURIComponent).join('%7C');
+    const z = zoom ? ('&z=' + zoom) : '';
+    return '<iframe class="drd-map" src="https://maps.google.com/maps?q=' + q + z + '&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>';
+  }
+  const dayRouteData = [
+    { day:'Day 01', date:'8.7(토)', stops:['상하이 푸동공항(PVG)','하얏트 온더번드 (난징둥루)','1000 Trees · 신톈디'],
+      connectors:[{icon:'transit',text:'공항 프라이빗셔틀'},{icon:'transit',text:'택시'}],
+      map: mapFrame(['Shanghai Pudong International Airport','Hyatt on the Bund, Shanghai','1000 Trees, Shanghai']) },
+    { day:'Day 02', date:'8.8(일)', stops:['하얏트 온더번드','상하이동물원','와이탄(번드)'],
+      connectors:[{icon:'transit',text:'택시'},{icon:'transit',text:'택시'}],
+      map: mapFrame(['Hyatt on the Bund, Shanghai','Shanghai Zoo','The Bund, Shanghai']) },
+    { day:'Day 03', date:'8.9(월)', stops:['하얏트 온더번드','상하이 디즈니랜드','위위안(예원)'],
+      connectors:[{icon:'transit',text:'택시'},{icon:'transit',text:'디즈니 프라이빗셔틀'}],
+      map: mapFrame(['Hyatt on the Bund, Shanghai','Shanghai Disneyland','Yu Garden, Shanghai']) },
+    { day:'Day 04', date:'8.10(화)', stops:['하얏트 온더번드','동방명주 · 신톈디','상하이 훙차오공항(SHA)'],
+      connectors:[{icon:'transit',text:'택시'},{icon:'transit',text:'공항 프라이빗셔틀'}],
+      map: mapFrame(['Hyatt on the Bund, Shanghai','Oriental Pearl Tower, Shanghai','Shanghai Hongqiao International Airport']) }
+  ];
+  function renderDailyRoutes(){
+    const container = document.getElementById('dailyRouteList');
+    let html = '';
+    dayRouteData.forEach(d => {
+      let drd = '<div class="drd">';
+      d.stops.forEach((stop, i) => {
+        drd += `<div class="drd-stop"><span class="dot"></span><span class="label">${stop}</span></div>`;
+        if (d.connectors[i]){
+          drd += `<div class="drd-connector">${routeIcons[d.connectors[i].icon]}<span>${d.connectors[i].text}</span></div>`;
+        }
+      });
+      drd += '</div>';
+      html += `<div class="daily-route-card"><div class="daily-route-head"><span class="d-day">${d.day}</span><span class="d-date">${d.date}</span></div>${d.map}${drd}</div>`;
+    });
+    container.innerHTML = html;
+  }
+  renderDailyRoutes();
+</script>
+
+</body>
+</html>
