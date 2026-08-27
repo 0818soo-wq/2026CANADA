@@ -12,5 +12,9 @@
 
 > 이 저장소는 Public이며, 예약번호·좌석 정보·탑승객 실명·숙소 상세 주소가 모두 포함되어 있습니다. 링크를 아는 사람은 누구나 볼 수 있으니 링크를 외부에 공유하지 마세요.
 
+## 다른 여행
+
+- 🔗 [2026 SHANGHAI (2nd)](https://0818soo-wq.github.io/2026CANADA/shanghai.html) — 8.7~8.10 상하이 3박4일 (`shanghai.html`)
+
 ## 배포
 GitHub Pages로 자동 배포됩니다 (main 브랜치 / root).
