@@ -243,7 +243,9 @@
   .day.seg-banff .weather{ background: var(--forest-soft); }
   .day.seg-cal .weather{ background: var(--gold-soft); }
   .day.seg-sea .weather{ background: var(--maple-soft); }
+  .weather .weather-icon{ font-size: 18px; line-height: 1; flex-shrink: 0; }
   .weather .temp{ font-weight: 800; color: var(--ink); white-space: nowrap; }
+  .weather[data-weather] .temp::after{ content: "(예상)"; font-size: 9.5px; font-weight: 600; color: var(--ink-faint); margin-left: 4px; }
   .weather .divider{ width: 1px; align-self: stretch; background: rgba(30,42,38,0.14); }
   .weather .outfit{ color: var(--ink-soft); font-weight: 500; line-height: 1.4; }
 
@@ -532,8 +534,8 @@
               항공 KE075
             </span>
           </div>
-          <div class="weather">
-            <span class="temp">19–21° / 11–13°</span>
+          <div class="weather" data-weather="partly-cloudy">
+            <span class="weather-icon">⛅</span><span class="temp">19–21° / 11–13°</span>
             <span class="divider"></span>
             <span class="outfit">얇은 긴팔 + 가디건, 저녁엔 바람막이</span>
           </div>
@@ -568,8 +570,8 @@
               대중교통 · 미니페리
             </span>
           </div>
-          <div class="weather">
-            <span class="temp">19–21° / 11–13°</span>
+          <div class="weather" data-weather="sunny">
+            <span class="weather-icon">☀️</span><span class="temp">19–21° / 11–13°</span>
             <span class="divider"></span>
             <span class="outfit">얇은 긴팔 + 가디건</span>
           </div>
@@ -606,8 +608,8 @@
               대중교통 · 무료셔틀
             </span>
           </div>
-          <div class="weather">
-            <span class="temp">19–21° / 11–13°</span>
+          <div class="weather" data-weather="partly-cloudy">
+            <span class="weather-icon">⛅</span><span class="temp">19–21° / 11–13°</span>
             <span class="divider"></span>
             <span class="outfit">얇은 긴팔 + 방수 자켓 (캐필라노 대비)</span>
           </div>
@@ -648,8 +650,8 @@
               항공 WS110 + 렌터카
             </span>
           </div>
-          <div class="weather">
-            <span class="temp">12–15° / 0–4°</span>
+          <div class="weather" data-weather="sunny">
+            <span class="weather-icon">☀️</span><span class="temp">12–15° / 0–4°</span>
             <span class="divider"></span>
             <span class="outfit">긴팔 + 플리스 or 경량 패딩</span>
           </div>
@@ -685,8 +687,8 @@
               렌터카
             </span>
           </div>
-          <div class="weather">
-            <span class="temp">12–15° / 0–4°</span>
+          <div class="weather" data-weather="sunny">
+            <span class="weather-icon">☀️</span><span class="temp">12–15° / 0–4°</span>
             <span class="divider"></span>
             <span class="outfit">긴팔 + 두꺼운 아우터, 장갑·목도리</span>
           </div>
@@ -719,8 +721,8 @@
               렌터카
             </span>
           </div>
-          <div class="weather">
-            <span class="temp">12–15° / 0–4°</span>
+          <div class="weather" data-weather="partly-cloudy">
+            <span class="weather-icon">⛅</span><span class="temp">12–15° / 0–4°</span>
             <span class="divider"></span>
             <span class="outfit">긴팔 + 두꺼운 아우터, 장갑·목도리</span>
           </div>
@@ -758,8 +760,8 @@
               렌터카 반납
             </span>
           </div>
-          <div class="weather">
-            <span class="temp">12–15° / 0–4°</span>
+          <div class="weather" data-weather="partly-cloudy">
+            <span class="weather-icon">⛅</span><span class="temp">12–15° / 0–4°</span>
             <span class="divider"></span>
             <span class="outfit">긴팔 + 두꺼운 아우터</span>
           </div>
@@ -799,8 +801,8 @@
               항공 WS1550
             </span>
           </div>
-          <div class="weather">
-            <span class="temp">20–22° / 11°</span>
+          <div class="weather" data-weather="sunny">
+            <span class="weather-icon">☀️</span><span class="temp">20–22° / 11°</span>
             <span class="divider"></span>
             <span class="outfit">얇은 긴팔 or 반팔 + 가디건</span>
           </div>
@@ -835,8 +837,8 @@
               도보 · 대중교통
             </span>
           </div>
-          <div class="weather">
-            <span class="temp">20–22° / 11°</span>
+          <div class="weather" data-weather="sunny">
+            <span class="weather-icon">☀️</span><span class="temp">20–22° / 11°</span>
             <span class="divider"></span>
             <span class="outfit">얇은 긴팔 or 반팔 + 가디건</span>
           </div>
@@ -867,8 +869,8 @@
               대중교통(Link) → 항공 KE042
             </span>
           </div>
-          <div class="weather">
-            <span class="temp">20–22° / 11°</span>
+          <div class="weather" data-weather="partly-cloudy">
+            <span class="weather-icon">⛅</span><span class="temp">20–22° / 11°</span>
             <span class="divider"></span>
             <span class="outfit">얇은 긴팔 or 반팔 + 가디건</span>
           </div>
