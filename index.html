@@ -290,6 +290,73 @@
   .meal-btn svg{ width: 14px; height: 14px; }
   .meal-btn:active{ background: var(--gold-soft); color: var(--ink); }
 
+  /* ---------- TIP BUTTON + MODAL ---------- */
+  .tip-btn{
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    width: 100%; margin-top: 12px; padding: 11px 12px;
+    border-radius: 10px; border: 1px solid var(--maple);
+    background: var(--maple-soft); color: var(--maple);
+    font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 12.5px;
+    cursor: pointer;
+  }
+  .tip-btn svg{ width: 14px; height: 14px; }
+  .tip-btn:active{ opacity: 0.65; }
+
+  .tip-modal{
+    position: fixed; inset: 0; z-index: 60;
+    background: rgba(30,42,38,0.55);
+    display: none; align-items: flex-end; justify-content: center;
+  }
+  .tip-modal.open{ display: flex; }
+  .tip-sheet{
+    background: var(--surface);
+    width: 100%; max-width: 480px; max-height: 88vh;
+    border-radius: 18px 18px 0 0;
+    display: flex; flex-direction: column;
+    animation: sheetup .25s ease;
+  }
+  @keyframes sheetup{ from{ transform: translateY(28px); opacity: .5; } to{ transform: translateY(0); opacity: 1; } }
+  .tip-head{
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 18px 18px 13px; border-bottom: 1px solid var(--line); flex-shrink: 0;
+  }
+  .tip-head h3{ font-family: 'Fraunces', serif; font-weight: 600; font-size: 17px; margin: 0; color: var(--ink); }
+  .tip-close{
+    width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0;
+    border: 1px solid var(--line); background: var(--surface);
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+  }
+  .tip-close svg{ width: 15px; height: 15px; color: var(--ink-soft); }
+  .tip-body{ overflow-y: auto; padding: 16px 18px 10px; -webkit-overflow-scrolling: touch; }
+  .tip-sec{ margin-bottom: 20px; }
+  .tip-sec h4{
+    font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;
+    color: var(--maple); margin: 0 0 9px;
+  }
+  .tip-sec p{ font-size: 13px; line-height: 1.6; color: var(--ink); margin: 0 0 8px; }
+  .tip-sec p:last-child{ margin-bottom: 0; }
+  .tip-hero{
+    background: var(--maple-soft); border-radius: 12px; padding: 13px 14px;
+    font-size: 13.5px; font-weight: 700; color: var(--maple); line-height: 1.55;
+  }
+  .tip-hero span{ display: block; font-weight: 600; font-size: 12px; color: var(--ink-soft); margin-top: 5px; }
+  .tip-table{ width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .tip-table td{ padding: 8px 6px 8px 0; border-top: 1px solid var(--line); color: var(--ink); vertical-align: top; }
+  .tip-table tr:first-child td{ border-top: none; }
+  .tip-table td.rank{ font-weight: 800; color: var(--maple); white-space: nowrap; width: 62px; }
+  .tip-table td.rank.no{ color: var(--ink-faint); }
+  .tip-table td small{ display: block; color: var(--ink-soft); font-size: 11px; margin-top: 2px; font-weight: 500; }
+  .tip-list{ margin: 0; padding-left: 17px; }
+  .tip-list li{ font-size: 13px; line-height: 1.6; color: var(--ink); margin-bottom: 6px; }
+  .tip-list li:last-child{ margin-bottom: 0; }
+  .tip-foot{ padding: 12px 18px 20px; flex-shrink: 0; border-top: 1px solid var(--line); }
+  .tip-foot button{
+    width: 100%; padding: 13px; border-radius: 10px; border: none;
+    background: var(--forest); color: #F6F3EC;
+    font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 13.5px; cursor: pointer;
+  }
+  .tip-foot button:active{ opacity: 0.8; }
+
   /* ---------- MEAL PAGE (slide-over) ---------- */
   .meal-page{
     position: fixed; inset: 0; z-index: 50;
@@ -627,6 +694,10 @@
             <li>TransLink 버스 232 or 236번으로 캐필라노 연어부화장(Salmon Hatchery) 이동 (약 1km, 하차 후 도보)</li>
             <li>다시 현수교로 복귀 → 무료셔틀로 Canada Place 복귀</li>
           </ul>
+          <button class="tip-btn" onclick="openTip()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg>
+            모레인 예약 팁
+          </button>
           <button class="meal-btn" onclick="openMeal('day3','9.18 (금) · 밴쿠버')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3v6a2 2 0 0 0 4 0V3M9 9v12M17 3c-1.5 3-1.5 6 0 8v10"/></svg>
             오늘 뭐 먹지?
@@ -671,6 +742,10 @@
             <li class="drive">차량으로 캔모어 이동 (약 1시간 10분)</li>
             <li>16:00 이후 숙소 체크인</li>
           </ul>
+          <button class="tip-btn" onclick="openTip()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg>
+            모레인 예약 팁
+          </button>
           <button class="meal-btn" onclick="openMeal('day4','9.19 (토) · 캘거리→캔모어')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3v6a2 2 0 0 0 4 0V3M9 9v12M17 3c-1.5 3-1.5 6 0 8v10"/></svg>
             오늘 뭐 먹지?
@@ -1306,6 +1381,79 @@
 </main>
 
 <!-- ============ MEAL SLIDE-OVER PAGE ============ -->
+<!-- ============ 모레인 예약 팁 팝업 ============ -->
+<div class="tip-modal" id="tipModal" onclick="if(event.target===this) closeTip()">
+  <div class="tip-sheet">
+    <div class="tip-head">
+      <h3>모레인레이크 셔틀 예약 팁</h3>
+      <div class="tip-close" onclick="closeTip()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </div>
+    </div>
+
+    <div class="tip-body">
+      <div class="tip-sec">
+        <h4>언제 여는가</h4>
+        <div class="tip-hero">
+          9/18(금) 밴쿠버 시계 <b>07:00 정각</b> → 9/20 방문분<br>
+          실패하면 9/19(토) 같은 시각 → 9/21 방문분
+          <span>밴프 현지 08:00(MDT) 기준 · 몇 분 안에 매진됩니다</span>
+        </div>
+      </div>
+
+      <div class="tip-sec">
+        <h4>어느 시간대를 누를까</h4>
+        <table class="tip-table">
+          <tr><td class="rank">1순위</td><td><b>7–8am 출발</b><small>캔모어 06:15 출발 · 두 호수 다 최적, 인파 회피</small></td></tr>
+          <tr><td class="rank">2순위</td><td><b>6:30–7am 출발</b><small>캔모어 05:30 출발 · 완전히 텅 빈 레이크루이스, 대신 4시 45분 기상</small></td></tr>
+          <tr><td class="rank">3순위</td><td><b>8–9am 출발</b><small>캔모어 07:15 출발 · 모레인 도착이 11시라 인파와 겹치기 시작</small></td></tr>
+          <tr><td class="rank no">피하기</td><td>9am 이후 출발<small>두 곳 다 인파 피크(11~15시)와 정면으로 겹침</small></td></tr>
+        </table>
+      </div>
+
+      <div class="tip-sec">
+        <h4>가장 중요한 것</h4>
+        <p><b>모레인 셔틀이 매진이어도 포기하지 마세요.</b> 레이크루이스 셔틀만 잡아도 <b>두 호수 다 갈 수 있습니다</b> — 무료 Lake Connector가 붙거든요.</p>
+        <p>다들 모레인만 노려서 모레인 셔틀이 먼저 매진됩니다. 없으면 <b>즉시 레이크루이스 셔틀로 갈아타서</b> 같은 시간대를 잡으세요.</p>
+      </div>
+
+      <div class="tip-sec">
+        <h4>미리 해둘 것</h4>
+        <ul class="tip-list">
+          <li>reservation.pc.gc.ca <b>계정 미리 생성</b> (당일 가입하면 늦습니다)</li>
+          <li>신용카드 등록</li>
+          <li>인원: 어른 2 · 어린이 1</li>
+          <li>06:50 로그인해서 대기 · <b>둘이 각자 폰으로 동시 시도</b></li>
+        </ul>
+      </div>
+
+      <div class="tip-sec">
+        <h4>성공하면 — 당일 동선</h4>
+        <p>두 호수의 최적 시간이 <b>다릅니다.</b> 레이크루이스는 새벽(수면이 잔잔해 빙하가 반사됨), 모레인은 오전 9~10시(해가 높아야 물색이 살아남). 그래서 <b>레이크루이스 → 모레인</b> 순서입니다.</p>
+        <table class="tip-table">
+          <tr><td class="rank">07:15</td><td>Park &amp; Ride 체크인 → 셔틀 탑승<small>티켓을 받아야 연결셔틀을 탈 수 있습니다</small></td></tr>
+          <tr><td class="rank">07:40</td><td><b>레이크루이스</b> 도착<small>일출 직후 · 수면 잔잔 · 사람 거의 없음</small></td></tr>
+          <tr><td class="rank">09:15</td><td>Lake Connector 탑승<small>좌석 예약 없이 선착순이라 조금 일찍 줄 서기</small></td></tr>
+          <tr><td class="rank">09:45</td><td><b>모레인레이크</b> 도착<small>터콰이즈 최고조 · 일출팀은 이미 빠짐 · 록파일 전망대 먼저</small></td></tr>
+          <tr><td class="rank">11:30</td><td>복귀<small>인파가 몰려오기 직전에 탈출</small></td></tr>
+        </table>
+      </div>
+
+      <div class="tip-sec">
+        <h4>챙길 것</h4>
+        <ul class="tip-list">
+          <li>아침 기온 0~4도 → <b>경량패딩</b></li>
+          <li>파크패스 인쇄물을 대시보드 왼쪽에 (날짜 보이게)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="tip-foot">
+      <button onclick="closeTip()">닫기</button>
+    </div>
+  </div>
+</div>
+
 <div class="meal-page" id="mealPage">
   <div class="meal-page-head">
     <div class="meal-back" onclick="closeMeal()">
@@ -1420,6 +1568,16 @@
     } else {
       el.textContent = entry || '맛집 리스트 준비 중이에요.';
     }
+  }
+
+  // 모레인 예약 팁 팝업
+  function openTip(){
+    document.getElementById('tipModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeTip(){
+    document.getElementById('tipModal').classList.remove('open');
+    document.body.style.overflow = '';
   }
 
   // 식사 페이지
