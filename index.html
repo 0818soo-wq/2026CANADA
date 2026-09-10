@@ -357,6 +357,16 @@
   }
   .tip-foot button:active{ opacity: 0.8; }
 
+  /* ---------- OFFLINE BAR ---------- */
+  #offlineBar{
+    display: none;
+    position: sticky; top: 0; z-index: 30;
+    background: var(--gold-soft); color: var(--gold);
+    font-size: 11.5px; font-weight: 800; text-align: center;
+    padding: 8px 12px; line-height: 1.45;
+  }
+  body.is-offline #offlineBar{ display: block; }
+
   /* ---------- WEATHER DETAIL ---------- */
   .weather{ cursor: pointer; }
   .weather .more{ margin-left: auto; font-size: 10.5px; font-weight: 700; color: var(--ink-faint); white-space: nowrap; }
@@ -616,6 +626,8 @@
     </span>
   </div>
 </div>
+
+<div id="offlineBar">📴 오프라인 — 일정·예약·비용은 그대로 보입니다. 지도와 실시간 날씨만 표시되지 않아요.</div>
 
 <div class="tabbar">
   <button class="tab active" data-tab="itinerary">일정</button>
@@ -2016,6 +2028,17 @@
     });
     container.innerHTML = html;
   }
+  // 오프라인 대비: 한 번이라도 온라인으로 열어두면 통신이 끊겨도 일정이 열립니다
+  if ('serviceWorker' in navigator){
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('sw.js').catch(function(){});
+    });
+  }
+  function syncOnlineState(){ document.body.classList.toggle('is-offline', !navigator.onLine); }
+  window.addEventListener('online', syncOnlineState);
+  window.addEventListener('offline', syncOnlineState);
+  syncOnlineState();
+
   renderDailyRoutes();
 </script>
 
