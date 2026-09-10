@@ -357,6 +357,50 @@
   }
   .tip-foot button:active{ opacity: 0.8; }
 
+  /* ---------- WEATHER DETAIL ---------- */
+  .weather{ cursor: pointer; }
+  .weather .more{ margin-left: auto; font-size: 10.5px; font-weight: 700; color: var(--ink-faint); white-space: nowrap; }
+  .wx-sum{ display: flex; gap: 8px; margin-bottom: 16px; }
+  .wx-sum > div{ flex: 1; background: var(--bg); border-radius: 10px; padding: 10px 12px; }
+  .wx-sum .k{ font-size: 10px; font-weight: 800; color: var(--ink-faint); letter-spacing: .04em; }
+  .wx-sum .v{ font-size: 15.5px; font-weight: 800; color: var(--ink); margin-top: 3px; }
+  .wx-outfit{ background: var(--forest-soft); border-radius: 10px; padding: 11px 13px; font-size: 12.5px; color: var(--ink); line-height: 1.5; margin-bottom: 16px; }
+  .wx-row{ display: flex; align-items: center; gap: 9px; padding: 8px 0; border-top: 1px solid var(--line); }
+  .wx-row:first-of-type{ border-top: none; }
+  .wx-row .t{ width: 42px; font-size: 12px; font-weight: 700; color: var(--ink-soft); }
+  .wx-row .ic{ width: 20px; text-align: center; font-size: 15px; }
+  .wx-row .tp{ width: 38px; font-size: 13px; font-weight: 800; color: var(--ink); }
+  .wx-row .ppbar{ flex: 1; height: 5px; border-radius: 3px; background: var(--line); overflow: hidden; }
+  .wx-row .ppbar i{ display: block; height: 100%; background: var(--slate); }
+  .wx-row .ppv{ width: 36px; text-align: right; font-size: 11.5px; font-weight: 700; color: var(--slate); }
+  .wx-row.rain .ppv{ color: var(--maple); }
+  .wx-row.rain .ppbar i{ background: var(--maple); }
+  .wx-msg{ text-align: center; padding: 36px 10px; color: var(--ink-faint); font-size: 13px; line-height: 1.6; }
+  .wx-src{ font-size: 10.5px; color: var(--ink-faint); text-align: center; margin: 14px 0 2px; }
+
+  /* ---------- PACKING CHECKLIST ---------- */
+  .pack-btn{
+    display: flex; align-items: center; justify-content: center; gap: 7px;
+    width: calc(100% - 12px); margin: 20px 6px 4px; padding: 13px;
+    border-radius: 12px; border: 1px solid var(--line);
+    background: var(--surface); color: var(--forest);
+    font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 13px; cursor: pointer;
+  }
+  .pack-btn svg{ width: 15px; height: 15px; }
+  .pack-btn:active{ background: var(--forest-soft); }
+  .pack-progress{ padding: 13px 18px 2px; flex-shrink: 0; }
+  .pack-progress span{ font-size: 11.5px; font-weight: 800; color: var(--ink-soft); }
+  .pack-bar{ height: 5px; border-radius: 3px; background: var(--line); margin-top: 6px; overflow: hidden; }
+  .pack-bar i{ display: block; height: 100%; width: 0; background: var(--forest); transition: width .2s ease; }
+  .pack-sec{ margin-bottom: 20px; }
+  .pack-sec h4{ font-size: 12.5px; font-weight: 800; color: var(--ink); margin: 0 0 4px; }
+  .pack-note{ font-size: 11.5px; color: var(--maple); line-height: 1.55; margin: 4px 0 8px; font-weight: 600; }
+  .pack-item{ display: flex; gap: 10px; align-items: flex-start; padding: 8px 0; border-top: 1px solid var(--line); cursor: pointer; }
+  .pack-sec .pack-item:first-of-type{ border-top: none; }
+  .pack-item input{ width: 17px; height: 17px; margin: 1px 0 0; accent-color: var(--forest); flex-shrink: 0; }
+  .pack-item span{ font-size: 13px; line-height: 1.5; color: var(--ink); }
+  .pack-item.done span{ color: var(--ink-faint); text-decoration: line-through; }
+
   /* ---------- MEAL PAGE (slide-over) ---------- */
   .meal-page{
     position: fixed; inset: 0; z-index: 50;
@@ -586,6 +630,11 @@
   <section class="tab-panel active" id="tab-itinerary">
 
     <div id="todayCard"></div>
+
+    <button class="pack-btn" onclick="openPack()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M4 6h16v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6z"/></svg>
+      짐 체크리스트
+    </button>
 
     <div class="segment-label seg-van"><span class="dot"></span>밴쿠버<span class="rule"></span></div>
     <div class="timeline">
@@ -1386,6 +1435,36 @@
 
 <!-- ============ MEAL SLIDE-OVER PAGE ============ -->
 <!-- ============ 모레인 예약 팁 팝업 ============ -->
+<div class="tip-modal" id="wxModal" onclick="if(event.target===this) closeWx()">
+  <div class="tip-sheet">
+    <div class="tip-head">
+      <h3 id="wxTitle">날씨</h3>
+      <div class="tip-close" onclick="closeWx()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </div>
+    </div>
+    <div class="tip-body" id="wxBody"></div>
+    <div class="tip-foot"><button onclick="closeWx()">닫기</button></div>
+  </div>
+</div>
+
+<div class="tip-modal" id="packModal" onclick="if(event.target===this) closePack()">
+  <div class="tip-sheet">
+    <div class="tip-head">
+      <h3>짐 체크리스트</h3>
+      <div class="tip-close" onclick="closePack()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </div>
+    </div>
+    <div class="pack-progress">
+      <span id="packCount">0 / 0</span>
+      <div class="pack-bar"><i id="packBar"></i></div>
+    </div>
+    <div class="tip-body" id="packBody"></div>
+    <div class="tip-foot"><button onclick="closePack()">닫기</button></div>
+  </div>
+</div>
+
 <div class="tip-modal" id="tipModal" onclick="if(event.target===this) closeTip()">
   <div class="tip-sheet">
     <div class="tip-head">
@@ -1585,6 +1664,174 @@
   }
 
   // 모레인 예약 팁 팝업
+  // 날씨 상세: 날씨 칸을 누르면 시간별 기온·강수확률
+  const segLabelKo = { 'seg-van':'밴쿠버', 'seg-banff':'밴프 · 캔모어', 'seg-cal':'캘거리', 'seg-sea':'시애틀' };
+  function closeWx(){
+    document.getElementById('wxModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  async function openWx(day){
+    const dateStr = day.dataset.date;
+    const seg = Object.keys(segCoords).find(function(x){ return day.classList.contains(x); });
+    const dnum = day.querySelector('.day-num'), ddate = day.querySelector('.day-date');
+    document.getElementById('wxTitle').textContent =
+      (ddate ? ddate.textContent : dateStr) + (seg ? ' · ' + segLabelKo[seg] : '');
+    const body = document.getElementById('wxBody');
+    body.innerHTML = '<div class="wx-msg">불러오는 중…</div>';
+    document.getElementById('wxModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    if (!seg){ body.innerHTML = '<div class="wx-msg">이 날짜는 예보 대상이 아닙니다.</div>'; return; }
+    const c = segCoords[seg];
+    const url = 'https://api.open-meteo.com/v1/forecast?latitude=' + c.lat + '&longitude=' + c.lon +
+      '&hourly=temperature_2m,precipitation_probability,precipitation,weathercode' +
+      '&daily=temperature_2m_max,temperature_2m_min&timezone=auto&start_date=' + dateStr + '&end_date=' + dateStr;
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw 0;
+      const j = await res.json();
+      if (!j.hourly || !j.hourly.time || !j.hourly.time.length) throw 0;
+      const outfitEl = day.querySelector('.outfit');
+      const tmax = Math.round(j.daily.temperature_2m_max[0]);
+      const tmin = Math.round(j.daily.temperature_2m_min[0]);
+      let maxPop = 0, sumMm = 0;
+      j.hourly.precipitation_probability.forEach(function(v){ if (v > maxPop) maxPop = v; });
+      j.hourly.precipitation.forEach(function(v){ sumMm += (v || 0); });
+      let html = '<div class="wx-sum">' +
+        '<div><div class="k">최고 / 최저</div><div class="v">' + tmax + '° / ' + tmin + '°</div></div>' +
+        '<div><div class="k">강수확률 최대</div><div class="v">' + maxPop + '%</div></div>' +
+        '<div><div class="k">예상 강수량</div><div class="v">' + (Math.round(sumMm * 10) / 10) + 'mm</div></div>' +
+        '</div>';
+      if (outfitEl) html += '<div class="wx-outfit">👕 ' + outfitEl.textContent + '</div>';
+      for (let i = 0; i < j.hourly.time.length; i++){
+        const hh = parseInt(j.hourly.time[i].slice(11, 13), 10);
+        if (hh < 6 || hh > 21) continue;
+        const pop = j.hourly.precipitation_probability[i] || 0;
+        html += '<div class="wx-row' + (pop >= 50 ? ' rain' : '') + '">' +
+          '<span class="t">' + String(hh).padStart(2, '0') + ':00</span>' +
+          '<span class="ic">' + weatherEmoji(j.hourly.weathercode[i]) + '</span>' +
+          '<span class="tp">' + Math.round(j.hourly.temperature_2m[i]) + '°</span>' +
+          '<span class="ppbar"><i style="width:' + pop + '%"></i></span>' +
+          '<span class="ppv">' + pop + '%</span></div>';
+      }
+      html += '<div class="wx-src">06~21시 · 출처 Open-Meteo</div>';
+      body.innerHTML = html;
+    } catch (e) {
+      body.innerHTML = '<div class="wx-msg">아직 예보가 나오지 않았습니다.<br>보통 방문일 2주 전부터 조회됩니다.</div>';
+    }
+  }
+  document.addEventListener('click', function(e){
+    const w = e.target.closest('.weather');
+    if (!w || !w.querySelector('.weather-icon')) return;
+    const day = w.closest('.day[data-date]');
+    if (day) openWx(day);
+  });
+  // 날씨 칸에 "탭하면 시간별" 힌트 표시
+  document.querySelectorAll('#tab-itinerary .day[data-date] .weather').forEach(function(w){
+    if (!w.querySelector('.weather-icon')) return;
+    const hint = document.createElement('span');
+    hint.className = 'more';
+    hint.textContent = '시간별 ›';
+    w.appendChild(hint);
+  });
+
+  // 짐 체크리스트 (체크 상태는 이 기기에 저장됩니다)
+  const packData = [
+    { h:'🔴 없으면 여행이 안 되는 것', items:[
+      '여권 3명 (조수연 · 홍정표 · 지우)',
+      '<b>파크패스 인쇄물</b> — 한국에서 출력, 차 대시보드용',
+      '조수연 국제운전면허증 + 한국 운전면허증',
+      '조수연 명의 <b>실물</b> 신용카드 (렌터카 보증금)',
+      '여행자보험 증권 · 예약 확인 메일 오프라인 저장'
+    ]},
+    { h:'👕 옷 — 구간마다 기온이 다릅니다', note:'밴쿠버 19~21/11~13 · 밴프 12~15/0~4 · 시애틀 20~22/11', items:[
+      '얇은 긴팔 · 가디건 (밴쿠버 · 시애틀)',
+      '<b>방수 자켓</b> (캐필라노 대비)',
+      '<b>경량패딩</b> (밴프 새벽 0~4도)',
+      '기모 후드 · 니트',
+      '장갑 · 비니 · 목도리',
+      '편한 운동화 (씨월 · 록파일 계단 · 호수 둘레길)',
+      '실내복 · 속옷 · 양말 11일치',
+      '수영복 (햄프턴인 수영장)'
+    ]},
+    { h:'🔌 전자기기', note:'⚠ 다이슨은 한국 220V 모델이면 북미 120V에서 작동하지 않습니다. 본체 전압 표기 확인 — 100-240V면 OK, 220V 단독이면 두고 가세요.', items:[
+      '다이슨 (전압 확인 후)',
+      '<b>블루투스 스피커</b> — 리튬배터리라 <b>기내 반입만</b>',
+      '보조배터리 — 역시 기내만, 위탁 금지',
+      '북미용 플러그 어댑터 여러 개',
+      '<b>한국 멀티탭 1개</b> — 어댑터 하나로 여러 기기 충전',
+      '충전기 · 케이블',
+      '카메라 + 여분 배터리 (추우면 빨리 닳음)'
+    ]},
+    { h:'👶 지우 (만 4세)', items:[
+      '기내용 태블릿 · 장난감 · 헤드폰 (인천→밴쿠버 9시간 40분)',
+      '간식 · 물티슈',
+      '여벌 옷 (기내용 1벌 따로)',
+      '상비약 · 처방약',
+      '휴대용 유모차'
+    ]},
+    { h:'🏔 밴프 새벽 셔틀용', items:[
+      '<b>핫팩</b> — 0~4도에서 대기',
+      '<b>선글라스</b> — 고산지대 햇빛',
+      '선크림',
+      '보온병 · 물통'
+    ]},
+    { h:'🧴 기타', items:[
+      '세면도구',
+      '우산 또는 우비 (밴쿠버)',
+      '여행용 세제 (11일, 중간 빨래)',
+      '목베개 · 안대 (장거리 비행)',
+      '지퍼백 · 에코백'
+    ]}
+  ];
+  const PACK_KEY = 'pack2026nw';
+  function packStrip(t){ return t.replace(/<[^>]+>/g, '').trim(); }
+  function packLoad(){ try{ return JSON.parse(localStorage.getItem(PACK_KEY) || '[]'); }catch(e){ return []; } }
+  function packSave(a){ try{ localStorage.setItem(PACK_KEY, JSON.stringify(a)); }catch(e){} }
+  function packCount(){
+    const boxes = document.querySelectorAll('#packBody input[type=checkbox]');
+    const done = document.querySelectorAll('#packBody input[type=checkbox]:checked').length;
+    document.getElementById('packCount').textContent = done + ' / ' + boxes.length;
+    document.getElementById('packBar').style.width = boxes.length ? (done / boxes.length * 100) + '%' : '0%';
+  }
+  function packRender(){
+    const done = packLoad();
+    let html = '';
+    packData.forEach(sec => {
+      html += '<div class="pack-sec"><h4>' + sec.h + '</h4>';
+      if (sec.note) html += '<p class="pack-note">' + sec.note + '</p>';
+      sec.items.forEach(it => {
+        const k = packStrip(it);
+        const on = done.indexOf(k) !== -1;
+        html += '<label class="pack-item' + (on ? ' done' : '') + '">' +
+                '<input type="checkbox" data-k="' + k.replace(/"/g, '&quot;') + '"' + (on ? ' checked' : '') + '>' +
+                '<span>' + it + '</span></label>';
+      });
+      html += '</div>';
+    });
+    const body = document.getElementById('packBody');
+    body.innerHTML = html;
+    packCount();
+  }
+  document.addEventListener('change', function(e){
+    if (!e.target.matches('#packBody input[type=checkbox]')) return;
+    const k = e.target.dataset.k;
+    let done = packLoad();
+    if (e.target.checked){ if (done.indexOf(k) === -1) done.push(k); }
+    else { done = done.filter(function(x){ return x !== k; }); }
+    packSave(done);
+    e.target.closest('.pack-item').classList.toggle('done', e.target.checked);
+    packCount();
+  });
+  function openPack(){
+    packRender();
+    document.getElementById('packModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closePack(){
+    document.getElementById('packModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
   function openTip(){
     document.getElementById('tipModal').classList.add('open');
     document.body.style.overflow = 'hidden';
