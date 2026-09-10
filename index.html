@@ -1896,7 +1896,7 @@
       const list = bySeg[seg];
       const dates = list.map(d => d.dataset.date).sort();
       const { lat, lon } = segCoords[seg];
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=auto&start_date=${dates[0]}&end_date=${dates[dates.length-1]}`;
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&start_date=${dates[0]}&end_date=${dates[dates.length-1]}`;
       try {
         const res = await fetch(url);
         if (!res.ok) return;
@@ -1915,6 +1915,15 @@
           const tmax = Math.round(json.daily.temperature_2m_max[i]);
           const tmin = Math.round(json.daily.temperature_2m_min[i]);
           tempEl.innerHTML = tmax + '° / ' + tmin + '° <span style="font-size:9.5px;font-weight:600;color:var(--slate);">(실시간)</span>';
+          const pop = json.daily.precipitation_probability_max ? json.daily.precipitation_probability_max[i] : 0;
+          const outfitEl = day.querySelector('.outfit');
+          if (pop >= 50 && outfitEl && !outfitEl.querySelector('.rain-note')){
+            const note = document.createElement('b');
+            note.className = 'rain-note';
+            note.style.cssText = 'display:block;color:var(--maple);margin-top:3px;font-weight:800;';
+            note.textContent = '☔ 강수확률 ' + pop + '% — 우산 · 방수 자켓';
+            outfitEl.appendChild(note);
+          }
         });
       } catch (e) { /* 네트워크 오류 시 기존 예상 날씨 유지 */ }
     }));
