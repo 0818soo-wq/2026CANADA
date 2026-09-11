@@ -357,6 +357,19 @@
   }
   .tip-foot button:active{ opacity: 0.8; }
 
+  /* ---------- AURORA LIVE TABLE ---------- */
+  .au-row{ display: flex; align-items: center; gap: 9px; padding: 10px 0; border-top: 1px solid var(--line); }
+  .au-row:first-of-type{ border-top: none; }
+  .au-row .d{ width: 62px; font-size: 12.5px; font-weight: 800; color: var(--ink); }
+  .au-row .cl{ flex: 1; font-size: 12.5px; color: var(--ink-soft); font-weight: 600; }
+  .au-row .cl b{ color: var(--ink); }
+  .au-row .kp{
+    width: 74px; text-align: right; font-size: 13px; font-weight: 800; color: var(--ink-faint);
+  }
+  .au-row.good{ background: var(--slate-soft); border-radius: 8px; padding-left: 8px; padding-right: 8px; }
+  .au-row.good .kp{ color: var(--maple); }
+  .au-note{ font-size: 11.5px; color: var(--ink-soft); line-height: 1.55; margin: 10px 0 0; }
+
   /* ---------- AURORA BUTTON ---------- */
   .aurora-btn{
     display: flex; align-items: center; justify-content: center; gap: 6px;
@@ -1512,8 +1525,8 @@
       </div>
 
       <div class="tip-sec">
-        <h4 class="night">확인 방법</h4>
-        <p>휴대폰에 오로라 예보 앱(My Aurora Forecast 등)을 깔고 <b>Kp 지수</b>를 보세요. 저녁에 6 이상이 뜨면 그날 밤 나가볼 만합니다. 안 뜨면 미련 없이 자는 게 낫습니다.</p>
+        <h4 class="night">밤별 예보 (밤 22~02시 기준)</h4>
+        <div id="auroraLive"></div>
       </div>
 
       <div class="tip-sec">
@@ -1765,9 +1778,84 @@
   }
 
   // 모레인 예약 팁 팝업
+  // 밤별 구름량(Open-Meteo) + 오로라 지수 Kp(NOAA) 실시간 조회
+  const AURORA_NIGHTS = [
+    { d:'2026-09-19', label:'9/19 (토)' },
+    { d:'2026-09-20', label:'9/20 (일)' },
+    { d:'2026-09-21', label:'9/21 (월)' }
+  ];
+  function shiftDay(ymd, n){
+    const p = ymd.split('-').map(Number);
+    const dt = new Date(Date.UTC(p[0], p[1]-1, p[2] + n));
+    return dt.toISOString().slice(0,10);
+  }
+  function cloudWord(v){
+    if (v <= 20) return '매우 맑음';
+    if (v <= 50) return '맑음';
+    if (v <= 80) return '구름 많음';
+    return '흐림';
+  }
+  async function loadAuroraLive(){
+    const el = document.getElementById('auroraLive');
+    if (!el) return;
+    el.innerHTML = '<div class="wx-msg">불러오는 중…</div>';
+
+    const c = segCoords['seg-banff'];
+    const cloudBy = {}, kpBy = {};
+
+    // 구름량 — 그날 22~23시 + 다음날 00~02시 평균
+    try {
+      const r = await fetch('https://api.open-meteo.com/v1/forecast?latitude=' + c.lat + '&longitude=' + c.lon +
+        '&hourly=cloudcover&timezone=auto&start_date=2026-09-19&end_date=2026-09-22');
+      if (r.ok){
+        const j = await r.json();
+        AURORA_NIGHTS.forEach(function(n){
+          const nx = shiftDay(n.d, 1), vals = [];
+          j.hourly.time.forEach(function(t, i){
+            const day = t.slice(0,10), hh = parseInt(t.slice(11,13), 10);
+            if ((day === n.d && hh >= 22) || (day === nx && hh <= 2)) vals.push(j.hourly.cloudcover[i]);
+          });
+          if (vals.length) cloudBy[n.d] = Math.round(vals.reduce(function(a,b){ return a+b; }, 0) / vals.length);
+        });
+      }
+    } catch (e) {}
+
+    // Kp — NOAA 행성 K지수 3일 예보 (현지 22~02시 = UTC 04~08시)
+    try {
+      const r = await fetch('https://services.swpc.noaa.gov/products/noaa-planetary-k-index-forecast.json');
+      if (r.ok){
+        const rows = await r.json();
+        rows.slice(1).forEach(function(row){
+          const utc = new Date(row[0].replace(' ', 'T') + 'Z');
+          const kp = parseFloat(row[1]);
+          if (isNaN(utc.getTime()) || isNaN(kp)) return;
+          const h = utc.getUTCHours();
+          if (h < 3 || h >= 9) return;
+          const night = shiftDay(utc.toISOString().slice(0,10), -1);
+          if (!(night in kpBy) || kp > kpBy[night]) kpBy[night] = kp;
+        });
+      }
+    } catch (e) {}
+
+    let html = '', anyKp = false;
+    AURORA_NIGHTS.forEach(function(n){
+      const cv = cloudBy[n.d], kp = kpBy[n.d];
+      if (kp !== undefined) anyKp = true;
+      const good = (kp !== undefined && kp >= 6) && (cv !== undefined && cv <= 50);
+      html += '<div class="au-row' + (good ? ' good' : '') + '">' +
+        '<span class="d">' + n.label + '</span>' +
+        '<span class="cl">' + (cv === undefined ? '예보 없음' : '<b>' + cv + '%</b> · ' + cloudWord(cv)) + '</span>' +
+        '<span class="kp">Kp ' + (kp === undefined ? '—' : kp.toFixed(1)) + '</span></div>';
+    });
+    html += '<p class="au-note">Kp는 <b>출발 3일 전부터</b> 나옵니다. 밴프에서 보이려면 <b>Kp 6 이상 + 구름 50% 이하</b>가 같이 맞아야 하고, 그러면 이 줄이 파랗게 표시됩니다.' +
+      (anyKp ? '' : ' 아직 예보 기간이 아니라 Kp는 비어 있습니다.') +
+      '<br>구름 Open-Meteo · Kp 미국 해양대기청(NOAA)</p>';
+    el.innerHTML = html;
+  }
   function openAurora(){
     document.getElementById('auroraModal').classList.add('open');
     document.body.style.overflow = 'hidden';
+    loadAuroraLive();
   }
   function closeAurora(){
     document.getElementById('auroraModal').classList.remove('open');
