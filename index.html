@@ -357,6 +357,19 @@
   }
   .tip-foot button:active{ opacity: 0.8; }
 
+  /* ---------- AURORA BUTTON ---------- */
+  .aurora-btn{
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    width: 100%; margin-top: 12px; padding: 11px 12px;
+    border-radius: 10px; border: 1px solid var(--slate);
+    background: var(--slate-soft); color: var(--slate);
+    font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 12.5px; cursor: pointer;
+  }
+  .aurora-btn svg{ width: 14px; height: 14px; }
+  .aurora-btn:active{ opacity: 0.65; }
+  .tip-hero.night{ background: var(--slate-soft); color: var(--slate); }
+  .tip-sec h4.night{ color: var(--slate); }
+
   /* ---------- OFFLINE BAR ---------- */
   #offlineBar{
     display: none;
@@ -881,6 +894,10 @@
             <li class="warn">⚠ 9월은 엘크 발정기 — 수컷이 공격적입니다. 곰 100m · 엘크 50m 이상 거리, <b>차 안에서 관찰하고 내리지 마세요</b></li>
             <li class="note">Bow Valley Parkway(1A) 동쪽 구간은 9/1~10/6 낮 시간 차량 제한 · 방문자센터에서 당일 확인</li>
           </ul>
+          <button class="aurora-btn" onclick="openAurora()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+            오로라 · 밤하늘 보기
+          </button>
           <button class="meal-btn" onclick="openMeal('day6','9.21 (월) · 밴프')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3v6a2 2 0 0 0 4 0V3M9 9v12M17 3c-1.5 3-1.5 6 0 8v10"/></svg>
             오늘 뭐 먹지?
@@ -1451,6 +1468,66 @@
 
 <!-- ============ MEAL SLIDE-OVER PAGE ============ -->
 <!-- ============ 모레인 예약 팁 팝업 ============ -->
+<div class="tip-modal" id="auroraModal" onclick="if(event.target===this) closeAurora()">
+  <div class="tip-sheet">
+    <div class="tip-head">
+      <h3>오로라 · 밤하늘</h3>
+      <div class="tip-close" onclick="closeAurora()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </div>
+    </div>
+    <div class="tip-body">
+
+      <div class="tip-sec">
+        <div class="tip-hero night">
+          솔직히 확률은 낮습니다
+          <span>밴프는 북위 51.2°로 오로라대(65°)에서 한참 남쪽 · 9월은 밤이 짧아 비수기</span>
+        </div>
+      </div>
+
+      <div class="tip-sec">
+        <h4 class="night">세 가지가 동시에 맞아야 합니다</h4>
+        <table class="tip-table">
+          <tr><td class="rank">Kp 6+</td><td>강한 지자기 폭풍<small>밴프 위도에선 Kp 6 이상이어야 지평선 위로 보입니다</small></td></tr>
+          <tr><td class="rank">맑은 밤</td><td>구름이 없어야<small>9월 하순 밴프는 맑은 날이 많은 편</small></td></tr>
+          <tr><td class="rank">22~02시</td><td>가장 활발한 시간대<small>9월엔 밤 8시는 지나야 충분히 어두워집니다</small></td></tr>
+        </table>
+      </div>
+
+      <div class="tip-sec">
+        <h4 class="night">어디서 볼까</h4>
+        <ul class="tip-list">
+          <li><b>Lake Minnewanka</b> ⭐ — 밴프 시내에서 차로 10분. 북쪽 시야가 트여 있고 댐 위쪽이 명당. 낮에 가는 곳이라 길도 익숙해집니다</li>
+          <li><b>Vermilion Lakes</b> — 마운트 런들이 배경으로 들어와 사진이 잘 나옵니다</li>
+          <li><b>Two Jack Lake</b> — 미네완카 가는 길목, 수면 반사가 좋습니다</li>
+        </ul>
+      </div>
+
+      <div class="tip-sec">
+        <h4 class="night">확인 방법</h4>
+        <p>휴대폰에 오로라 예보 앱(My Aurora Forecast 등)을 깔고 <b>Kp 지수</b>를 보세요. 저녁에 6 이상이 뜨면 그날 밤 나가볼 만합니다. 안 뜨면 미련 없이 자는 게 낫습니다.</p>
+      </div>
+
+      <div class="tip-sec">
+        <h4 class="night">오로라보다 확실한 것 — 별</h4>
+        <p>밴프는 광공해가 적어서 맑은 밤이면 <b>은하수가 보입니다.</b> 오로라를 못 봐도 이건 거의 확실해요.</p>
+        <p>특히 <b>모레인 가는 날 새벽에 캔모어를 나설 때</b>가 달도 지고 하늘이 가장 어두운 시간입니다. 가는 길에 차 한 번 세우고 올려다보세요.</p>
+      </div>
+
+      <div class="tip-sec">
+        <h4 class="night">밤에 나갈 때 주의</h4>
+        <ul class="tip-list">
+          <li>밤은 <b>야생동물이 가장 활발한 시간</b>입니다. 차에서 멀리 떨어지지 마세요</li>
+          <li>기온이 <b>0~4도</b>까지 떨어집니다 — 경량패딩 · 장갑 · 핫팩</li>
+          <li>지우를 데리고 나갈지는 컨디션 보고 결정하세요. 다음날 일정이 있다면 무리하지 않는 편이 낫습니다</li>
+        </ul>
+      </div>
+
+    </div>
+    <div class="tip-foot"><button onclick="closeAurora()">닫기</button></div>
+  </div>
+</div>
+
 <div class="tip-modal" id="wxModal" onclick="if(event.target===this) closeWx()">
   <div class="tip-sheet">
     <div class="tip-head">
@@ -1680,6 +1757,15 @@
   }
 
   // 모레인 예약 팁 팝업
+  function openAurora(){
+    document.getElementById('auroraModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeAurora(){
+    document.getElementById('auroraModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
   // 날씨 상세: 날씨 칸을 누르면 시간별 기온·강수확률
   const segLabelKo = { 'seg-van':'밴쿠버', 'seg-banff':'밴프 · 캔모어', 'seg-cal':'캘거리', 'seg-sea':'시애틀' };
   function closeWx(){
