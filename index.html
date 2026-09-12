@@ -499,6 +499,7 @@
   .meal-link:active{ opacity: 0.6; }
   .meal-picks{ display: flex; flex-direction: column; gap: 12px; }
   .meal-pick .meal-desc{ display: block; font-size: 11.5px; color: var(--ink-soft); margin-top: 3px; line-height: 1.5; }
+  .meal-pick .meal-plain{ font-size: 13px; font-weight: 700; color: var(--ink); }
 
   /* ---------- ROUTE MAP TAB ---------- */
   .map-card{
@@ -1781,7 +1782,10 @@
 
   // 일자별 식사 정보 (장소명은 문자열, 실제 식당은 {name, place}로 적으면 구글맵 링크가 붙음)
   const mealData = {
-    day1: { b: "공항 라운지 (예정)", l: "기내식", d: { name: "Skewers Souvlaki Pita bar", place: "Skewers Souvlaki Pita Bar, Vancouver, BC" } },
+    day1: { b: "공항 라운지 (예정)", l: [
+      { name: "1번째 기내식 (KE075)", desc: "한식 낙지덮밥 · 중식 블랙빈소스 소고기와 달걀볶음밥 · 양식 토마토소스 파스타" },
+      { name: "2번째 기내식", desc: "한식 채소죽 · 양식 스크램블드에그와 베이컨·감자" }
+    ], d: { name: "Skewers Souvlaki Pita bar", place: "Skewers Souvlaki Pita Bar, Vancouver, BC" } },
     day2: { b: "호텔", l: [
       { name: "The Lobster Man", place: "The Lobster Man, Granville Island, Vancouver, BC", desc: "확정 · 그랜빌아일랜드 시푸드 마켓" },
       { name: "The Sandbar", place: "The Sandbar Restaurant, Granville Island, Vancouver, BC", desc: "다리 밑 시푸드 타워 + 라이브 피아노, 특색있는 분위기" },
@@ -1826,13 +1830,18 @@
       { name: "Lenox", place: "Lenox Seattle, WA", desc: "아프로-라틴 소울푸드, 벨타운에서 가장 특색있는 곳" },
       { name: "Chiho", place: "Chiho Seattle, WA", desc: "샤오롱바오 등 딤섬 전문, 아이와 먹기도 좋음" }
     ] },
-    day10:{ b: "숙소에서 해먹기", l: "기내식 (KE042 이륙 후)", d: "기내식 (도착 전 2번째 식사)" }
+    day10:{ b: "숙소에서 해먹기", l: [
+      { name: "1번째 기내식 (KE042)", desc: "한식 비빔밥 · 양식 레드와인소스 소고기와 으깬 감자 · 아시아식 채소카레와 쌀밥" }
+    ], d: [
+      { name: "2번째 기내식", desc: "양식 굴라쉬 소고기스튜와 구운 감자 · 양식 토마토크림소스 푸실리 파스타" }
+    ] }
   };
 
   // 식사 슬롯 렌더링: {name, place} → 구글맵 링크 1개, 배열 → 여러 후보, 문자열 → 일반 텍스트
   function mealPickHTML(item){
-    const q = encodeURIComponent(item.place);
     const desc = item.desc ? `<span class="meal-desc">${item.desc}</span>` : '';
+    if (!item.place) return `<div class="meal-pick"><span class="meal-plain">✈ ${item.name}</span>${desc}</div>`;
+    const q = encodeURIComponent(item.place);
     return `<div class="meal-pick"><a class="meal-link" href="https://www.google.com/maps/search/?api=1&query=${q}" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
         ${item.name}
