@@ -237,25 +237,35 @@
   .day.seg-sea .transport-badge{ background: var(--maple-soft); color: var(--maple); }
 
   .weather{
-    display: flex; align-items: center; gap: 10px;
+    display: flex; flex-wrap: wrap; align-items: center;
+    column-gap: 8px; row-gap: 0;
     padding: 10px 12px; border-radius: 10px; margin-bottom: 10px; font-size: 12.5px;
   }
   .day.seg-van .weather{ background: var(--slate-soft); }
   .day.seg-banff .weather{ background: var(--forest-soft); }
   .day.seg-cal .weather{ background: var(--gold-soft); }
   .day.seg-sea .weather{ background: var(--maple-soft); }
-  .weather .weather-icon{ font-size: 18px; line-height: 1; flex-shrink: 0; }
-  .weather .temp{ font-weight: 800; color: var(--ink); white-space: nowrap; }
+  .weather .weather-icon{ order: 1; font-size: 18px; line-height: 1; flex-shrink: 0; }
+  .weather .temp{ order: 2; font-weight: 800; color: var(--ink); white-space: nowrap; }
   .weather[data-weather] .temp::after{ content: "(예상)"; font-size: 9.5px; font-weight: 600; color: var(--ink-faint); margin-left: 4px; }
-  .weather .divider{ width: 1px; align-self: stretch; background: rgba(30,42,38,0.14); }
-  .weather .outfit{ color: var(--ink-soft); font-weight: 500; line-height: 1.4; }
+  .weather .divider{ display: none; }
+  .weather .outfit{
+    order: 4; flex: 0 0 100%; width: 100%;
+    margin-top: 8px; padding-top: 8px;
+    border-top: 1px solid rgba(30,42,38,0.12);
+    color: var(--ink-soft); font-weight: 500; line-height: 1.5;
+  }
 
   .stay{
-    display: flex; align-items: center; gap: 6px;
     margin-bottom: 12px; font-size: 12px; font-weight: 600; color: var(--ink-soft);
+    line-height: 1.55;
   }
-  .stay svg{ width: 13px; height: 13px; flex-shrink: 0; opacity: 0.75; }
+  .stay svg{
+    width: 13px; height: 13px; opacity: 0.75;
+    display: inline-block; vertical-align: -2px; margin-right: 5px;
+  }
   .stay .stay-name{ color: var(--ink); font-weight: 700; text-decoration: none; }
+  .stay .stay-name + .stay-name{ margin-left: 0; }
 
   .schedule{ list-style: none; margin: 0; padding: 0; }
 
@@ -278,6 +288,7 @@
   .schedule li.note{ color: var(--ink-soft); font-weight: 500; font-style: italic; }
   .schedule li.warn{ color: var(--maple); font-weight: 700; font-style: normal; }
   .schedule li.warn::before{ background: var(--maple); }
+  .schedule li a{ color: inherit; text-decoration: underline; text-underline-offset: 2px; font-weight: 800; }
 
   .meal-btn{
     display: flex; align-items: center; justify-content: center; gap: 6px;
@@ -395,7 +406,7 @@
 
   /* ---------- WEATHER DETAIL ---------- */
   .weather{ cursor: pointer; }
-  .weather .more{ margin-left: auto; font-size: 10.5px; font-weight: 700; color: var(--ink-faint); white-space: nowrap; }
+  .weather .more{ order: 3; margin-left: auto; font-size: 10.5px; font-weight: 700; color: var(--ink-faint); white-space: nowrap; }
   .wx-sum{ display: flex; gap: 8px; margin-bottom: 16px; }
   .wx-sum > div{ flex: 1; background: var(--bg); border-radius: 10px; padding: 10px 12px; }
   .wx-sum .k{ font-size: 10px; font-weight: 800; color: var(--ink-faint); letter-spacing: .04em; }
@@ -974,7 +985,7 @@
             <li>11:00 캔모어 숙소 체크아웃</li>
             <li class="drive">렌터카로 캘거리 동물원(Calgary Zoo) 방문</li>
             <li>15:00 이후 Hampton Inn 체크인</li>
-            <li class="warn">⚠ <b>반납 전 슈퍼차저에서 충전</b> — 9/19 인수 때 찍어둔 % 이상으로. 차량 내비에 'Supercharger'를 검색하면 가까운 곳이 바로 뜹니다</li>
+            <li class="warn">⚠ <b>반납 전 충전</b> — 9/19 인수 때 찍어둔 % 이상으로 · <a href="https://www.google.com/maps/search/?api=1&amp;query=Tesla%20Supercharger%2C%20475%20Aviation%20Rd%20NE%2C%20Calgary%2C%20AB" target="_blank" rel="noopener">Tesla 슈퍼차저 · 475 Aviation Rd NE ↗</a> (공항 바로 옆 12기 · 호텔에서 약 10분, 반납 가는 길목)</li>
             <li class="flight">21:00 렌터카 반납 <span class="tag">Calgary Airport</span></li>
             <li>공항 → 호텔: 호텔 셔틀 이용 (확인완료)</li>
           </ul>
@@ -1813,7 +1824,7 @@
       { name: "Lenox", place: "Lenox Seattle, WA", desc: "아프로-라틴 소울푸드, 벨타운에서 가장 특색있는 곳" },
       { name: "Chiho", place: "Chiho Seattle, WA", desc: "샤오롱바오 등 딤섬 전문, 아이와 먹기도 좋음" }
     ] },
-    day10:{ b: "숙소에서 해먹기", l: "기내식", d: "-" }
+    day10:{ b: "숙소에서 해먹기", l: "기내식 (KE042 이륙 후)", d: "기내식 (도착 전 2번째 식사)" }
   };
 
   // 식사 슬롯 렌더링: {name, place} → 구글맵 링크 1개, 배열 → 여러 후보, 문자열 → 일반 텍스트
