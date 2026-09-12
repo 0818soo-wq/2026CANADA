@@ -113,9 +113,9 @@
     background: transparent;
     font-family: 'Manrope', sans-serif;
     font-weight: 700;
-    font-size: 13.5px;
+    font-size: 12.5px;
     color: var(--ink-faint);
-    padding: 14px 4px 12px;
+    padding: 14px 2px 12px;
     position: relative;
     cursor: pointer;
   }
@@ -502,6 +502,21 @@
   .meal-pick .meal-plain{ font-size: 13px; font-weight: 700; color: var(--ink); }
   .meal-pick .meal-desc b{ color: var(--gold); font-weight: 800; }
 
+  /* ---------- 식사 TAB ---------- */
+  .mealday{ background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin-bottom: 12px; }
+  .mealday-head{ display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 4px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+  .mealday-head .d{ font-family: 'Fraunces', serif; font-weight: 600; font-size: 15px; color: var(--ink); }
+  .mealday-head .t{ font-size: 11.5px; font-weight: 700; color: var(--ink-faint); }
+  .mealday.seg-van .mealday-head .d{ color: var(--slate); }
+  .mealday.seg-banff .mealday-head .d{ color: var(--forest); }
+  .mealday.seg-cal .mealday-head .d{ color: var(--gold); }
+  .mealday.seg-sea .mealday-head .d{ color: var(--maple); }
+  .mealday-row{ display: flex; gap: 10px; padding: 9px 0; border-top: 1px solid var(--line); }
+  .mealday-row:first-of-type{ border-top: none; }
+  .mealday-row .k{ flex: 0 0 32px; font-size: 11px; font-weight: 800; color: var(--ink-faint); padding-top: 3px; }
+  .mealday-row .v{ flex: 1; min-width: 0; font-size: 12.5px; color: var(--ink); line-height: 1.5; }
+  .mealday-row .v .meal-picks{ gap: 10px; }
+
   /* ---------- ROUTE MAP TAB ---------- */
   .map-card{
     margin-top: 22px;
@@ -678,6 +693,7 @@
 <div class="tabbar">
   <button class="tab active" data-tab="itinerary">일정</button>
   <button class="tab" data-tab="route">동선</button>
+  <button class="tab" data-tab="meals">식사</button>
   <button class="tab" data-tab="budget">비용</button>
   <button class="tab" data-tab="booking">예약사항</button>
 </div>
@@ -727,7 +743,7 @@
           <ul class="schedule">
             <li class="note">📱 <b>웹체크인</b> — KE075 <b>9/15(화) 22:40</b>부터</li>
             <li>18:44 월드컵파크7단지 <b>6012 공항버스</b> (49분) → 19:33 인천공항 T2 <b>3층</b></li>
-            <li>하나은행 외화 수령 — 3층 <b>10번 출입구 · K카운터 안쪽</b> → 체크인 · 수하물</li>
+            <li>하나은행 외화 수령 — 3층 <b>10번 출입구 · K카운터 안쪽</b></li>
             <li class="flight">22:40 ICN 출발 <span class="tag">KE075</span></li>
             <li class="flight">16:30 YVR 도착</li>
             <li>공항 → 호텔: <b>택시</b> · 도착층 밖 승강장 · 정액 CA$36~46 (25~35분)</li>
@@ -1215,6 +1231,11 @@
       <span><span class="legend-line dashed" style="border-top-color:var(--slate); border-top-width:1px;"></span> 도보</span>
     </div>
     <div id="dailyRouteList"></div>
+  </section>
+
+  <!-- ============ 식사 TAB ============ -->
+  <section class="tab-panel" id="tab-meals">
+    <div id="mealsAll"></div>
   </section>
 
   <!-- ============ 비용 TAB ============ -->
@@ -1848,15 +1869,44 @@
         ${item.name}
       </a>${desc}</div>`;
   }
-  function renderMealSlot(el, entry){
-    if (Array.isArray(entry)){
-      el.innerHTML = `<div class="meal-picks">${entry.map(mealPickHTML).join('')}</div>`;
-    } else if (entry && typeof entry === 'object' && entry.place){
-      el.innerHTML = mealPickHTML(entry);
-    } else {
-      el.textContent = entry || '맛집 리스트 준비 중이에요.';
-    }
+  function mealSlotHTML(entry, empty){
+    if (Array.isArray(entry)) return `<div class="meal-picks">${entry.map(mealPickHTML).join('')}</div>`;
+    if (entry && typeof entry === 'object' && entry.place) return mealPickHTML(entry);
+    return `<span class="meal-empty">${entry || empty}</span>`;
   }
+  function renderMealSlot(el, entry){
+    el.innerHTML = mealSlotHTML(entry, '맛집 리스트 준비 중이에요.');
+  }
+
+  // 식사 탭 — 전체 일자
+  const MEAL_DAYS = [
+    { k:'day1',  n:'Day 01', t:'9.16 (수) · 밴쿠버',      seg:'seg-van'   },
+    { k:'day2',  n:'Day 02', t:'9.17 (목) · 밴쿠버',      seg:'seg-van'   },
+    { k:'day3',  n:'Day 03', t:'9.18 (금) · 밴쿠버',      seg:'seg-van'   },
+    { k:'day4',  n:'Day 04', t:'9.19 (토) · 캘거리→캔모어', seg:'seg-banff' },
+    { k:'day5',  n:'Day 05', t:'9.20 (일) · 밴프',        seg:'seg-banff' },
+    { k:'day6',  n:'Day 06', t:'9.21 (월) · 밴프',        seg:'seg-banff' },
+    { k:'day7',  n:'Day 07', t:'9.22 (화) · 밴프→캘거리',  seg:'seg-cal'   },
+    { k:'day8',  n:'Day 08', t:'9.23 (수) · 시애틀',      seg:'seg-sea'   },
+    { k:'day9',  n:'Day 09', t:'9.24 (목) · 시애틀',      seg:'seg-sea'   },
+    { k:'day10', n:'Day 10', t:'9.25 (금) · 시애틀',      seg:'seg-sea'   }
+  ];
+  function renderMealsTab(){
+    const host = document.getElementById('mealsAll');
+    if (!host) return;
+    host.innerHTML = MEAL_DAYS.map(function(d){
+      const m = mealData[d.k] || {};
+      const row = function(label, entry){
+        return '<div class="mealday-row"><span class="k">' + label + '</span>' +
+               '<div class="v">' + mealSlotHTML(entry, '미정') + '</div></div>';
+      };
+      return '<div class="mealday ' + d.seg + '">' +
+             '<div class="mealday-head"><span class="d">' + d.n + '</span><span class="t">' + d.t + '</span></div>' +
+             row('아침', m.b) + row('점심', m.l) + row('저녁', m.d) +
+             '</div>';
+    }).join('');
+  }
+  renderMealsTab();
 
   // 모레인 예약 팁 팝업
   // 밤별 구름량(Open-Meteo) + 오로라 지수 Kp(NOAA) 실시간 조회
