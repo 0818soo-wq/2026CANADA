@@ -820,12 +820,12 @@
           </div>
           <ul class="schedule">
             <li class="warn">⚠ <b>1차 티켓팅</b> — <b>07:00</b>(밴쿠버) · <b>9/20 방문분</b> · parks.canada.ca</li>
-            <li>09:00 호텔 출발 → <b>하얏트 리젠시</b>(655 Burrard St) 도보 약 13분</li>
-            <li>09:20 Capilano 무료셔틀 → <b>09:40 도착</b> (입장 10:00)</li>
-            <li class="note">하얏트 출발 08:35 · 08:50 · 09:05 · 09:20 · 09:35 · 09:50 (15분 간격 · 선착순)</li>
+            <li>08:55 호텔 출발 → <b>캐나다플레이스</b> 도보 약 16분</li>
+            <li>09:15 Capilano 무료셔틀 → <b>09:40 도착</b> (입장 10:00)</li>
+            <li class="note">캐나다플레이스 08:30부터 15분 간격 · Express(무정차) 08:30 · 09:00 · 09:30은 20분 소요</li>
             <li>캐필라노 현수교 관람</li>
             <li>TransLink 232·236번으로 연어부화장 (약 1km)</li>
-            <li>현수교 복귀 → 무료셔틀로 다운타운</li>
+            <li>현수교 복귀 → 무료셔틀 <b>하얏트 리젠시</b> 하차 → 호텔 도보 13분</li>
             <li class="note">📱 <b>웹체크인</b> — WS110 <b>오늘 10:40</b>부터</li>
           </ul>
           <button class="tip-btn" onclick="openTip()">
@@ -2403,9 +2403,9 @@
     { day:'Day 02', date:'9.17(목)', seg:'seg-van', stops:['호텔','스탠리공원 · 아쿠아리움','Hornby St 선착장','그랜빌아일랜드','호텔 (복귀)'],
       connectors:[{icon:'transit',text:'버스 19번 · 약 10분'},{icon:'transit',text:'씨월 도보 · 약 25분'},{icon:'transit',text:'Aquabus 미니페리 · 약 5~10분'},{icon:'transit',text:'Aquabus/도보/버스로 복귀'}],
       map: mapFrame(['433 Robson St, Vancouver, BC','Stanley Park, Vancouver, BC','Vancouver Aquarium, Stanley Park, Vancouver, BC','Aquabus Hornby Street Dock, Vancouver, BC','Granville Island, Vancouver, BC']) },
-    { day:'Day 03', date:'9.18(금)', seg:'seg-van', stops:['호텔','하얏트 리젠시','캐필라노 현수교','연어부화장','호텔 (복귀)'],
-      connectors:[{icon:'transit',text:'도보 · 약 13분'},{icon:'transit',text:'무료셔틀 · 약 20분'},{icon:'transit',text:'버스 232/236번'},{icon:'transit',text:'무료셔틀 + 도보'}],
-      map: mapFrame(['433 Robson St, Vancouver, BC','Hyatt Regency Vancouver, 655 Burrard St, Vancouver, BC','Capilano Suspension Bridge Park, North Vancouver, BC','Capilano Salmon Hatchery, North Vancouver, BC']) },
+    { day:'Day 03', date:'9.18(금)', seg:'seg-van', stops:['호텔','Canada Place','캐필라노 현수교','연어부화장','하얏트 리젠시 → 호텔'],
+      connectors:[{icon:'transit',text:'도보 · 약 16분'},{icon:'transit',text:'무료셔틀 · 약 25분'},{icon:'transit',text:'버스 232/236번'},{icon:'transit',text:'무료셔틀 + 도보 13분'}],
+      map: mapFrame(['433 Robson St, Vancouver, BC','Canada Place, Vancouver, BC','Capilano Suspension Bridge Park, North Vancouver, BC','Capilano Salmon Hatchery, North Vancouver, BC']) },
     { day:'Day 04', date:'9.19(토)', seg:'seg-banff', stops:['YVR','YYC','한인마트 (장보기)','캔모어 숙소','캔모어 시내'],
       connectors:[{icon:'plane',text:'WS110 · 약 1h30m'},{icon:'car',text:'렌터카 · 약 25분'},{icon:'car',text:'렌터카 · 약 1시간10분'},{icon:'transit',text:'도보'}],
       map: mapFrame(['Vancouver International Airport','Calgary International Airport','H Mart, 11810 Sarcee Trail NW, Calgary, AB','Canmore, AB','Main Street, Canmore, AB']) },
