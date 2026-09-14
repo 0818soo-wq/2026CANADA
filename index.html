@@ -7,6 +7,8 @@
 <title>2026 NORTHWEST AMERICA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" defer></script>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -555,7 +557,32 @@
   .daily-route-head .d-day{ font-family:'Fraunces', serif; font-weight:600; font-size:15.5px; color: var(--ink); }
   .daily-route-head .d-date{ font-size: 11.5px; color: var(--ink-soft); font-weight: 600; }
 
-  .drd-map{ width:100%; height:220px; display:block; margin-bottom: 16px; border-radius: 12px; border: 0; background: var(--bg); }
+  .drd-map{
+    width:100%; height:230px; display:block; margin-bottom: 10px;
+    border-radius: 12px; border: 1px solid var(--line); background: var(--bg);
+    position: relative; z-index: 0; overflow: hidden;
+  }
+  .drd-map.leaflet-container{ font: inherit; }
+  .drd-map .leaflet-control-attribution{ font-size: 9px; background: rgba(255,255,255,.78); }
+  .drd-pin{
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--forest); color: #fff; border: 2px solid #fff;
+    box-shadow: 0 1px 4px rgba(30,42,38,.4);
+    display:flex; align-items:center; justify-content:center;
+    font-size: 11px; font-weight: 800; line-height: 1;
+  }
+  .drd-pin.first{ background: #2F6F4E; }
+  .drd-pin.last{ background: #B4553F; }
+  .drd-dir{
+    display:flex; align-items:center; justify-content:center; gap:6px;
+    margin-bottom: 16px; padding: 9px 12px;
+    border: 1px solid var(--line); border-radius: 10px;
+    font-size: 12.5px; font-weight: 700; color: var(--forest);
+    text-decoration: none; background: var(--bg);
+  }
+  .drd-dir svg{ width: 14px; height: 14px; flex-shrink:0; }
+  .drd-map-ph{ display:flex; align-items:center; justify-content:center;
+    font-size: 12px; color: var(--ink-faint); font-weight: 600; }
 
   .drd{ position: relative; padding-left: 22px; }
   .drd::before{
@@ -2413,10 +2440,126 @@
     car: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 11l1.5-5h11L19 11M5 11v6a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1h8v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-6M5 11h14"/></svg>',
     plane: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16l20-8-8 20-3-8-9-4z"/></svg>'
   };
-  function mapFrame(locs, zoom){
-    const q = locs.map(encodeURIComponent).join('%7C');
-    const z = zoom ? ('&z=' + zoom) : '';
-    return '<iframe class="drd-map" src="https://maps.google.com/maps?q=' + q + z + '&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>';
+  // 경유지 좌표 (OpenStreetMap 기준) — 인천은 태평양을 건너도록 경도를 -360 보정
+  const GEO = {
+    'Vancouver International Airport'                                : [49.1967, -123.1815],
+    '433 Robson St, Vancouver, BC'                                   : [49.2795, -123.1173],
+    'Stanley Park, Vancouver, BC'                                    : [49.3017, -123.1417],
+    'Vancouver Aquarium, Stanley Park, Vancouver, BC'                : [49.3004, -123.1309],
+    'Aquabus Hornby Street Dock, Vancouver, BC'                      : [49.2758, -123.1289],
+    'Granville Island, Vancouver, BC'                                : [49.2716, -123.1340],
+    'Canada Place, Vancouver, BC'                                    : [49.2888, -123.1111],
+    'Capilano Suspension Bridge Park, North Vancouver, BC'           : [49.3427, -123.1149],
+    'Capilano Salmon Hatchery, North Vancouver, BC'                  : [49.3628, -123.1128],
+    'Calgary International Airport'                                  : [51.1315, -114.0106],
+    'H Mart, 11810 Sarcee Trail NW, Calgary, AB'                     : [51.1565, -114.1560],
+    'Canmore, AB'                                                    : [51.0884, -115.3479],
+    'Main Street, Canmore, AB'                                       : [51.0888, -115.3523],
+    '1 Whitehorn Road, Lake Louise, AB'                              : [51.4419, -116.1456],
+    'Moraine Lake, AB'                                               : [51.3272, -116.1801],
+    'Bow Lake, Banff National Park, AB'                              : [51.6706, -116.4592],
+    'Peyto Lake, Banff National Park, AB'                            : [51.7178, -116.5147],
+    'Johnston Canyon, Improvement District No. 9, AB'                : [51.2453, -115.8404],
+    'Banff, AB'                                                      : [51.1784, -115.5708],
+    'Fairmont Banff Springs, Banff, AB'                              : [51.1650, -115.5620],
+    'Two Jack Lake, Banff, AB'                                       : [51.2250, -115.4680],
+    'Vermilion Lakes, Banff, AB'                                     : [51.1800, -115.6060],
+    '2021 100 Ave NE, Calgary, AB'                                   : [51.1265, -114.0090],
+    'CrossIron Mills, 261055 CrossIron Blvd, Rocky View County, AB'   : [51.2340, -114.0130],
+    '1300 Zoo Road NE, Calgary, AB'                                  : [51.0455, -114.0230],
+    'Seattle-Tacoma International Airport'                           : [47.4502, -122.3088],
+    'Hilton Motif Seattle, 1415 5th Ave, Seattle, WA'                : [47.6103, -122.3346],
+    'Pike Place Market, Seattle, WA'                                 : [47.6097, -122.3422],
+    "Trader Joe's, 1700 E Madison St, Seattle, WA"                   : [47.6155, -122.3095],
+    'Pacific Science Center, Seattle, WA'                            : [47.6190, -122.3505],
+    'Artists at Play, Seattle Center, WA'                            : [47.6215, -122.3495],
+    'Myrtle Edwards Park, Seattle, WA'                               : [47.6215, -122.3577],
+    'Kerry Park, Seattle, WA'                                        : [47.6295, -122.3599],
+    'Westlake Station, Seattle, WA'                                  : [47.6112, -122.3374],
+    'SeaTac/Airport Station, SeaTac, WA'                             : [47.4457, -122.2967],
+    'Incheon International Airport'                                  : [37.4602, -233.5593]
+  };
+  // 짧은 표시용 이름
+  function shortName(n){
+    return n.replace(/, (BC|AB|WA|SeaTac, WA|Seattle, WA|Vancouver, BC|North Vancouver, BC|Calgary, AB|Banff, AB|Lake Louise, AB|Rocky View County, AB|Banff National Park, AB|Improvement District No\. 9, AB|Stanley Park, Vancouver, BC|Seattle Center, WA)$/, '')
+            .replace(/^\d+ /, '').replace(/,.*$/, '');
+  }
+  function mapFrame(locs, opts){
+    opts = opts || {};
+    const pts = locs.filter(function(l){ return GEO[l]; });
+    let html = '<div class="drd-map drd-map-ph" data-pts="'
+             + encodeURIComponent(JSON.stringify(pts)) + '">지도 불러오는 중…</div>';
+    const dl = opts.dir === null ? [] : (opts.dir || locs);
+    if (dl.length >= 2){
+      const o = encodeURIComponent(dl[0]);
+      const d = encodeURIComponent(dl[dl.length - 1]);
+      const w = dl.slice(1, -1).map(encodeURIComponent).join('%7C');
+      html += '<a class="drd-dir" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1'
+            + '&origin=' + o + '&destination=' + d + (w ? '&waypoints=' + w : '')
+            + '&travelmode=' + (opts.mode || 'driving') + '">'
+            + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>'
+            + '구글 지도로 길찾기</a>';
+    }
+    return html;
+  }
+  function buildRouteMap(el){
+    let names;
+    try { names = JSON.parse(decodeURIComponent(el.dataset.pts)); } catch(e){ return; }
+    if (!names.length || !window.L) return;
+    el.removeAttribute('data-pts');
+    el.classList.remove('drd-map-ph');
+    el.textContent = '';
+    const map = L.map(el, { scrollWheelZoom: false, attributionControl: true });
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; CARTO',
+      subdomains: 'abcd', maxZoom: 19
+    }).addTo(map);
+    const pts = names.map(function(n){ return GEO[n]; });
+    if (pts.length > 1){
+      L.polyline(pts, { color: '#2F4A3E', weight: 2.6, opacity: .8, dashArray: '6 7' }).addTo(map);
+    }
+    pts.forEach(function(p, i){
+      const cls = i === 0 ? ' first' : (i === pts.length - 1 ? ' last' : '');
+      L.marker(p, { icon: L.divIcon({ className: '', iconSize: [22, 22], iconAnchor: [11, 11],
+        html: '<div class="drd-pin' + cls + '">' + (i + 1) + '</div>' }) })
+       .addTo(map).bindTooltip(shortName(names[i]), { direction: 'top', offset: [0, -13] });
+    });
+    if (pts.length === 1) map.setView(pts[0], 13);
+    else map.fitBounds(L.latLngBounds(pts), { padding: [28, 28] });
+  }
+  // Leaflet이 끝내 안 뜨면 원래 구글 임베드로 되돌린다 (지금보다 나빠지지 않게)
+  function fallbackRouteMaps(){
+    document.querySelectorAll('.drd-map[data-pts]').forEach(function(el){
+      let names;
+      try { names = JSON.parse(decodeURIComponent(el.dataset.pts)); } catch(e){ return; }
+      el.removeAttribute('data-pts');
+      const q = names.map(encodeURIComponent).join('%7C');
+      el.outerHTML = '<iframe class="drd-map" src="https://maps.google.com/maps?q=' + q
+                   + '&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>';
+    });
+  }
+  function initRouteMaps(){
+    if (!window.L){
+      if (!initRouteMaps.waited){
+        initRouteMaps.waited = true;
+        window.addEventListener('load', initRouteMaps, { once: true });
+        setTimeout(initRouteMaps, 5000);
+        return;
+      }
+      fallbackRouteMaps();
+      return;
+    }
+    const nodes = document.querySelectorAll('.drd-map[data-pts]');
+    if (!nodes.length) return;
+    if (!('IntersectionObserver' in window)){ nodes.forEach(buildRouteMap); return; }
+    const io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (!e.isIntersecting) return;
+        io.unobserve(e.target);
+        buildRouteMap(e.target);
+      });
+    }, { rootMargin: '250px' });
+    nodes.forEach(function(n){ io.observe(n); });
   }
   const dayRouteData = [
     { day:'Day 01', date:'9.16(수)', seg:'seg-van', stops:['YVR 공항','Hilton Vancouver Downtown'],
@@ -2424,13 +2567,14 @@
       map: mapFrame(['Vancouver International Airport','433 Robson St, Vancouver, BC']) },
     { day:'Day 02', date:'9.17(목)', seg:'seg-van', stops:['호텔','스탠리공원 · 아쿠아리움','Hornby St 선착장','그랜빌아일랜드','호텔 (복귀)'],
       connectors:[{icon:'transit',text:'버스 19번 · 약 10분'},{icon:'transit',text:'씨월 도보 · 약 25분'},{icon:'transit',text:'Aquabus 미니페리 · 약 5~10분'},{icon:'transit',text:'Aquabus/도보/버스로 복귀'}],
-      map: mapFrame(['433 Robson St, Vancouver, BC','Stanley Park, Vancouver, BC','Vancouver Aquarium, Stanley Park, Vancouver, BC','Aquabus Hornby Street Dock, Vancouver, BC','Granville Island, Vancouver, BC']) },
+      map: mapFrame(['433 Robson St, Vancouver, BC','Stanley Park, Vancouver, BC','Vancouver Aquarium, Stanley Park, Vancouver, BC','Aquabus Hornby Street Dock, Vancouver, BC','Granville Island, Vancouver, BC'], { mode:'transit' }) },
     { day:'Day 03', date:'9.18(금)', seg:'seg-van', stops:['호텔','Canada Place','캐필라노 현수교','연어부화장','하얏트 리젠시 → 호텔'],
       connectors:[{icon:'transit',text:'도보 · 약 16분'},{icon:'transit',text:'무료셔틀 · 약 25분'},{icon:'transit',text:'버스 232/236번'},{icon:'transit',text:'무료셔틀 + 도보 13분'}],
-      map: mapFrame(['433 Robson St, Vancouver, BC','Canada Place, Vancouver, BC','Capilano Suspension Bridge Park, North Vancouver, BC','Capilano Salmon Hatchery, North Vancouver, BC']) },
+      map: mapFrame(['433 Robson St, Vancouver, BC','Canada Place, Vancouver, BC','Capilano Suspension Bridge Park, North Vancouver, BC','Capilano Salmon Hatchery, North Vancouver, BC'], { mode:'transit' }) },
     { day:'Day 04', date:'9.19(토)', seg:'seg-banff', stops:['YVR','YYC','한인마트 (장보기)','캔모어 숙소','캔모어 시내'],
       connectors:[{icon:'plane',text:'WS110 · 약 1h30m'},{icon:'car',text:'렌터카 · 약 25분'},{icon:'car',text:'렌터카 · 약 1시간10분'},{icon:'transit',text:'도보'}],
-      map: mapFrame(['Vancouver International Airport','Calgary International Airport','H Mart, 11810 Sarcee Trail NW, Calgary, AB','Canmore, AB','Main Street, Canmore, AB']) },
+      map: mapFrame(['Vancouver International Airport','Calgary International Airport','H Mart, 11810 Sarcee Trail NW, Calgary, AB','Canmore, AB','Main Street, Canmore, AB'],
+        { dir:['Calgary International Airport','H Mart, 11810 Sarcee Trail NW, Calgary, AB','Main Street, Canmore, AB'] }) },
     { day:'Day 05', date:'9.20(일)', seg:'seg-banff', stops:['캔모어 숙소','Lake Louise Park & Ride','모레인레이크 · 레이크루이스','보우호','페이토호','캔모어 숙소'],
       connectors:[{icon:'car',text:'렌터카 · 약 1시간'},{icon:'transit',text:'Parks Canada 셔틀'},{icon:'car',text:'렌터카 · 약 30분'},{icon:'car',text:'렌터카 · 약 8분'},{icon:'car',text:'렌터카 · 약 1시간50분'}],
       map: mapFrame(['Canmore, AB','1 Whitehorn Road, Lake Louise, AB','Moraine Lake, AB','Bow Lake, Banff National Park, AB','Peyto Lake, Banff National Park, AB','Canmore, AB']) },
@@ -2442,16 +2586,17 @@
       map: mapFrame(['Canmore, AB','2021 100 Ave NE, Calgary, AB','CrossIron Mills, 261055 CrossIron Blvd, Rocky View County, AB','1300 Zoo Road NE, Calgary, AB','CrossIron Mills, 261055 CrossIron Blvd, Rocky View County, AB','2021 100 Ave NE, Calgary, AB']) },
     { day:'Day 08', date:'9.23(수)', seg:'seg-sea', stops:['YYC','SEA','힐튼 모티프','파이크플레이스',"Trader Joe's"],
       connectors:[{icon:'plane',text:'WS1550'},{icon:'transit',text:'Link 경전철 · 약 38분 + 도보 4분'},{icon:'transit',text:'도보 약 10분'},{icon:'transit',text:'도보 + RapidRide G · 약 20분'}],
-      map: mapFrame(['Calgary International Airport','Seattle-Tacoma International Airport','Hilton Motif Seattle, 1415 5th Ave, Seattle, WA','Pike Place Market, Seattle, WA',"Trader Joe's, 1700 E Madison St, Seattle, WA"]) },
+      map: mapFrame(['Calgary International Airport','Seattle-Tacoma International Airport','Hilton Motif Seattle, 1415 5th Ave, Seattle, WA','Pike Place Market, Seattle, WA',"Trader Joe's, 1700 E Madison St, Seattle, WA"],
+        { mode:'transit', dir:['Seattle-Tacoma International Airport','Hilton Motif Seattle, 1415 5th Ave, Seattle, WA','Pike Place Market, Seattle, WA',"Trader Joe's, 1700 E Madison St, Seattle, WA"] }) },
     { day:'Day 09', date:'9.24(목)', seg:'seg-sea', stops:['힐튼 모티프','퍼시픽 사이언스 센터','놀이터','해안 산책로','Kerry Park (일몰)'],
       connectors:[{icon:'transit',text:'도보 3분 + 모노레일 2분'},{icon:'transit',text:'도보'},{icon:'transit',text:'도보 약 15분'},{icon:'transit',text:'버스 13번'},{icon:'transit',text:'버스 2·13번 · 약 15분'}],
-      map: mapFrame(['Hilton Motif Seattle, 1415 5th Ave, Seattle, WA','Pacific Science Center, Seattle, WA','Artists at Play, Seattle Center, WA','Myrtle Edwards Park, Seattle, WA','Kerry Park, Seattle, WA'], 14) },
+      map: mapFrame(['Hilton Motif Seattle, 1415 5th Ave, Seattle, WA','Pacific Science Center, Seattle, WA','Artists at Play, Seattle Center, WA','Myrtle Edwards Park, Seattle, WA','Kerry Park, Seattle, WA'], { mode:'transit' }) },
     { day:'Day 10', date:'9.25(금)', seg:'seg-sea', stops:['힐튼 모티프','Westlake역','SEA공항역','공항 (탑승동)'],
       connectors:[{icon:'transit',text:'도보 · 약 4분'},{icon:'transit',text:'Link 경전철 · 약 38분'},{icon:'transit',text:'도보 · 약 10분'}],
-      map: mapFrame(['Hilton Motif Seattle, 1415 5th Ave, Seattle, WA','Westlake Station, Seattle, WA','SeaTac/Airport Station, SeaTac, WA','Seattle-Tacoma International Airport']) },
+      map: mapFrame(['Hilton Motif Seattle, 1415 5th Ave, Seattle, WA','Westlake Station, Seattle, WA','SeaTac/Airport Station, SeaTac, WA','Seattle-Tacoma International Airport'], { mode:'transit' }) },
     { day:'Day 11', date:'9.26(토)', seg:'seg-sea', stops:['SEA','ICN 도착'],
       connectors:[{icon:'plane',text:'KE042'}],
-      map: mapFrame(['Seattle-Tacoma International Airport','Incheon International Airport'], 2) }
+      map: mapFrame(['Seattle-Tacoma International Airport','Incheon International Airport'], { dir:null }) }
   ];
   function renderDailyRoutes(){
     const segLabels = {'seg-van':'밴쿠버','seg-banff':'밴프 · 캔모어','seg-cal':'캘거리','seg-sea':'시애틀'};
@@ -2474,6 +2619,7 @@
       html += `<div class="daily-route-card ${d.seg}"><div class="daily-route-head"><span class="d-day">${d.day}</span><span class="d-date">${d.date}</span></div>${d.map}${drd}</div>`;
     });
     container.innerHTML = html;
+    initRouteMaps();
   }
   // 오프라인 대비: 한 번이라도 온라인으로 열어두면 통신이 끊겨도 일정이 열립니다
   if ('serviceWorker' in navigator){
