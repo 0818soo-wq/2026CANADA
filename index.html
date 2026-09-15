@@ -7,8 +7,6 @@
 <title>2026 NORTHWEST AMERICA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" defer></script>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -562,17 +560,16 @@
     border-radius: 12px; border: 1px solid var(--line); background: var(--bg);
     position: relative; z-index: 0; overflow: hidden;
   }
-  .drd-map.leaflet-container{ font: inherit; }
-  .drd-map .leaflet-control-attribution{ font-size: 9px; background: rgba(255,255,255,.78); }
-  .drd-pin{
-    width: 22px; height: 22px; border-radius: 50%;
-    background: var(--forest); color: #fff; border: 2px solid #fff;
-    box-shadow: 0 1px 4px rgba(30,42,38,.4);
-    display:flex; align-items:center; justify-content:center;
-    font-size: 11px; font-weight: 800; line-height: 1;
+  .drd-tiles{ position:absolute; inset:0; }
+  .drd-tiles img{ position:absolute; width:256px; height:256px; border:0; }
+  .drd-ov{ position:absolute; inset:0; width:100%; height:100%; }
+  .drd-attr{
+    position:absolute; right:0; bottom:0; z-index:2;
+    font-size: 9px; line-height:1.4; padding: 1px 5px;
+    background: rgba(255,255,255,.8); color: var(--ink-soft);
+    border-top-left-radius: 6px;
   }
-  .drd-pin.first{ background: #2F6F4E; }
-  .drd-pin.last{ background: #B4553F; }
+  .drd-attr a{ color: inherit; }
   .drd-dir{
     display:flex; align-items:center; justify-content:center; gap:6px;
     margin-bottom: 16px; padding: 9px 12px;
@@ -2527,28 +2524,69 @@
     if (pts.length === 1) map.setView(pts[0], 13);
     else map.fitBounds(L.latLngBounds(pts), { padding: [28, 28] });
   }
-  // Leaflet이 끝내 안 뜨면 원래 구글 임베드로 되돌린다 (지금보다 나빠지지 않게)
-  function fallbackRouteMaps(){
-    document.querySelectorAll('.drd-map[data-pts]').forEach(function(el){
-      let names;
-      try { names = JSON.parse(decodeURIComponent(el.dataset.pts)); } catch(e){ return; }
-      el.removeAttribute('data-pts');
-      const q = names.map(encodeURIComponent).join('%7C');
-      el.outerHTML = '<iframe class="drd-map" src="https://maps.google.com/maps?q=' + q
-                   + '&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>';
+  // ── OpenStreetMap 타일을 직접 그린다 (외부 라이브러리·API 키 없음) ──
+  const TS = 256;
+  function lon2px(lon, z){ return (lon + 180) / 360 * Math.pow(2, z) * TS; }
+  function lat2px(lat, z){
+    const r = lat * Math.PI / 180;
+    return (1 - Math.log(Math.tan(r) + 1 / Math.cos(r)) / Math.PI) / 2 * Math.pow(2, z) * TS;
+  }
+  function buildRouteMap(el){
+    let names;
+    try { names = JSON.parse(decodeURIComponent(el.dataset.pts)); } catch(e){ return; }
+    const pts = names.map(function(n){ return GEO[n]; }).filter(Boolean);
+    if (!pts.length) return;
+    el.removeAttribute('data-pts');
+
+    const W = el.clientWidth || 340, H = el.clientHeight || 230, PAD = 30;
+    let z = 16;
+    for (; z > 1; z--){
+      const xs = pts.map(function(p){ return lon2px(p[1], z); });
+      const ys = pts.map(function(p){ return lat2px(p[0], z); });
+      const dx = Math.max.apply(null, xs) - Math.min.apply(null, xs);
+      const dy = Math.max.apply(null, ys) - Math.min.apply(null, ys);
+      if (dx <= W - PAD * 2 && dy <= H - PAD * 2) break;
+    }
+    if (pts.length === 1) z = Math.min(z, 13);
+
+    const xs = pts.map(function(p){ return lon2px(p[1], z); });
+    const ys = pts.map(function(p){ return lat2px(p[0], z); });
+    const cx = (Math.min.apply(null, xs) + Math.max.apply(null, xs)) / 2;
+    const cy = (Math.min.apply(null, ys) + Math.max.apply(null, ys)) / 2;
+    const ox = cx - W / 2, oy = cy - H / 2;
+    const n = Math.pow(2, z);
+
+    let tiles = '';
+    for (let ty = Math.floor(oy / TS); ty <= Math.floor((oy + H) / TS); ty++){
+      if (ty < 0 || ty >= n) continue;
+      for (let tx = Math.floor(ox / TS); tx <= Math.floor((ox + W) / TS); tx++){
+        const wx = ((tx % n) + n) % n;
+        tiles += '<img alt="" loading="lazy" src="https://tile.openstreetmap.org/' + z + '/' + wx + '/' + ty + '.png"'
+               + ' style="left:' + (tx * TS - ox) + 'px;top:' + (ty * TS - oy) + 'px">';
+      }
+    }
+
+    const sx = xs.map(function(v){ return (v - ox).toFixed(1); });
+    const sy = ys.map(function(v){ return (v - oy).toFixed(1); });
+    let ov = '<svg class="drd-ov" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none">';
+    if (pts.length > 1){
+      const d = sx.map(function(v, i){ return (i ? 'L' : 'M') + v + ' ' + sy[i]; }).join(' ');
+      ov += '<path d="' + d + '" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>'
+          + '<path d="' + d + '" fill="none" stroke="#2F4A3E" stroke-width="2.6" stroke-dasharray="7 6" stroke-linecap="round" stroke-linejoin="round"/>';
+    }
+    sx.forEach(function(v, i){
+      const fill = i === 0 ? '#2F6F4E' : (i === sx.length - 1 ? '#B4553F' : '#2F4A3E');
+      ov += '<circle cx="' + v + '" cy="' + sy[i] + '" r="11" fill="' + fill + '" stroke="#fff" stroke-width="2.5"/>'
+          + '<text x="' + v + '" y="' + (parseFloat(sy[i]) + 4) + '" text-anchor="middle"'
+          + ' font-size="12" font-weight="800" fill="#fff" font-family="Manrope,sans-serif">' + (i + 1) + '</text>';
     });
+    ov += '</svg>';
+
+    el.classList.remove('drd-map-ph');
+    el.innerHTML = '<div class="drd-tiles">' + tiles + '</div>' + ov
+      + '<div class="drd-attr">&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a></div>';
   }
   function initRouteMaps(){
-    if (!window.L){
-      if (!initRouteMaps.waited){
-        initRouteMaps.waited = true;
-        window.addEventListener('load', initRouteMaps, { once: true });
-        setTimeout(initRouteMaps, 5000);
-        return;
-      }
-      fallbackRouteMaps();
-      return;
-    }
     const nodes = document.querySelectorAll('.drd-map[data-pts]');
     if (!nodes.length) return;
     if (!('IntersectionObserver' in window)){ nodes.forEach(buildRouteMap); return; }
