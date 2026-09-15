@@ -847,12 +847,13 @@
             <li class="warn">⏰ <b>00:00 서대문사랑상품권</b> — 서울 9/17(목) 16:00 · 자정</li>
             <li>호텔 → 버스 19번(Pender/Burrard) → 스탠리공원 (10분)</li>
             <li>밴쿠버 아쿠아리움 관람</li>
-            <li>씨월(Seawall) 산책 → 잉글리시베이 (약 30분)</li>
-            <li>잉글리시베이 → <b>23번 버스</b> → Beach Ave @ Hornby 하차 (약 10분)</li>
-            <li class="note">ⓘ 내리면 아쿠아버스 선착장 바로 앞 · 23번은 10~15분 간격 · 작은 셔틀버스라 붐빌 수 있어요</li>
-            <li>아쿠아버스로 그랜빌아일랜드 (5~10분)</li>
+            <li>도보 5분 → 스탠리파크 버스루프 → <b>19번</b> → W Pender @ Granville (약 20분)</li>
+            <li>도보 2분 환승 → <b>50번</b> → 그랜빌아일랜드 (약 15분)</li>
+            <li class="note">ⓘ 90분 내 환승 무료 — 두 번 타도 어른 CA$3.15 한 번 요금 · 지우 무료</li>
             <li>그랜빌아일랜드 퍼블릭마켓 관람 · 저녁</li>
-            <li>아쿠아버스 또는 도보·버스로 호텔 복귀</li>
+            <li><b>아쿠아버스</b>로 Hornby St 선착장 복귀 (5~10분)</li>
+            <li>선착장 → 호텔 도보 16분 (완만한 오르막)</li>
+            <li class="note">ⓘ 지우 지치면 선착장에서 택시 — CA$10 안팎</li>
             <li class="warn">⏰ <b>23:00 서울광역사랑상품권</b> — 서울 9/18(금) 15:00</li>
           </ul>
           <button class="meal-btn" onclick="openMeal('day2','9.17 (목) · 밴쿠버')">
@@ -2712,9 +2713,9 @@
     { day:'Day 01', date:'9.16(수)', seg:'seg-van', stops:['YVR 공항','Hilton Vancouver Downtown'],
       connectors:[{icon:'car',text:'택시 · 약 25~35분'}],
       map: mapFrame(['Vancouver International Airport','433 Robson St, Vancouver, BC']) },
-    { day:'Day 02', date:'9.17(목)', seg:'seg-van', stops:['호텔','스탠리공원 · 아쿠아리움','Hornby St 선착장','그랜빌아일랜드','호텔 (복귀)'],
-      connectors:[{icon:'transit',text:'버스 19번 · 약 10분'},{icon:'transit',text:'씨월 도보 30분 + 23번 버스 10분'},{icon:'transit',text:'Aquabus 미니페리 · 약 5~10분'},{icon:'transit',text:'Aquabus/도보/버스로 복귀'}],
-      map: mapFrame(['433 Robson St, Vancouver, BC','Vancouver Aquarium, Stanley Park, Vancouver, BC','Aquabus Hornby Street Dock, Vancouver, BC','Granville Island, Vancouver, BC','433 Robson St, Vancouver, BC'], { mode:'transit' }) },
+    { day:'Day 02', date:'9.17(목)', seg:'seg-van', stops:['호텔','스탠리공원 · 아쿠아리움','그랜빌아일랜드','Hornby St 선착장','호텔 (복귀)'],
+      connectors:[{icon:'transit',text:'버스 19번 · 약 10분'},{icon:'transit',text:'19번 + 50번 환승 · 약 40분'},{icon:'transit',text:'Aquabus 미니페리 · 약 5~10분'},{icon:'transit',text:'도보 약 16분'}],
+      map: mapFrame(['433 Robson St, Vancouver, BC','Vancouver Aquarium, Stanley Park, Vancouver, BC','Granville Island, Vancouver, BC','Aquabus Hornby Street Dock, Vancouver, BC','433 Robson St, Vancouver, BC'], { mode:'transit' }) },
     { day:'Day 03', date:'9.18(금)', seg:'seg-van', stops:['호텔','Canada Place','캐필라노 현수교','연어부화장','하얏트 리젠시 → 호텔'],
       connectors:[{icon:'transit',text:'도보 · 약 16분'},{icon:'transit',text:'무료셔틀 · 약 25분'},{icon:'transit',text:'버스 232/236번'},{icon:'transit',text:'무료셔틀 + 도보 13분'}],
       map: mapFrame(['433 Robson St, Vancouver, BC','Canada Place, Vancouver, BC','Capilano Suspension Bridge Park, North Vancouver, BC','Capilano Salmon Hatchery, North Vancouver, BC','433 Robson St, Vancouver, BC'], { mode:'transit' }) },
