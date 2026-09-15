@@ -570,6 +570,43 @@
     border-top-left-radius: 6px;
   }
   .drd-attr a{ color: inherit; }
+  .drd-map{ cursor: zoom-in; }
+  .drd-zoom{
+    position:absolute; right:8px; top:8px; z-index:3;
+    display:flex; align-items:center; gap:4px;
+    padding: 5px 9px; border-radius: 999px;
+    background: rgba(255,255,255,.92); border: 1px solid var(--line);
+    font-size: 11px; font-weight: 800; color: var(--forest);
+  }
+  .drd-zoom svg{ width: 12px; height: 12px; }
+
+  /* 전체화면 지도 */
+  .mapfull{
+    position: fixed; inset: 0; z-index: 90; display: none;
+    background: var(--bg); flex-direction: column;
+  }
+  .mapfull.on{ display: flex; }
+  .mapfull-bar{
+    display:flex; align-items:center; gap:10px;
+    padding: 12px 14px; border-bottom: 1px solid var(--line); background: var(--surface);
+  }
+  .mapfull-bar .t{ font-size: 14px; font-weight: 800; color: var(--ink); flex:1; }
+  .mapfull-bar button{
+    width: 36px; height: 36px; border-radius: 50%; flex-shrink:0;
+    border: 1px solid var(--line); background: var(--bg); color: var(--ink);
+    font-size: 17px; font-weight: 800; line-height: 1; cursor: pointer;
+  }
+  .mapfull-bar button:focus-visible{ outline: 2px solid var(--forest); outline-offset: 2px; }
+  .mapfull-cv{
+    flex: 1; position: relative; overflow: hidden;
+    touch-action: none; background: var(--bg); cursor: grab;
+  }
+  .mapfull-cv:active{ cursor: grabbing; }
+  .mapfull-hint{
+    padding: 9px 14px; font-size: 11.5px; color: var(--ink-soft);
+    font-weight: 600; text-align:center; border-top: 1px solid var(--line);
+    background: var(--surface);
+  }
   .drd-dir{
     display:flex; align-items:center; justify-content:center; gap:6px;
     margin-bottom: 16px; padding: 9px 12px;
@@ -581,16 +618,21 @@
   .drd-map-ph{ display:flex; align-items:center; justify-content:center;
     font-size: 12px; color: var(--ink-faint); font-weight: 600; }
 
-  .drd{ position: relative; padding-left: 22px; }
+  .drd{ position: relative; padding-left: 26px; }
   .drd::before{
-    content:""; position:absolute; left:5px; top:7px; bottom:7px; width:2px;
+    content:""; position:absolute; left:8px; top:10px; bottom:10px; width:2px;
     background: repeating-linear-gradient(to bottom, var(--line) 0px, var(--line) 4px, transparent 4px, transparent 9px);
   }
   .drd-stop{ position: relative; margin-bottom: 2px; }
   .drd-stop .dot{
-    position:absolute; left:-22px; top:2px; width:11px; height:11px; border-radius:50%;
-    background: var(--surface); border: 2.5px solid var(--forest); z-index:1;
+    position:absolute; left:-25px; top:0; width:18px; height:18px; border-radius:50%;
+    background: var(--forest); border: 2px solid var(--surface); z-index:1;
+    color:#fff; font-size:10px; font-weight:800; line-height:1;
+    display:flex; align-items:center; justify-content:center;
+    font-variant-numeric: tabular-nums;
   }
+  .drd-stop:first-child .dot{ background:#2F6F4E; }
+  .drd-stop:last-of-type .dot{ background:#B4553F; }
   .drd-stop .label{ font-size: 13px; font-weight: 700; color: var(--ink); padding-top: 0; }
   .drd-connector{
     position: relative; margin: 3px 0 14px; padding-left: 2px;
@@ -598,11 +640,6 @@
     font-size: 11.5px; color: var(--ink-soft); font-weight: 600;
   }
   .drd-connector svg{ width: 12px; height: 12px; opacity: 0.75; flex-shrink:0; }
-
-  .daily-route-card.seg-van .drd-stop .dot{ border-color: var(--slate); }
-  .daily-route-card.seg-banff .drd-stop .dot{ border-color: var(--forest); }
-  .daily-route-card.seg-cal .drd-stop .dot{ border-color: var(--gold); }
-  .daily-route-card.seg-sea .drd-stop .dot{ border-color: var(--maple); }
 
   /* ---------- BUDGET TAB ---------- */
   .budget-summary{
@@ -2484,7 +2521,7 @@
   function mapFrame(locs, opts){
     opts = opts || {};
     const pts = locs.filter(function(l){ return GEO[l]; });
-    let html = '<div class="drd-map drd-map-ph" data-pts="'
+    let html = '<div class="drd-map drd-map-ph" data-title="' + (opts.title || '동선') + '" data-pts="'
              + encodeURIComponent(JSON.stringify(pts)) + '">지도 불러오는 중…</div>';
     const dl = opts.dir === null ? [] : (opts.dir || locs);
     if (dl.length >= 2){
@@ -2531,43 +2568,37 @@
     const r = lat * Math.PI / 180;
     return (1 - Math.log(Math.tan(r) + 1 / Math.cos(r)) / Math.PI) / 2 * Math.pow(2, z) * TS;
   }
-  function buildRouteMap(el){
-    let names;
-    try { names = JSON.parse(decodeURIComponent(el.dataset.pts)); } catch(e){ return; }
-    const pts = names.map(function(n){ return GEO[n]; }).filter(Boolean);
-    if (!pts.length) return;
-    el.removeAttribute('data-pts');
-
-    const W = el.clientWidth || 340, H = el.clientHeight || 230, PAD = 30;
+  // 경유지가 모두 들어가는 줌과 중심(월드 픽셀)을 구한다
+  function fitMap(pts, W, H, pad){
+    pad = pad || 34;
     let z = 16;
     for (; z > 1; z--){
       const xs = pts.map(function(p){ return lon2px(p[1], z); });
       const ys = pts.map(function(p){ return lat2px(p[0], z); });
-      const dx = Math.max.apply(null, xs) - Math.min.apply(null, xs);
-      const dy = Math.max.apply(null, ys) - Math.min.apply(null, ys);
-      if (dx <= W - PAD * 2 && dy <= H - PAD * 2) break;
+      if (Math.max.apply(null, xs) - Math.min.apply(null, xs) <= W - pad * 2 &&
+          Math.max.apply(null, ys) - Math.min.apply(null, ys) <= H - pad * 2) break;
     }
     if (pts.length === 1) z = Math.min(z, 13);
-
     const xs = pts.map(function(p){ return lon2px(p[1], z); });
     const ys = pts.map(function(p){ return lat2px(p[0], z); });
-    const cx = (Math.min.apply(null, xs) + Math.max.apply(null, xs)) / 2;
-    const cy = (Math.min.apply(null, ys) + Math.max.apply(null, ys)) / 2;
-    const ox = cx - W / 2, oy = cy - H / 2;
-    const n = Math.pow(2, z);
-
+    return { z: z,
+      cx: (Math.min.apply(null, xs) + Math.max.apply(null, xs)) / 2,
+      cy: (Math.min.apply(null, ys) + Math.max.apply(null, ys)) / 2 };
+  }
+  // 주어진 상태로 타일과 경로를 그린다
+  function paintMap(el, pts, st, W, H){
+    const ox = st.cx - W / 2, oy = st.cy - H / 2, n = Math.pow(2, st.z);
     let tiles = '';
     for (let ty = Math.floor(oy / TS); ty <= Math.floor((oy + H) / TS); ty++){
       if (ty < 0 || ty >= n) continue;
       for (let tx = Math.floor(ox / TS); tx <= Math.floor((ox + W) / TS); tx++){
         const wx = ((tx % n) + n) % n;
-        tiles += '<img alt="" loading="lazy" src="https://tile.openstreetmap.org/' + z + '/' + wx + '/' + ty + '.png"'
+        tiles += '<img alt="" src="https://tile.openstreetmap.org/' + st.z + '/' + wx + '/' + ty + '.png"'
                + ' style="left:' + (tx * TS - ox) + 'px;top:' + (ty * TS - oy) + 'px">';
       }
     }
-
-    const sx = xs.map(function(v){ return (v - ox).toFixed(1); });
-    const sy = ys.map(function(v){ return (v - oy).toFixed(1); });
+    const sx = pts.map(function(p){ return (lon2px(p[1], st.z) - ox).toFixed(1); });
+    const sy = pts.map(function(p){ return (lat2px(p[0], st.z) - oy).toFixed(1); });
     let ov = '<svg class="drd-ov" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none">';
     if (pts.length > 1){
       const d = sx.map(function(v, i){ return (i ? 'L' : 'M') + v + ' ' + sy[i]; }).join(' ');
@@ -2581,10 +2612,83 @@
           + ' font-size="12" font-weight="800" fill="#fff" font-family="Manrope,sans-serif">' + (i + 1) + '</text>';
     });
     ov += '</svg>';
-
-    el.classList.remove('drd-map-ph');
     el.innerHTML = '<div class="drd-tiles">' + tiles + '</div>' + ov
       + '<div class="drd-attr">&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a></div>';
+  }
+  function buildRouteMap(el){
+    let names;
+    try { names = JSON.parse(decodeURIComponent(el.dataset.pts)); } catch(e){ return; }
+    const pts = names.map(function(n){ return GEO[n]; }).filter(Boolean);
+    if (!pts.length) return;
+    el.removeAttribute('data-pts');
+    const W = el.clientWidth || 340, H = el.clientHeight || 230;
+    el.classList.remove('drd-map-ph');
+    paintMap(el, pts, fitMap(pts, W, H), W, H);
+    el.insertAdjacentHTML('beforeend',
+      '<span class="drd-zoom"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>크게 보기</span>');
+    el.addEventListener('click', function(){ openMapFull(pts, el.dataset.title || '동선'); });
+  }
+  // ── 전체화면 지도: 드래그 이동 · 버튼/핀치 확대 ──
+  let MF = null;
+  function openMapFull(pts, title){
+    if (!MF){
+      MF = document.createElement('div');
+      MF.className = 'mapfull';
+      MF.innerHTML = '<div class="mapfull-bar"><span class="t"></span>'
+        + '<button type="button" data-a="out" aria-label="축소">−</button>'
+        + '<button type="button" data-a="in" aria-label="확대">+</button>'
+        + '<button type="button" data-a="fit" aria-label="전체 보기">⤢</button>'
+        + '<button type="button" data-a="close" aria-label="닫기">×</button></div>'
+        + '<div class="mapfull-cv"></div>'
+        + '<div class="mapfull-hint">손가락으로 끌어 이동 · 두 손가락으로 확대</div>';
+      document.body.appendChild(MF);
+    }
+    const bar = MF.querySelector('.mapfull-bar'), cv = MF.querySelector('.mapfull-cv');
+    MF.querySelector('.t').textContent = title;
+    MF.classList.add('on');
+    document.body.style.overflow = 'hidden';
+
+    const W = () => cv.clientWidth, H = () => cv.clientHeight;
+    let st = fitMap(pts, W(), H(), 48);
+    const draw = () => paintMap(cv, pts, st, W(), H());
+    draw();
+
+    const zoom = (d) => {
+      const nz = Math.max(2, Math.min(17, st.z + d));
+      if (nz === st.z) return;
+      const f = Math.pow(2, nz - st.z);
+      st = { z: nz, cx: st.cx * f, cy: st.cy * f };
+      draw();
+    };
+    bar.onclick = (e) => {
+      const a = e.target.closest('button') && e.target.closest('button').dataset.a;
+      if (a === 'in') zoom(1);
+      else if (a === 'out') zoom(-1);
+      else if (a === 'fit'){ st = fitMap(pts, W(), H(), 48); draw(); }
+      else if (a === 'close'){ MF.classList.remove('on'); document.body.style.overflow = ''; }
+    };
+
+    const ptr = new Map();
+    let base = 0;
+    cv.onpointerdown = (e) => { cv.setPointerCapture(e.pointerId); ptr.set(e.pointerId, e); base = 0; };
+    cv.onpointermove = (e) => {
+      if (!ptr.has(e.pointerId)) return;
+      const prev = ptr.get(e.pointerId);
+      ptr.set(e.pointerId, e);
+      if (ptr.size === 1){
+        st.cx -= e.clientX - prev.clientX;
+        st.cy -= e.clientY - prev.clientY;
+        draw();
+      } else if (ptr.size === 2){
+        const [a, b] = [...ptr.values()];
+        const d = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+        if (!base) { base = d; return; }
+        if (d / base > 1.55){ zoom(1); base = d; }
+        else if (d / base < 0.65){ zoom(-1); base = d; }
+      }
+    };
+    const end = (e) => { ptr.delete(e.pointerId); base = 0; };
+    cv.onpointerup = end; cv.onpointercancel = end;
   }
   function initRouteMaps(){
     const nodes = document.querySelectorAll('.drd-map[data-pts]');
@@ -2605,10 +2709,10 @@
       map: mapFrame(['Vancouver International Airport','433 Robson St, Vancouver, BC']) },
     { day:'Day 02', date:'9.17(목)', seg:'seg-van', stops:['호텔','스탠리공원 · 아쿠아리움','Hornby St 선착장','그랜빌아일랜드','호텔 (복귀)'],
       connectors:[{icon:'transit',text:'버스 19번 · 약 10분'},{icon:'transit',text:'씨월 도보 · 약 25분'},{icon:'transit',text:'Aquabus 미니페리 · 약 5~10분'},{icon:'transit',text:'Aquabus/도보/버스로 복귀'}],
-      map: mapFrame(['433 Robson St, Vancouver, BC','Stanley Park, Vancouver, BC','Vancouver Aquarium, Stanley Park, Vancouver, BC','Aquabus Hornby Street Dock, Vancouver, BC','Granville Island, Vancouver, BC'], { mode:'transit' }) },
+      map: mapFrame(['433 Robson St, Vancouver, BC','Vancouver Aquarium, Stanley Park, Vancouver, BC','Aquabus Hornby Street Dock, Vancouver, BC','Granville Island, Vancouver, BC','433 Robson St, Vancouver, BC'], { mode:'transit' }) },
     { day:'Day 03', date:'9.18(금)', seg:'seg-van', stops:['호텔','Canada Place','캐필라노 현수교','연어부화장','하얏트 리젠시 → 호텔'],
       connectors:[{icon:'transit',text:'도보 · 약 16분'},{icon:'transit',text:'무료셔틀 · 약 25분'},{icon:'transit',text:'버스 232/236번'},{icon:'transit',text:'무료셔틀 + 도보 13분'}],
-      map: mapFrame(['433 Robson St, Vancouver, BC','Canada Place, Vancouver, BC','Capilano Suspension Bridge Park, North Vancouver, BC','Capilano Salmon Hatchery, North Vancouver, BC'], { mode:'transit' }) },
+      map: mapFrame(['433 Robson St, Vancouver, BC','Canada Place, Vancouver, BC','Capilano Suspension Bridge Park, North Vancouver, BC','Capilano Salmon Hatchery, North Vancouver, BC','433 Robson St, Vancouver, BC'], { mode:'transit' }) },
     { day:'Day 04', date:'9.19(토)', seg:'seg-banff', stops:['YVR','YYC','한인마트 (장보기)','캔모어 숙소','캔모어 시내'],
       connectors:[{icon:'plane',text:'WS110 · 약 1h30m'},{icon:'car',text:'렌터카 · 약 25분'},{icon:'car',text:'렌터카 · 약 1시간10분'},{icon:'transit',text:'도보'}],
       map: mapFrame(['Vancouver International Airport','Calgary International Airport','H Mart, 11810 Sarcee Trail NW, Calgary, AB','Canmore, AB','Main Street, Canmore, AB'],
@@ -2621,7 +2725,7 @@
       map: mapFrame(['Canmore, AB','Johnston Canyon, Improvement District No. 9, AB','Banff, AB','Fairmont Banff Springs, Banff, AB','Two Jack Lake, Banff, AB','Vermilion Lakes, Banff, AB']) },
     { day:'Day 07', date:'9.22(화)', seg:'seg-cal', stops:['캔모어 숙소','Hampton Inn (짐 맡기기)','CrossIron Mills (수연 하차)','캘거리 동물원 (정표·지우)','아울렛 픽업','Hampton Inn','캘거리공항 (반납)'],
       connectors:[{icon:'car',text:'렌터카 · 약 1시간 15분'},{icon:'car',text:'렌터카 · 약 15분'},{icon:'car',text:'렌터카 · 약 30분'},{icon:'car',text:'렌터카 · 약 30분'},{icon:'car',text:'렌터카 · 약 15분'},{icon:'car',text:'렌터카 반납'}],
-      map: mapFrame(['Canmore, AB','2021 100 Ave NE, Calgary, AB','CrossIron Mills, 261055 CrossIron Blvd, Rocky View County, AB','1300 Zoo Road NE, Calgary, AB','CrossIron Mills, 261055 CrossIron Blvd, Rocky View County, AB','2021 100 Ave NE, Calgary, AB']) },
+      map: mapFrame(['Canmore, AB','2021 100 Ave NE, Calgary, AB','CrossIron Mills, 261055 CrossIron Blvd, Rocky View County, AB','1300 Zoo Road NE, Calgary, AB','CrossIron Mills, 261055 CrossIron Blvd, Rocky View County, AB','2021 100 Ave NE, Calgary, AB','Calgary International Airport']) },
     { day:'Day 08', date:'9.23(수)', seg:'seg-sea', stops:['YYC','SEA','힐튼 모티프','파이크플레이스',"Trader Joe's"],
       connectors:[{icon:'plane',text:'WS1550'},{icon:'transit',text:'Link 경전철 · 약 38분 + 도보 4분'},{icon:'transit',text:'도보 약 10분'},{icon:'transit',text:'도보 + RapidRide G · 약 20분'}],
       map: mapFrame(['Calgary International Airport','Seattle-Tacoma International Airport','Hilton Motif Seattle, 1415 5th Ave, Seattle, WA','Pike Place Market, Seattle, WA',"Trader Joe's, 1700 E Madison St, Seattle, WA"],
@@ -2648,13 +2752,13 @@
       }
       let drd = '<div class="drd">';
       d.stops.forEach((stop, i) => {
-        drd += `<div class="drd-stop"><span class="dot"></span><span class="label">${stop}</span></div>`;
+        drd += `<div class="drd-stop"><span class="dot">${i + 1}</span><span class="label">${stop}</span></div>`;
         if (d.connectors[i]){
           drd += `<div class="drd-connector">${routeIcons[d.connectors[i].icon]}<span>${d.connectors[i].text}</span></div>`;
         }
       });
       drd += '</div>';
-      html += `<div class="daily-route-card ${d.seg}"><div class="daily-route-head"><span class="d-day">${d.day}</span><span class="d-date">${d.date}</span></div>${d.map}${drd}</div>`;
+      html += `<div class="daily-route-card ${d.seg}"><div class="daily-route-head"><span class="d-day">${d.day}</span><span class="d-date">${d.date}</span></div>${d.map.replace('data-title="동선"', `data-title="${d.day} · ${d.date}"`)}${drd}</div>`;
     });
     container.innerHTML = html;
     initRouteMaps();
