@@ -1203,7 +1203,10 @@
             <li class="note">MoPOP은 프랭크 게리 건축 외관만 보고 통과 — 놀이터 바로 옆</li>
             <li>15:00 <b>D Line</b> 버스로 이동</li>
             <li><a href="https://www.google.com/maps/search/?api=1&amp;query=Trader%20Joe%27s%2C%201700%20E%20Madison%20St%2C%20Seattle%2C%20WA" target="_blank" rel="noopener"><b>Trader Joe&#39;s ↗</b></a> 쇼핑 — 1700 E Madison St</li>
-            <li>17:00 호텔 복귀 → <b>휴식·짐정리</b></li>
+            <li>17:00 호텔 복귀 → 장본 것 정리</li>
+            <li class="drive">17:40 호텔 출발 → Westlake역 도보 → <b>Link</b> → Stadium역 (약 5~7분)</li>
+            <li>18:00 <a href="https://www.google.com/maps/search/?api=1&amp;query=T-Mobile+Park%2C+1250+1st+Ave+S%2C+Seattle%2C+WA" target="_blank" rel="noopener"><b>T-Mobile Park ↗</b></a> 도착 — Home Plate Box Office에서 현장 티켓 구매 (카드만, 현금 불가)</li>
+            <li class="note">18:40 First Pitch — 마리너스 vs LA 에인절스</li>
           </ul>
           <button class="meal-btn" onclick="openMeal('day9','9.24 (목) · 시애틀')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 3v6a2 2 0 0 0 4 0V3M9 9v12M17 3c-1.5 3-1.5 6 0 8v10"/></svg>
@@ -2787,9 +2790,9 @@
       connectors:[{icon:'plane',text:'WS1550'},{icon:'transit',text:'Link 경전철 · 약 38분 + 도보 4분'},{icon:'transit',text:'도보 4~5분'},{icon:'transit',text:'도보 약 5분'},{icon:'transit',text:'버스 13번'},{icon:'transit',text:'버스 2·13번 · 약 15분'}],
       map: mapFrame(['Calgary International Airport','Seattle-Tacoma International Airport','Hilton Motif Seattle, 1415 5th Ave, Seattle, WA','222 Pike St, Seattle, WA','Pike Place Market, Seattle, WA','Kerry Park, Seattle, WA','Hilton Motif Seattle, 1415 5th Ave, Seattle, WA'],
         { mode:'transit', dir:['Seattle-Tacoma International Airport','Hilton Motif Seattle, 1415 5th Ave, Seattle, WA','222 Pike St, Seattle, WA','Pike Place Market, Seattle, WA','Kerry Park, Seattle, WA','Hilton Motif Seattle, 1415 5th Ave, Seattle, WA'] }) },
-    { day:'Day 09', date:'9.24(목)', seg:'seg-sea', stops:['힐튼 모티프','퍼시픽 사이언스 센터','놀이터',"Trader Joe's"],
-      connectors:[{icon:'transit',text:'도보 3분 + 모노레일 3분'},{icon:'transit',text:'도보'},{icon:'transit',text:'D Line 버스'}],
-      map: mapFrame(['Hilton Motif Seattle, 1415 5th Ave, Seattle, WA','Pacific Science Center, Seattle, WA','Artists at Play, Seattle Center, WA',"Trader Joe's, 1700 E Madison St, Seattle, WA"], { mode:'transit' }) },
+    { day:'Day 09', date:'9.24(목)', seg:'seg-sea', stops:['힐튼 모티프','퍼시픽 사이언스 센터','놀이터',"Trader Joe's",'힐튼 모티프 (복귀)','T-Mobile Park'],
+      connectors:[{icon:'transit',text:'도보 3분 + 모노레일 3분'},{icon:'transit',text:'도보'},{icon:'transit',text:'D Line 버스'},{icon:'transit',text:'도보 + D Line 버스'},{icon:'transit',text:'도보 + Link · 약 5~7분'}],
+      map: mapFrame(['Hilton Motif Seattle, 1415 5th Ave, Seattle, WA','Pacific Science Center, Seattle, WA','Artists at Play, Seattle Center, WA',"Trader Joe's, 1700 E Madison St, Seattle, WA",'Hilton Motif Seattle, 1415 5th Ave, Seattle, WA','T-Mobile Park, 1250 1st Ave S, Seattle, WA'], { mode:'transit' }) },
     { day:'Day 10', date:'9.25(금)', seg:'seg-sea', stops:['힐튼 모티프','Westlake역','SEA공항역','공항 (탑승동)'],
       connectors:[{icon:'transit',text:'도보 · 약 4분'},{icon:'transit',text:'Link 경전철 · 약 38분'},{icon:'transit',text:'도보 · 약 10분'}],
       map: mapFrame(['Hilton Motif Seattle, 1415 5th Ave, Seattle, WA','Westlake Station, Seattle, WA','SeaTac/Airport Station, SeaTac, WA','Seattle-Tacoma International Airport'], { mode:'transit' }) },
