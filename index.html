@@ -1366,7 +1366,7 @@
 
     <div class="budget-summary">
       <div class="total-label">Total Budget</div>
-      <div class="total-amount">₩ 13,920,840</div>
+      <div class="total-amount">₩ 13,840,840</div>
       <div class="split">
         <div>
           <div class="k">지출완료</div>
@@ -1374,7 +1374,7 @@
         </div>
         <div>
           <div class="k">지출예정</div>
-          <div class="v planned">₩ 1,285,390</div>
+          <div class="v planned">₩ 1,205,390</div>
         </div>
       </div>
     </div>
@@ -1471,10 +1471,10 @@
       <div class="cost-row"><div class="cost-label">웨스트젯(공홀)<small>WS1550 · 캘거리→시애틀 · 886.89+135=1021.89</small></div><div class="cost-amount paid">₩1,142,754</div></div>
       <div class="cost-row"><div class="cost-label">캘거리 공항 면세점<small>Calgary Duty Free · <b>CA$175.00 실지출</b></small></div><div class="cost-amount paid">₩173,250</div></div>
       <div class="cost-row"><div class="cost-label">스타벅스 · 캘거리 공항(보안검색 후)<small><b>CA$10.97 실지출</b></small></div><div class="cost-amount paid">₩10,860</div></div>
-      <div class="cost-row"><div class="cost-label">교통 · Link + RapidRide G<small>SEA→Westlake $3 × 2 + Trader Joe's 왕복 $2.75 × 4</small></div><div class="cost-amount planned">₩27,000</div></div>
+      <div class="cost-row"><div class="cost-label">교통 · Link + 버스 13번<small>SEA→Westlake $3 × 2 + 버스 13번(퀸앤) 왕복 $2.75 × 4</small></div><div class="cost-amount planned">₩27,000</div></div>
       <div class="cost-row"><div class="cost-label">점심 · Luke's Lobster<small>파이크플레이스 · <b>US$55.15 실지출</b></small></div><div class="cost-amount paid">₩76,658</div></div>
       <div class="cost-row"><div class="cost-label">간식 · Le Panier<small>파이크플레이스 · <b>US$9.20 실지출</b></small></div><div class="cost-amount paid">₩12,788</div></div>
-      <div class="cost-row"><div class="cost-label">저녁 · The Pink Door<small>파이크플레이스 이탈리안 · Salumi 선택 시 ₩90,000 수준</small></div><div class="cost-amount planned">₩150,000</div></div>
+      <div class="cost-row"><div class="cost-label">저녁 · Pike Place Chowder - Pacific Place<small>테이크아웃</small></div><div class="cost-amount planned">₩70,000</div></div>
     </div>
 
     <div class="budget-day">
@@ -1482,7 +1482,7 @@
       <div class="cost-row"><div class="cost-label">퍼시픽 사이언스 센터<small>성인 $27.95 × 2 + 지우 $19.95 (3~12세) · 24시간 전 온라인 예약 시 20% 할인</small></div><div class="cost-amount planned">₩112,000</div></div>
       <div class="cost-row"><div class="cost-label">교통 · 모노레일 + 버스<small>모노레일 $4 × 2 (지우 5세 이하 무료) + 버스 13·2번 $2.75 × 4</small></div><div class="cost-amount planned">₩30,000</div></div>
       <div class="cost-row"><div class="cost-label">점심 · Armory 푸드코트<small>시애틀센터 안 · 캐주얼</small></div><div class="cost-amount planned">₩65,000</div></div>
-      <div class="cost-row"><div class="cost-label">저녁 · Pike Place Chowder - Pacific Place<small>테이크아웃</small></div><div class="cost-amount planned">₩70,000</div></div>
+      <div class="cost-row"><div class="cost-label">저녁 · T-Mobile Park 매점<small>야구장 현장 구매</small></div><div class="cost-amount planned">₩70,000</div></div>
     </div>
 
     <div class="budget-day">
@@ -2566,13 +2566,15 @@
     'Seattle-Tacoma International Airport'                           : [47.4502, -122.3088],
     'Hilton Motif Seattle, 1415 5th Ave, Seattle, WA'                : [47.6103, -122.3346],
     'Pike Place Market, Seattle, WA'                                 : [47.6097, -122.3422],
-    "Trader Joe's, 1700 E Madison St, Seattle, WA"                   : [47.6155, -122.3095],
+    '222 Pike St, Seattle, WA'                                       : [47.6098, -122.3380],
+    "Trader Joe's, 1916 Queen Anne Ave N, Seattle, WA"               : [47.6356, -122.3572],
     'Pacific Science Center, Seattle, WA'                            : [47.6190, -122.3505],
     'Artists at Play, Seattle Center, WA'                            : [47.6215, -122.3495],
-    'Myrtle Edwards Park, Seattle, WA'                               : [47.6215, -122.3577],
+    'Myrtle Edwards Park, Seattle, WA'                                : [47.6215, -122.3577],
     'Kerry Park, Seattle, WA'                                        : [47.6295, -122.3599],
     'Westlake Station, Seattle, WA'                                  : [47.6112, -122.3374],
     'SeaTac/Airport Station, SeaTac, WA'                             : [47.4457, -122.2967],
+    'T-Mobile Park, 1250 1st Ave S, Seattle, WA'                     : [47.5915, -122.3329],
     'Incheon International Airport'                                  : [37.4602, -233.5593]
   };
   // 짧은 표시용 이름
@@ -2793,7 +2795,7 @@
       map: mapFrame(['Calgary International Airport','Seattle-Tacoma International Airport','Hilton Motif Seattle, 1415 5th Ave, Seattle, WA','222 Pike St, Seattle, WA','Pike Place Market, Seattle, WA',"Trader Joe's, 1916 Queen Anne Ave N, Seattle, WA",'Kerry Park, Seattle, WA','Hilton Motif Seattle, 1415 5th Ave, Seattle, WA'],
         { mode:'transit', dir:['Seattle-Tacoma International Airport','Hilton Motif Seattle, 1415 5th Ave, Seattle, WA','222 Pike St, Seattle, WA','Pike Place Market, Seattle, WA',"Trader Joe's, 1916 Queen Anne Ave N, Seattle, WA",'Kerry Park, Seattle, WA','Hilton Motif Seattle, 1415 5th Ave, Seattle, WA'] }) },
     { day:'Day 09', date:'9.24(목)', seg:'seg-sea', stops:['힐튼 모티프','퍼시픽 사이언스 센터','놀이터','힐튼 모티프 (복귀)','T-Mobile Park'],
-      connectors:[{icon:'transit',text:'도보 3분 + 모노레일 3분'},{icon:'transit',text:'도보'},{icon:'transit',text:'D Line 버스'},{icon:'transit',text:'도보 + Link · 약 5~7분'}],
+      connectors:[{icon:'transit',text:'도보 3분 + 모노레일 3분'},{icon:'transit',text:'도보'},{icon:'transit',text:'모노레일 3분 + 도보 3분'},{icon:'transit',text:'도보 + Link · 약 5~7분'}],
       map: mapFrame(['Hilton Motif Seattle, 1415 5th Ave, Seattle, WA','Pacific Science Center, Seattle, WA','Artists at Play, Seattle Center, WA','Hilton Motif Seattle, 1415 5th Ave, Seattle, WA','T-Mobile Park, 1250 1st Ave S, Seattle, WA'], { mode:'transit' }) },
     { day:'Day 10', date:'9.25(금)', seg:'seg-sea', stops:['힐튼 모티프','Westlake역','SEA공항역','공항 (탑승동)'],
       connectors:[{icon:'transit',text:'도보 · 약 4분'},{icon:'transit',text:'Link 경전철 · 약 38분'},{icon:'transit',text:'도보 · 약 10분'}],
