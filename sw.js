@@ -1,7 +1,7 @@
 // 오프라인 대비 캐시
 // 모레인레이크는 셀 서비스가 아예 없고 밴프 일부 구간도 신호가 약합니다.
 // 온라인이면 항상 최신을 받아오고, 통신이 끊겼을 때만 캐시된 일정을 보여줍니다.
-var CACHE = 'nw2026-v119';
+var CACHE = 'nw2026-v120';
 
 self.addEventListener('install', function (e) {
   e.waitUntil(
