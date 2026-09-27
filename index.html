@@ -661,6 +661,18 @@
   .budget-summary .split .v.planned{ color: #E8A99C; }
   .budget-note{ font-size: 11px; color: var(--ink-faint); margin: 10px 4px 0; line-height: 1.5; }
 
+  .budget-cats{ display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 12px; }
+  .budget-cats .cat-item{ background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+  .budget-cats .cat-k{ display: block; font-size: 11px; color: var(--ink-faint); font-weight: 700; margin-bottom: 3px; }
+  .budget-cats .cat-v{ display: block; font-family: 'Fraunces', serif; font-size: 16px; font-weight: 700; color: var(--ink); }
+  .budget-flight{
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+    padding: 12px 16px; margin-top: 10px;
+  }
+  .budget-flight .k{ font-size: 12.5px; font-weight: 700; color: var(--ink-soft); }
+  .budget-flight .v{ font-family: 'Fraunces', serif; font-size: 17px; font-weight: 700; color: var(--ink); }
+
   .budget-day{
     background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
     padding: 16px 18px; margin-top: 14px;
@@ -1383,6 +1395,15 @@
         </div>
       </div>
     </div>
+
+    <div class="budget-cats">
+      <div class="cat-item"><span class="cat-k">숙소</span><span class="cat-v">₩4,259,352</span></div>
+      <div class="cat-item"><span class="cat-k">교통</span><span class="cat-v">₩6,884,975</span></div>
+      <div class="cat-item"><span class="cat-k">식사</span><span class="cat-v">₩1,408,527</span></div>
+      <div class="cat-item"><span class="cat-k">기타</span><span class="cat-v">₩1,228,014</span></div>
+    </div>
+    <div class="budget-flight"><span class="k">✈ 항공비 합계</span><span class="v">₩5,999,654</span></div>
+
     <p class="budget-note">파란색 = 이미 지출한 항목 · 빨간색 = 지출 예정(예산) 항목입니다. 지출 예정 항목은 2026년 9월 현지 요금으로 산정한 뒤 10~15% 여유를 더한 값입니다. 환율 CA$1≈₩990 · US$1≈₩1,390 · 시애틀은 판매세 10.35% + 팁 20%, 캐나다는 GST 5% + 팁 18% 포함.</p>
     <div class="cost-legend">
       <span><span class="sw paid"></span>지출완료</span>
