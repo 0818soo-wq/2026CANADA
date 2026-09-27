@@ -501,6 +501,8 @@
   .meal-pick .meal-desc{ display: block; font-size: 11.5px; color: var(--ink-soft); margin-top: 3px; line-height: 1.5; }
   .meal-pick .meal-plain{ font-size: 13px; font-weight: 700; color: var(--ink); }
   .meal-pick .meal-desc b{ color: var(--gold); font-weight: 800; }
+  .meal-real{ margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--line); font-size: 12.5px; font-weight: 700; color: #3E6C8C; }
+  .meal-real .meal-link{ color: #3E6C8C; }
 
   /* ---------- 식사 TAB ---------- */
   .mealday{ background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; margin-bottom: 12px; }
@@ -1973,25 +1975,29 @@
       { name: "The Lobster Man", place: "The Lobster Man, Granville Island, Vancouver, BC", desc: "확정 · 그랜빌아일랜드 시푸드 마켓" },
       { name: "The Sandbar", place: "The Sandbar Restaurant, Granville Island, Vancouver, BC", desc: "다리 밑 시푸드 타워 + 라이브 피아노, 특색있는 분위기" },
       { name: "Tony's Fish & Chips", place: "Tony's Fish & Chips, Granville Island, Vancouver, BC", desc: "그랜빌아일랜드 입구, 캐주얼 피시앤칩스" }
-    ], d: [
+    ], lReal: { name: "The Lobster Man", place: "The Lobster Man, Granville Island, Vancouver, BC" },
+    d: [
       { name: "Costco?!", place: "Costco Wholesale, 605 Expo Blvd, Vancouver, BC", desc: "확정(농담 반) · 호텔에서 가장 가까운 지점, 편하게 장봐서 숙소에서" },
       { name: "Blue Water Cafe", place: "Blue Water Cafe, Yaletown, Vancouver, BC", desc: "요트타운 대표 시푸드 파인다이닝, 오이스터바 유명" },
       { name: "Minami", place: "Minami Restaurant, Yaletown, Vancouver, BC", desc: "토치로 굽는 아부리 스시, 요트타운 특색있는 곳" }
-    ] },
-    day3: { b: "호텔", l: "도시락 / 피크닉 (캐필라노)", d: [
+    ], dReal: { name: "JINYA RAMEN BAR", place: "JINYA Ramen Bar, Vancouver, BC" } },
+    day3: { b: "호텔", l: "도시락 / 피크닉 (캐필라노)", lReal: { name: "파이브가이즈 (Five Guys)", place: "Five Guys, Vancouver, BC" },
+    d: [
       { name: "VietSub Vietnamese Cuisine", place: "VietSub Vietnamese Cuisine, Vancouver, BC", desc: "구글 4.5★ · 반미(바게트 샌드위치) 맛집, 로컬 인기" },
       { name: "Chef Lien Vietnamese Cuisine", place: "Chef Lien Vietnamese Cuisine, Robson Street, Vancouver, BC", desc: "구글 4.5★ · 호텔 바로 앞 로브슨가, 스프링롤·레몬그라스 치킨" },
       { name: "Phnom Penh", place: "Phnom Penh Restaurant, Vancouver, BC", desc: "구글 4.5★ · 밴쿠버 대표 베트남식당, 웨이팅 있는 맛집" }
-    ] },
+    ], dReal: { name: "Pho Mimosa", place: "Pho Mimosa, Vancouver, BC" } },
     day4: { b: "숙소에서 해먹기", l: [
       { name: "Kain Tayo", place: "Kain Tayo, Canmore, AB", desc: "캔모어 신상 · 아시아 스트리트푸드(일본·인니·필리핀), 가장 특색있는 곳" },
       { name: "Gaucho's", place: "Gaucho's Canmore, AB", desc: "캔모어 유일 브라질 슈하스코, 고기 좋아하면 강추" },
       { name: "JK Bakery", place: "JK Bakery, Canmore, AB", desc: "홈메이드 샌드위치 전문, 아이와 가볍게 먹기 좋음" }
-    ], d: "숙소에서 해먹기" },
+    ], lReal: { name: "H마트 김밥 (마트에서 구매)" },
+    d: "숙소에서 해먹기" },
     day5: { b: "숙소에서 해먹기", l: [
       { name: "Lago Italian Kitchen", place: "Lago Italian Kitchen, Fairmont Chateau Lake Louise, AB", desc: "레이크루이스 호수 바로 앞, 모던 지중해식, 가족 여행객 많음" },
       { name: "Bill Peyto's Cafe", place: "Bill Peyto's Cafe, Lake Louise, AB", desc: "레이크루이스 빌리지 로컬 맛집, 캐주얼·가성비" }
-    ], d: "숙소에서 해먹기" },
+    ], lReal: { name: "Laggan's Mountain Bakery", place: "Laggan's Mountain Bakery, Lake Louise, AB" },
+    d: "숙소에서 해먹기" },
     day6: { b: "숙소에서 해먹기", l: [
       { name: "Bear Street Tavern", place: "Bear Street Tavern, Banff, AB", desc: "구글 4.5★(2800+) · 밴프 시내 대표 맛집, 웨이팅 가능" },
       { name: "Tooloulou's", place: "Tooloulou's, Banff, AB", desc: "구글 4.5★(1700+) · 케이준-크리올 요리, 밴프에서 가장 특색있는 곳" },
@@ -2000,21 +2006,25 @@
     day7: { b: "숙소에서 해먹기", l: [
       { name: "Pfanntastic Pannenkoek Haus", place: "Pfanntastic Pannenkoek Haus, 2439 54 Ave SW, Calgary, AB", desc: "구글 4.7★(1,900+) · 네덜란드식 팬케이크 전문 · $10~20 · 09:00 오픈" },
       { name: "Galaxie Diner", place: "Galaxie Diner, Calgary, AB", desc: "구글 4.8★(2,200+) · 옛날 미국식 다이너 · 해시브라운·토스트 무제한 · 07:00 오픈" }
-    ], d: { name: "Noble Pie", place: "Noble Pie, Calgary, AB", desc: "구글 4.8★(1,400+) · 피자 전문점 · 21:00 마감 · 뒷골목 입구로 들어가야 함" } },
-    day8: { b: "호텔 조식", l: "시내 식당", d: [
+    ], lReal: { name: "Peters' Drive-In", place: "Peters' Drive-In, Calgary, AB" },
+    d: { name: "Noble Pie", place: "Noble Pie, Calgary, AB", desc: "구글 4.8★(1,400+) · 피자 전문점 · 21:00 마감 · 뒷골목 입구로 들어가야 함" },
+    dReal: { name: "CrossIron Mills 푸드코트 (KFC)", place: "CrossIron Mills, Rocky View County, AB" } },
+    day8: { b: "호텔 조식", l: "시내 식당", lReal: { name: "Luke's Lobster", place: "Luke's Lobster, Pike Place Market, Seattle, WA" },
+    d: [
       { name: "The Pink Door", place: "The Pink Door, Seattle, WA", desc: "1981년부터 파이크플레이스 골목의 이탈리안 노포, 숨은 입구로 유명" },
       { name: "Salumi", place: "Salumi Cured Meats, Seattle, WA", desc: "유명 살루미(햄) 샌드위치, 파이크플레이스 골목집" }
-    ] },
+    ], dReal: { name: "Pike Place Chowder - Pacific Place", place: "Pike Place Chowder, Pacific Place, Seattle, WA" } },
     day9: { b: "호텔 조식 (다이아몬드 혜택 확인)", l: [
       { name: "Pasta Casalinga", place: "Pasta Casalinga, Seattle, WA", desc: "Yelp 4.6★ · 다운타운 파스타 맛집, 셰프가 이탈리아 출신" },
       { name: "Lola", place: "Lola Seattle, WA", desc: "그리스/지중해식, 아침부터 저녁까지 인기" }
-    ], d: [
+    ], lReal: { name: "Armory 푸드코트 (Matt's Fish Basket)", place: "Armory Food Court, Seattle Center, Seattle, WA" },
+    d: [
       { name: "Via Tribunali", place: "Via Tribunali, Queen Anne, Seattle, WA", desc: "나폴리 화덕피자 · Kerry Park 도보권 · 지우 데리고 가기 좋음" },
       { name: "Betty", place: "Betty Restaurant, Queen Anne Ave N, Seattle, WA", desc: "어퍼 퀸앤 · 제철 컴포트푸드 · 캐주얼 · Kerry Park 몇 블록" },
       { name: "Six Seven Restaurant", place: "Six Seven Restaurant, Seattle, WA", desc: "구글 4.5★ · 뉴아메리칸·시푸드, 엘리엇 베이 전망" },
       { name: "Lenox", place: "Lenox Seattle, WA", desc: "아프로-라틴 소울푸드, 벨타운에서 가장 특색있는 곳" },
       { name: "Chiho", place: "Chiho Seattle, WA", desc: "샤오롱바오 등 딤섬 전문, 아이와 먹기도 좋음" }
-    ] },
+    ], dReal: { name: "Pike Place Chowder", place: "Pike Place Chowder, Seattle, WA" } },
     day10:{ b: "호텔 조식 (09:40 체크아웃 전)", l: [
       { name: "1번째 기내식 (KE042)", desc: "<b>정표</b> 한식 비빔밥 · 양식 레드와인소스 소고기와 으깬 감자 · 아시아식 채소카레와 쌀밥 중 선택<br><b>수연</b> 글루텐제한식<br><b>지우</b> 피자" }
     ], d: [
@@ -2032,13 +2042,21 @@
         ${item.name}
       </a>${desc}</div>`;
   }
-  function mealSlotHTML(entry, empty){
-    if (Array.isArray(entry)) return `<div class="meal-picks">${entry.map(mealPickHTML).join('')}</div>`;
-    if (entry && typeof entry === 'object' && entry.place) return mealPickHTML(entry);
-    return `<span class="meal-empty">${entry || empty}</span>`;
+  function mealRealHTML(real){
+    if (!real.place) return `<div class="meal-real">✅ 실제: ${real.name}</div>`;
+    const q = encodeURIComponent(real.place);
+    return `<div class="meal-real">✅ 실제: <a class="meal-link" href="https://www.google.com/maps/search/?api=1&query=${q}" target="_blank" rel="noopener">${real.name}</a></div>`;
   }
-  function renderMealSlot(el, entry){
-    el.innerHTML = mealSlotHTML(entry, '맛집 리스트 준비 중이에요.');
+  function mealSlotHTML(entry, empty, real){
+    let html;
+    if (Array.isArray(entry)) html = `<div class="meal-picks">${entry.map(mealPickHTML).join('')}</div>`;
+    else if (entry && typeof entry === 'object' && entry.place) html = mealPickHTML(entry);
+    else html = `<span class="meal-empty">${entry || empty}</span>`;
+    if (real) html += mealRealHTML(real);
+    return html;
+  }
+  function renderMealSlot(el, entry, real){
+    el.innerHTML = mealSlotHTML(entry, '맛집 리스트 준비 중이에요.', real);
   }
 
   // 식사 탭 — 전체 일자
@@ -2059,13 +2077,13 @@
     if (!host) return;
     host.innerHTML = MEAL_DAYS.map(function(d){
       const m = mealData[d.k] || {};
-      const row = function(label, entry){
+      const row = function(label, entry, real){
         return '<div class="mealday-row"><span class="k">' + label + '</span>' +
-               '<div class="v">' + mealSlotHTML(entry, '미정') + '</div></div>';
+               '<div class="v">' + mealSlotHTML(entry, '미정', real) + '</div></div>';
       };
       return '<div class="mealday ' + d.seg + '">' +
              '<div class="mealday-head"><span class="d">' + d.n + '</span><span class="t">' + d.t + '</span></div>' +
-             row('아침', m.b) + row('점심', m.l) + row('저녁', m.d) +
+             row('아침', m.b, m.bReal) + row('점심', m.l, m.lReal) + row('저녁', m.d, m.dReal) +
              '</div>';
     }).join('');
   }
@@ -2433,9 +2451,9 @@
     document.getElementById('mealDayLabel').textContent = labelMap[dayKey] || dayKey;
     document.getElementById('mealDateLabel').textContent = date;
     const m = mealData[dayKey];
-    renderMealSlot(document.getElementById('mealBreakfast'), m && m.b);
-    renderMealSlot(document.getElementById('mealLunch'), m && m.l);
-    renderMealSlot(document.getElementById('mealDinner'), m && m.d);
+    renderMealSlot(document.getElementById('mealBreakfast'), m && m.b, m && m.bReal);
+    renderMealSlot(document.getElementById('mealLunch'), m && m.l, m && m.lReal);
+    renderMealSlot(document.getElementById('mealDinner'), m && m.d, m && m.dReal);
     document.getElementById('mealPage').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
